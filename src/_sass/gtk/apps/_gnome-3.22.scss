@@ -260,14 +260,14 @@ $theme_list_radius: $window-radius - $space-size;
   // Floating status bar
   .floating-bar {
     min-height: $menuitem-size;
-    padding: $space-size / 2;
+    padding: $space-size * 0.5;
     margin: $space-size;
     border-style: none;
     border-radius: $circular-radius;
     background-color: rgba($background, 0.95);
 
     button {
-      margin: (32px - $small-size) / 2;
+      margin: (32px - $small-size) * 0.5;
 
       @extend %small-button;
     }
@@ -355,8 +355,8 @@ $theme_list_radius: $window-radius - $space-size;
 
   // for 3.32
   .linked.nautilus-path-bar button:not(.suggested-action):not(.destructive-action) {
-    padding-left: ($medium-size - 12px) / 2;
-    padding-right: ($medium-size - 12px) / 2;
+    padding-left: ($medium-size - 12px) * 0.5;
+    padding-right: ($medium-size - 12px) * 0.5;
     margin-left: 1px;
     margin-right: 1px;
 
@@ -641,13 +641,13 @@ window.background.csd {
 
     &:last-child:dir(ltr),
     &:not(:first-child):dir(rtl) {
-      margin-left: -$space-size / 2;
+      margin-left: -$space-size * 0.5;
       border-radius: $circular-radius;
     }
 
     &:first-child:dir(rtl),
     &:not(:last-child):dir(ltr) {
-      margin-right: -$space-size / 2;
+      margin-right: -$space-size * 0.5;
       border-radius: $circular-radius;
     }
   }
@@ -916,7 +916,7 @@ hdyleaflet, leaflet, box.horizontal > stack.background {
         @extend %sidebar_row;
       }
 
-      > separator { margin: $space-size / 2 0; }
+      > separator { margin: $space-size * 0.5 0; }
     }
   }
 
@@ -992,7 +992,7 @@ window.background.csd {
 tabbox { // Gnome 40.0
   background-color: $background;
   box-shadow: inset 0 -1px $divider;
-  padding: ($space-size / 2) ($space-size / 2) 0;
+  padding: ($space-size * 0.5) ($space-size * 0.5) 0;
 
   > tab {
     @extend %tabs_tab;
@@ -1088,7 +1088,7 @@ window.background.csd.unified {
 %image-button {
   min-height: 24px;
   min-width: 24px;
-  padding: ($medium-size - 24px) / 2;
+  padding: ($medium-size - 24px) * 0.5;
   margin: 0;
 }
 
@@ -1214,7 +1214,7 @@ layouttabbar {
   button { @extend %button-flat; }
 
   > box > button {
-    margin: (40px - $medium-size) / 2 0;
+    margin: (40px - $medium-size) * 0.5 0;
     // border-radius: 0;
   }
 }
@@ -1456,8 +1456,8 @@ window.workbench preferences preferencesgroup list entry {
 
 button.run-arrow-button {
   // min-width: 12px;
-  padding-left: ($medium-size - 16px) / 2;
-  padding-right: ($medium-size - 16px) / 2;
+  padding-left: ($medium-size - 16px) * 0.5;
+  padding-right: ($medium-size - 16px) * 0.5;
 }
 
 //
@@ -1814,7 +1814,7 @@ window.background { // gnome-terminal 3.32 setting
 popover.background.menu {
   radiobutton {
     &.system, &.light, &.dark {
-      margin: $space-size 0 $space-size / 2;
+      margin: $space-size 0 $space-size * 0.5;
     }
   }
 }
@@ -1836,7 +1836,7 @@ task-list-view {
   }
 
   > box > revealer > box > button {
-    margin: (12px * 2 - $medium-size) / 2;
+    margin: (12px * 2 - $medium-size) * 0.5;
 
     .dim-label { color: inherit; }
   }
@@ -1855,7 +1855,7 @@ tasklistview {
   }
 
   > box > revealer > box > button {
-    margin: (12px * 2 - $medium-size) / 2;
+    margin: (12px * 2 - $medium-size) * 0.5;
 
     .dim-label { color: inherit; }
   }

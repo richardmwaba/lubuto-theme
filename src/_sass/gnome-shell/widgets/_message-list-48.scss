@@ -233,7 +233,7 @@
 
 /* Media Controls */
 .message-media-control {
-  margin: (16px - $space-size * 2) $space-size / 2 !important;
+  margin: (16px - $space-size * 2) $space-size * 0.5 !important;
   padding: 0 $space-size * 2 !important;
   border-radius: $circular-radius;
   color: $text-secondary;
@@ -249,7 +249,7 @@
 .media-message {
   // album-art
   .message-icon {
-    border-radius: $corner-radius / 2 !important;
+    border-radius: $corner-radius * 0.5 !important;
 
     &.message-themed-icon {
       icon-size: $large-icon-size !important; // 32px

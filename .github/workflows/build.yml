@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  css:
+    name: Compile stylesheets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Compile every variant
+        run: FATAL_DEPRECATIONS=slash-div ./parse-sass.sh
+      - name: Install the full matrix into a scratch directory
+        run: ./install.sh -d "$RUNNER_TEMP/themes" -t all
+      - name: Check the installed tree
+        run: |
+          test -s "$RUNNER_TEMP/themes/Lubuto-Teal-Dark-Compact/gnome-shell/gnome-shell.css"
+          test -s "$RUNNER_TEMP/themes/Lubuto-Teal-Dark-Compact/gtk-4.0/gtk.css"
+          test -s "$RUNNER_TEMP/themes/Lubuto-Light/gtk-3.0/gtk.css"
+          ls "$RUNNER_TEMP/themes" | wc -l

@@ -3,7 +3,7 @@ $toggle-height: $space-size * 4 + $margin-size + $base-icon-size;
 .quick-settings {
   padding: $space-size * 3 !important;
   border-radius: 8px + $space-size * 5 !important;
-  margin-top: $space-size / 2 !important;
+  margin-top: $space-size * 0.5 !important;
   border: none;
 
   .icon-button, .button {
@@ -353,7 +353,7 @@ $toggle-height: $space-size * 4 + $margin-size + $base-icon-size;
 
 .nm-network-item {
   .wireless-secure-icon {
-    icon-size: $base-icon-size / 2;
+    icon-size: $base-icon-size * 0.5;
   }
 }
 

@@ -13,7 +13,7 @@
   background-color: $surface;
   border-radius: $menu-radius;
   box-shadow: 0 3px 8px rgba(black, 0.2);
-  margin: ($space-size / 2) 10px 13px;
+  margin: ($space-size * 0.5) 10px 13px;
   padding: $space-size;
   spacing: $space-size;
   border: none;
@@ -27,7 +27,7 @@
 
 .candidate-box {
   padding: 0.3em 0.5em 0.3em 0.5em;
-  margin-right: $space-size / 2;
+  margin-right: $space-size * 0.5;
   border-radius: $menuitem-radius;
   &:hover { background-color: $secondary-fill; color: $text; }
   &:active { background-color: $track; color: $text; }

@@ -1,0 +1,15 @@
+{
+  "name": "lubuto",
+  "version": "0.1.0",
+  "description": "GNOME 50 theme and shell extension with a Liquid Glass look, forked from Orchis",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "build:css": "./parse-sass.sh",
+    "lint:scss": "FATAL_DEPRECATIONS=slash-div ./parse-sass.sh"
+  },
+  "devDependencies": {
+    "sass-embedded": "1.105.1",
+    "sass-migrator": "2.6.1"
+  }
+}

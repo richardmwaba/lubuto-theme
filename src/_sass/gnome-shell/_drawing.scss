@@ -1,13 +1,15 @@
 // generic drawing of more complex things
 
 // provide font size in pt, with px fallback
+@use "sass:math";
+
 @function pt($size: $root-font-size) {
-  @return ($size * 0.75 / 1px) + pt;
+  @return math.div($size * 0.75, 1px) + pt;
 }
 
 // provide icon size in em, with px fallback
 @function em($size: 16px) {
-  @return ($size / $root-font-size) + em;
+  @return math.div($size, $root-font-size) + em;
 }
 
 // provide font size in rem, with px fallback

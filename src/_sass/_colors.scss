@@ -1,6 +1,8 @@
 // When color definition differs for dark and light variant,
 // it gets @if ed depending on $variant
 
+@use "sass:math";
+
 @import 'tweaks-temp';
 
 @function gtkalpha($c, $a) {
@@ -8,7 +10,7 @@
 }
 
 @function gtkmix($c1,$c2,$r) {
-  $ratio: 1 -  $r / 100%; // match SCSS mix()
+  $ratio: 1 -  math.div($r, 100%); // match SCSS mix()
   @return unquote("mix(#{$c1},#{$c2},#{$ratio})");
 }
 
@@ -26,7 +28,7 @@
   @if ($color == 'dark') { $color: black; }
 
   // Calculate color brightness according to https://www.w3.org/TR/AERT/#color-contrast
-  $brightness: (red($color) * 299 + green($color) * 587 + blue($color) * 114) / 1000;
+  $brightness: (red($color) * 299 + green($color) * 587 + blue($color) * 114) * 0.001;
 
   @if ($brightness >= 156) {
     @if ($state == 'primary') { @return rgba(black, 0.87); }

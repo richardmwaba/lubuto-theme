@@ -248,7 +248,7 @@
 
 .calendar-week-number {
   margin: 6px !important;
-  padding: 0 $margin-size / 2 + $space-size !important;
+  padding: 0 $margin-size * 0.5 + $space-size !important;
   border-radius: $circular-radius;
   background-color: if($variant == 'light', rgba(black, 0.04), rgba(white, 0.03));
   color: $text-disabled;
@@ -289,7 +289,7 @@
 .events-title {
   color: $text-disabled;
   font-weight: bold;
-  margin-bottom: $space-size / 2;
+  margin-bottom: $space-size * 0.5;
   text-shadow: none;
 }
 

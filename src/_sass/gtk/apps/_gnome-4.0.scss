@@ -353,7 +353,7 @@
       }
 
       > scrollbar {
-        margin: $space-size / 2 $space-size / 2 $space-size / 2 0;
+        margin: $space-size * 0.5 $space-size * 0.5 $space-size * 0.5 0;
         background: none;
         border: none;
 
@@ -488,7 +488,7 @@
   }
 
   infobar {
-    margin: $space-size / 2;
+    margin: $space-size * 0.5;
 
     > revealer > box {
       border-radius: $space-size;
@@ -496,7 +496,7 @@
   }
 
   label.search-information {
-    margin: $space-size / 2;
+    margin: $space-size * 0.5;
     border-radius: $space-size;
   }
 
@@ -515,7 +515,7 @@
 
 .floating-bar {
   min-height: $menuitem-size;
-  padding: $space-size / 2;
+  padding: $space-size * 0.5;
   margin: if($variant =='light' and $topbar =='dark', $space-size * 2, $space-size);
   border: none;
   border-radius: $circular-radius;
@@ -524,7 +524,7 @@
   color: $text;
 
   button {
-    margin: (32px - $small-size) / 2;
+    margin: (32px - $small-size) * 0.5;
 
     @extend %small-button;
   }
@@ -559,13 +559,13 @@
 .nautilus-query-editor {
   // search entry
   border-radius: $circular-radius;
-  padding: 0 ($medium-size - $menuitem-size) / 2 0 ($space-size + 2px);
+  padding: 0 ($medium-size - $menuitem-size) * 0.5 0 ($space-size + 2px);
 
   > menubutton > button.image-button {
     min-width: $menuitem-size;
     min-height: $menuitem-size;
     padding: 0;
-    margin: ($medium-size - $menuitem-size) / 2 0;
+    margin: ($medium-size - $menuitem-size) * 0.5 0;
   }
 
   > * {
@@ -580,7 +580,7 @@
 
   #NautilusPathButton,
   .nautilus-path-button {
-    margin: 0 $space-size / 2;
+    margin: 0 $space-size * 0.5;
     border-radius: $circular-radius;
 
     &.current-dir {
@@ -607,7 +607,7 @@
   border-radius: $circular-radius;
 
   > button {
-    margin: $space-size / 2;
+    margin: $space-size * 0.5;
     padding: 0;
     min-height: $small-size - 2px;
     min-width: $small-size - 2px;
@@ -1098,7 +1098,7 @@ datechooser {
   button.day, button.day.text-button {
     font-size: 10pt;
     font-weight: normal;
-    margin: $space-size / 2;
+    margin: $space-size * 0.5;
     padding: 0;
     min-height: $medium-size;
     min-width: $medium-size;
@@ -1107,8 +1107,8 @@ datechooser {
     dot {
       background-color: $text;
       border-radius: 50%;
-      min-height: $space-size / 2;
-      min-width: $space-size / 2;
+      min-height: $space-size * 0.5;
+      min-width: $space-size * 0.5;
     }
 
     &:selected, &.today:selected {
@@ -1729,7 +1729,7 @@ panelframetabbar {
   > button {
     border: none;
     margin: 0;
-    padding: $space-size / 2;
+    padding: $space-size * 0.5;
   }
 
   tabbar.inline {
@@ -1746,7 +1746,7 @@ panelframetabbar {
         border-left: 1px solid $border;
 
         menubutton > button {
-          margin: $space-size / 2;
+          margin: $space-size * 0.5;
           min-height: $small-size;
           min-width: $small-size;
           padding: $space-size;
@@ -1799,7 +1799,7 @@ panelstatusbar {
       border-radius: $corner-radius;
       outline-color: transparent;
       outline-width: 3px;
-      outline-offset: $space-size / 2;
+      outline-offset: $space-size * 0.5;
       outline-style: solid;
       box-shadow: none;
     }
@@ -2254,7 +2254,7 @@ window.background.chromium {
     button.titlebutton {
       min-height: $small-size;
       min-width: $small-size;
-      margin: $space-size $space-size / 2;
+      margin: $space-size $space-size * 0.5;
       padding: 0;
     }
   }

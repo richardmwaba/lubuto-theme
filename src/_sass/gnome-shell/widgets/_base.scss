@@ -5,7 +5,7 @@
   background-color: transparent;
   &:hover {
     color: $link;
-    background-color: rgba($link, 0.3 / 2);
+    background-color: rgba($link, 0.3 * 0.5);
   }
   &:active {
     color: $link;

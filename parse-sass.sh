@@ -1,11 +1,23 @@
 #!/bin/bash
+# Compiles every stylesheet variant in place, next to its .scss entry file.
+# CI runs this with FATAL_DEPRECATIONS set so deprecated Sass fails the build.
 
-if [[ ! "$(command -v sassc)" ]]; then
-  echo "'sassc' needs to be installed to generate the CSS."
+REPO_DIR="$(dirname "$(readlink -m "${0}")")"
+
+if [[ -x "$REPO_DIR/node_modules/.bin/sass" ]]; then
+  SASS="$REPO_DIR/node_modules/.bin/sass"
+elif command -v sass > /dev/null; then
+  SASS="$(command -v sass)"
+else
+  echo "Dart Sass is required. Run 'npm ci' in the repo or install 'sass' globally."
   exit 1
 fi
 
-SASSC_OPT=('-M' '-t' 'expanded')
+SASS_OPT=(--no-source-map --style=expanded)
+
+if [[ -n "${FATAL_DEPRECATIONS:-}" ]]; then
+  SASS_OPT+=(--fatal-deprecation="$FATAL_DEPRECATIONS")
+fi
 
 _COLOR_VARIANTS=('' '-Light' '-Dark')
 _GCOLOR_VARIANTS=('' '-Dark')
@@ -23,27 +35,20 @@ if [[ -n "${SIZE_VARIANTS:-}" ]]; then
   IFS=', ' read -r -a _SIZE_VARIANTS <<< "${SIZE_VARIANTS:-}"
 fi
 
-cp -rf src/_sass/_tweaks.scss src/_sass/_tweaks-temp.scss
+cp -rf "$REPO_DIR/src/_sass/_tweaks.scss" "$REPO_DIR/src/_sass/_tweaks-temp.scss"
 
 echo "== Generating the CSS..."
 
 for color in "${_COLOR_VARIANTS[@]}"; do
   for size in "${_SIZE_VARIANTS[@]}"; do
-    sassc "${SASSC_OPT[@]}" "src/gtk/3.0/gtk$color$size."{scss,css}
-    sassc "${SASSC_OPT[@]}" "src/gtk/4.0/gtk$color$size."{scss,css}
+    "$SASS" "${SASS_OPT[@]}" "$REPO_DIR/src/gtk/3.0/gtk$color$size."{scss,css} || exit 1
+    "$SASS" "${SASS_OPT[@]}" "$REPO_DIR/src/gtk/4.0/gtk$color$size."{scss,css} || exit 1
   done
 done
 
 for color in "${_GCOLOR_VARIANTS[@]}"; do
   for size in "${_SIZE_VARIANTS[@]}"; do
-    sassc "${SASSC_OPT[@]}" "src/gnome-shell/shell-3-28/gnome-shell$color$size."{scss,css}
-    sassc "${SASSC_OPT[@]}" "src/gnome-shell/shell-40-0/gnome-shell$color$size."{scss,css}
-    sassc "${SASSC_OPT[@]}" "src/gnome-shell/shell-42-0/gnome-shell$color$size."{scss,css}
-    sassc "${SASSC_OPT[@]}" "src/gnome-shell/shell-44-0/gnome-shell$color$size."{scss,css}
-    sassc "${SASSC_OPT[@]}" "src/gnome-shell/shell-46-0/gnome-shell$color$size."{scss,css}
-    sassc "${SASSC_OPT[@]}" "src/gnome-shell/shell-47-0/gnome-shell$color$size."{scss,css}
-    sassc "${SASSC_OPT[@]}" "src/gnome-shell/shell-48-0/gnome-shell$color$size."{scss,css}
-    sassc "${SASSC_OPT[@]}" "src/cinnamon/cinnamon$color$size."{scss,css}
+    "$SASS" "${SASS_OPT[@]}" "$REPO_DIR/src/gnome-shell/shell-50/gnome-shell$color$size."{scss,css} || exit 1
   done
 done
 

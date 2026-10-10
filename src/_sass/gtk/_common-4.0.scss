@@ -65,9 +65,10 @@ textview {
 
 iconview {
   @extend %view;
-  &:hover, &:selected { border-radius: $corner-radius / 2; }
+  &:hover, &:selected { border-radius: $corner-radius * 0.5; }
 }
 
+%rubberband,
 rubberband {
   @if $gnome_version == 'new' and $accent_type != "fixed" {
     --accent-bg-color: @accent_bg_color;
@@ -78,7 +79,7 @@ rubberband {
 }
 
 flowbox {
-  > rubberband { @extend rubberband; }
+  > rubberband { @extend %rubberband; }
 
   > flowboxchild {
     padding: 4px;
@@ -101,7 +102,7 @@ flowbox {
 }
 
 gridview {
-  > rubberband { @extend rubberband; }
+  > rubberband { @extend %rubberband; }
 
   > child {
     padding: 3px;
@@ -319,13 +320,13 @@ entry {
 
   image { // icons inside the entry
     &.left {
-      margin-left: ($medium-size - 16px) / 2 - 8px;
+      margin-left: ($medium-size - 16px) * 0.5 - 8px;
       margin-right: 6px;
     }
 
     &.right {
       margin-left: 6px;
-      margin-right: ($medium-size - 16px) / 2 - 8px;
+      margin-right: ($medium-size - 16px) * 0.5 - 8px;
     }
   }
 
@@ -478,7 +479,7 @@ editablelabel > stack > text {
 button {
   min-height: 24px;
   min-width: 24px;
-  padding: ($medium-size - 24px) / 2;
+  padding: ($medium-size - 24px) * 0.5;
   border-radius: $corner-radius;
   font-weight: 500;
   @extend %button-basic;
@@ -517,7 +518,7 @@ button {
 
   &.image-button {
     min-width: 24px;
-    padding: ($medium-size - 24px) / 2;
+    padding: ($medium-size - 24px) * 0.5;
 
     @extend %circular-button;
   }
@@ -525,22 +526,22 @@ button {
   // NOTE: Some image-only buttons use this as well
   &.text-button.image-button {
     min-width: 24px;
-    padding: ($medium-size - 24px) / 2;
+    padding: ($medium-size - 24px) * 0.5;
     border-radius: $corner-radius;
 
     label {
-      &:first-child { margin-left: 16px - ($medium-size - 24px) / 2; }
+      &:first-child { margin-left: 16px - ($medium-size - 24px) * 0.5; }
 
-      &:last-child { margin-right: 16px - ($medium-size - 24px) / 2; }
+      &:last-child { margin-right: 16px - ($medium-size - 24px) * 0.5; }
     }
 
     &.flat label {
-      &:first-child { margin-left: 12px - ($medium-size - 24px) / 2; }
+      &:first-child { margin-left: 12px - ($medium-size - 24px) * 0.5; }
 
-      &:last-child { margin-right: 12px - ($medium-size - 24px) / 2; }
+      &:last-child { margin-right: 12px - ($medium-size - 24px) * 0.5; }
     }
 
-    image:not(:only-child) { margin: 0 (24px - 16px) / 2; }
+    image:not(:only-child) { margin: 0 (24px - 16px) * 0.5; }
   }
 
   .linked:not(.vertical) > &,
@@ -829,10 +830,10 @@ spinbutton {
 
     > button {
       &.up:dir(ltr),
-      &.down:dir(rtl) { margin-left: $space-size / 2; }
+      &.down:dir(rtl) { margin-left: $space-size * 0.5; }
 
       &.up:dir(rtl),
-      &.down:dir(ltr) { margin-right: $space-size / 2; }
+      &.down:dir(ltr) { margin-right: $space-size * 0.5; }
     }
   }
 
@@ -861,10 +862,10 @@ spinbutton {
       margin: $space-size;
 
       &.up:dir(ltr),
-      &.down:dir(rtl) { margin-left: $space-size / 2; }
+      &.down:dir(rtl) { margin-left: $space-size * 0.5; }
 
       &.up:dir(rtl),
-      &.down:dir(ltr) { margin-right: $space-size / 2; }
+      &.down:dir(ltr) { margin-right: $space-size * 0.5; }
     }
   }
 }
@@ -897,8 +898,8 @@ combobox {
   }
 
   button.combo cellview {
-    &:dir(ltr) { margin-left: 8px - ($medium-size - 16px) / 2; }
-    &:dir(rtl) { margin-right: 8px - ($medium-size - 16px) / 2; }
+    &:dir(ltr) { margin-left: 8px - ($medium-size - 16px) * 0.5; }
+    &:dir(rtl) { margin-right: 8px - ($medium-size - 16px) * 0.5; }
   }
 
   &.linked {
@@ -934,8 +935,8 @@ combobox {
 
     min-height: 16px;
     min-width: 16px;
-    margin: ($medium-size - $small-size) / 2;
-    padding: ($small-size - 16px) / 2;
+    margin: ($medium-size - $small-size) * 0.5;
+    padding: ($small-size - 16px) * 0.5;
     border-radius: $corner-radius;
   }
 }
@@ -1010,7 +1011,7 @@ toolbar {
 
   > button { @extend %button-flat; }
 
-  button.pill { padding: ($medium-size - 24px) / 2 32px; }
+  button.pill { padding: ($medium-size - 24px) * 0.5 32px; }
 
   // on OSD
   .osd & { background-color: transparent; }
@@ -1046,7 +1047,7 @@ toolbar {
 
 .toolbar {
   > button {
-    border-radius: $corner-radius / 2;
+    border-radius: $corner-radius * 0.5;
   }
 
   .bottom-bar & {
@@ -1288,7 +1289,7 @@ headerbar {
     > button,  > menubutton > button {
       min-height: 24px;
       min-width: 24px;
-      padding: ($medium-size - 24px) / 2;
+      padding: ($medium-size - 24px) * 0.5;
       border-radius: $circular-radius;
     }
 
@@ -1499,7 +1500,7 @@ headerbar {
         @if $mac_style == 'true' {
           min-height: 16px;
           min-width: 16px;
-          padding: ($small-size - 16px) / 2 0;
+          padding: ($small-size - 16px) * 0.5 0;
           margin: 0 $space-size - 2px;
         } @else {
           min-height: $small-size;
@@ -1532,7 +1533,7 @@ window.devel {
 %mac_window_button {
   min-height: 16px;
   min-width: 16px;
-  padding: ($medium-size - 16px) / 2 0;
+  padding: ($medium-size - 16px) * 0.5 0;
   margin-left: $space-size - 2px;
   margin-right: $space-size - 2px;
 
@@ -1637,14 +1638,14 @@ headerbar windowcontrols {
  ************/
 %pathbar_button,
 pathbar > button {
-  padding-left: ($medium-size - 24px) / 2;
-  padding-right: ($medium-size - 24px) / 2;
+  padding-left: ($medium-size - 24px) * 0.5;
+  padding-right: ($medium-size - 24px) * 0.5;
   border-radius: $corner-radius;
-  border-spacing: $space-size / 2;
+  border-spacing: $space-size * 0.5;
 
   label, image {
-    margin-left: $space-size / 2;
-    margin-right: $space-size / 2;
+    margin-left: $space-size * 0.5;
+    margin-right: $space-size * 0.5;
   }
 
   label:not(:only-child) {
@@ -1657,8 +1658,8 @@ pathbar > button {
   }
 
   &.slider-button {
-    padding-left: (24px - 16px) / 2;
-    padding-right: (24px - 16px) / 2;
+    padding-left: (24px - 16px) * 0.5;
+    padding-right: (24px - 16px) * 0.5;
   }
 }
 
@@ -1710,7 +1711,7 @@ treeview.view {
     box-shadow: none;
   }
 
-  > rubberband { @extend rubberband; } // to avoid borders being overridden by the previously set props
+  > rubberband { @extend %rubberband; } // to avoid borders being overridden by the previously set props
 
   &:hover, &:selected {
     border-radius: 0;
@@ -1922,7 +1923,7 @@ popover.menu {
 
   label.title {
     font-weight: bold;
-    padding: $space-size / 2 ($space-size + 6px) * 2 + $space-size + 2px; //this will fall apart with font sizing
+    padding: $space-size * 0.5 ($space-size + 6px) * 2 + $space-size + 2px; //this will fall apart with font sizing
   }
 }
 
@@ -1973,7 +1974,7 @@ popover.background {
 
     separator {
       background-color: $divider;
-      margin: $space-size / 2 0;
+      margin: $space-size * 0.5 0;
     }
 
     list {
@@ -2005,7 +2006,7 @@ popover.background {
     transition: background-color $duration $ease-out;
     min-height: $menuitem-size - $space-size;
     min-width: $menuitem-size * 2;
-    padding: $space-size / 2 $space-size * 1.5;
+    padding: $space-size * 0.5 $space-size * 1.5;
     border-radius: $menuitem-radius;
     color: $text;
     font: initial;
@@ -2555,7 +2556,7 @@ radiobutton {
 checkbutton.text-button,
 radiobutton.text-button {
   // this is for a nice focus on check and radios text
-  padding: $space-size / 2;
+  padding: $space-size * 0.5;
 
   label:not(:only-child) { margin: 0 4px; }
 
@@ -2770,31 +2771,31 @@ scale {
 
   $slider_size: 32px;
 
-  $slider_margin: -($slider_size - $trough_size) / 2;
-  $finetune_slider_margin: -($slider_size - $finetune_trough_size) / 2;
+  $slider_margin: -($slider_size - $trough_size) * 0.5;
+  $finetune_slider_margin: -($slider_size - $finetune_trough_size) * 0.5;
 
-  $color_slider_margin: -($slider_size) * 3 / 4;
+  $color_slider_margin: -($slider_size) * 3 * 0.25;
   $color_marks_slider_margin: -($slider_size - 16px) - $color_slider_margin;
 
   min-height: $trough_size;
   min-width: $trough_size;
 
-  &.horizontal { padding: ($medium-size - $trough_size) / 2 12px; }
+  &.horizontal { padding: ($medium-size - $trough_size) * 0.5 12px; }
 
-  &.vertical { padding: 12px ($medium-size - $trough_size) / 2; }
+  &.vertical { padding: 12px ($medium-size - $trough_size) * 0.5; }
 
   // click-and-hold the slider to activate
   &.fine-tune {
     &.horizontal {
       min-height: $finetune_trough_size;
-      padding-top: ($medium-size - $finetune_trough_size) / 2;
-      padding-bottom: ($medium-size - $finetune_trough_size) / 2;
+      padding-top: ($medium-size - $finetune_trough_size) * 0.5;
+      padding-bottom: ($medium-size - $finetune_trough_size) * 0.5;
     }
 
     &.vertical {
       min-width: $finetune_trough_size;
-      padding-left: ($medium-size - $finetune_trough_size) / 2;
-      padding-right: ($medium-size - $finetune_trough_size) / 2;
+      padding-left: ($medium-size - $finetune_trough_size) * 0.5;
+      padding-right: ($medium-size - $finetune_trough_size) * 0.5;
     }
 
     // to make the trough grow in fine-tune mode
@@ -3390,15 +3391,15 @@ treeexpander {
 columnview {
   // move padding to child cells
   > listview {
-    border-spacing: $space-size / 2;
-    padding: $space-size / 2 0;
+    border-spacing: $space-size * 0.5;
+    padding: $space-size * 0.5 0;
 
     > row {
       padding: 0;
 
       // align horizontal sizing with header buttons
       > cell {
-        padding: $space-size / 2;
+        padding: $space-size * 0.5;
 
         &:not(:first-child) {
           border-left: 1px solid transparent;
@@ -3494,7 +3495,7 @@ row {
     > box.title {
       margin-top: $space-size;
       margin-bottom: $space-size;
-      border-spacing: $space-size / 2;
+      border-spacing: $space-size * 0.5;
       padding: 0;
 
       &,
@@ -3960,7 +3961,7 @@ calendar {
   }
 
   > header {
-    padding: $space-size / 2;
+    padding: $space-size * 0.5;
     border-bottom: 1px solid $divider;
 
     > button {
@@ -3971,7 +3972,7 @@ calendar {
   }
 
   > grid {
-    margin: $space-size / 2;
+    margin: $space-size * 0.5;
 
     > label {
       border-radius: $circular-radius;
@@ -4216,7 +4217,7 @@ stacksidebar {
   row {
     min-height: $small-size;
     padding: $space-size $space-size * 1.5;
-    border-radius: $corner-radius / 2;
+    border-radius: $corner-radius * 0.5;
 
     &:selected {
       @extend %selected_items_color;
@@ -4316,7 +4317,7 @@ placessidebar {
       // Needs overriding of the GtkListBoxRow padding
       min-height: 32px;
       margin: 0 4px 0 0; // Remove unwanted hard-coded vertical margins with -1px
-      padding: $space-size / 2;
+      padding: $space-size * 0.5;
       border-radius: 0 $circular_radius $circular_radius 0;
 
       // Using margins/padding directly in the SidebarRow
@@ -4566,7 +4567,7 @@ tooltip {
     background-color: $tooltip;
     color: on($tooltip);
     box-shadow: $shadow-z4;
-    border-radius: $corner-radius / 2;
+    border-radius: $corner-radius * 0.5;
     margin: 2px 6px 8px 6px;
     border: none;
   }
@@ -4683,7 +4684,7 @@ colorchooser .popover.osd {
 
   // &:hover { -gtk-icon-effect: highlight; }
 
-  rubberband, .rubberband { @extend rubberband; }
+  rubberband, .rubberband { @extend %rubberband; }
 }
 
 // .scale-popup {
@@ -4921,7 +4922,7 @@ popover.emoji-picker {
 
 .emoji-toolbar {
   padding: 0;
-  border-spacing: $space-size / 2;
+  border-spacing: $space-size * 0.5;
   border-top: 1px solid $divider;
   background: none;
   box-shadow: none;
@@ -4930,7 +4931,7 @@ popover.emoji-picker {
 button.emoji-section {
   margin: 0;
   padding: $space-size;
-  border-radius: $corner-radius -$space-size / 2;
+  border-radius: $corner-radius -$space-size * 0.5;
 
   &:checked {
     color: $primary;
@@ -4967,4 +4968,33 @@ emoji-completion-row {
 
 popover.entry-completion > contents {
   padding: 0;
+}
+
+//
+// Server-side decorations (mutter-x11-frames): match the GTK 3 headerbar proportions
+//
+window.ssd-frame headerbar.default-decoration {
+  min-height: $medium-size + 8px;
+
+  > windowhandle > box {
+    padding: 0 $space-size * 2;
+  }
+
+  windowcontrols {
+    border-spacing: $space-size * 2;
+
+    &.end:dir(ltr), &.start:dir(rtl) { margin-left: $space-size * 2; }
+    &.start:dir(ltr), &.end:dir(rtl) { margin-right: $space-size * 2; }
+
+    button,
+    menubutton {
+      min-height: $small-size + 4px;
+      min-width: $small-size + 4px;
+      margin: 0;
+
+      > image {
+        -gtk-icon-size: 16px;
+      }
+    }
+  }
 }

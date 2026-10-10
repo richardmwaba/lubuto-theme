@@ -1,10 +1,12 @@
+@use "sass:math";
+
 @import 'tweaks-temp';
 
 // Function to convert px values to em
 @function to_em($input, $base: 16px) {
   // multiplied and divided by 1000 to make up for round() shortcoming
-  $em_value: ($input / $base) * 1.091 * 1000;
-  @return round($em_value) / 1000 * 1em;
+  $em_value: math.div($input, $base) * 1.091 * 1000;
+  @return round($em_value) * 0.001 * 1em;
 }
 
 $asset-suffix: if($variant == 'dark', '-dark', '');
@@ -42,10 +44,10 @@ $large-scalable-icon-size: $scalable-icon-size * 2;
 
 $window-radius: $default_corner + $space-size;
 $corner-radius: if($compact == 'false', $default_corner, max(0, $default_corner - 2px));
-$material-radius: $default_corner / 2 + 4px;
-$menu-radius: $default_corner / 4 + $space-size + 2px;
+$material-radius: $default_corner * 0.5 + 4px;
+$menu-radius: $default_corner * 0.25 + $space-size + 2px;
 $popup-radius: $default_corner + $space-size * 2 - 4px;
-$menuitem-radius: $default_corner / 4 + 2px;
+$menuitem-radius: $default_corner * 0.25 + 2px;
 $circular-radius: 9999px;
 $panel-corner-radius: 0; // For gnome-shell
 

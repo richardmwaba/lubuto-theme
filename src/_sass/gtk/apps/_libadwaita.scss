@@ -238,7 +238,7 @@ splitbutton {
   &.image-button > button {
     min-height: 24px;
     min-width: 24px;
-    padding: ($medium-size - 24px) / 2;
+    padding: ($medium-size - 24px) * 0.5;
   }
 
   &.text-button.image-button > button,
@@ -458,7 +458,7 @@ preferencesgroup > box {
     box-shadow: none;
     outline-color: transparent;
     outline-width: 3px;
-    outline-offset: $space-size / 2;
+    outline-offset: $space-size * 0.5;
     outline-style: solid;
 
     &, > background-preview {
@@ -482,10 +482,10 @@ preferencesgroup > box {
     outline: 2px solid transparent;
     outline-offset: 0;
     border-radius: $corner-radius;
-    padding: $space-size / 2;
+    padding: $space-size * 0.5;
 
     .background-thumbnail {
-      border-radius: $corner-radius - $space-size / 2;
+      border-radius: $corner-radius - $space-size * 0.5;
     }
 
     &:hover {
@@ -508,7 +508,7 @@ preferencesgroup > box {
     button.accent-button {
       min-height: 24px;
       min-width: 24px;
-      padding: $space-size / 2;
+      padding: $space-size * 0.5;
       border-radius: $circular-radius;
       background: $primary;
       outline: none;
@@ -587,7 +587,7 @@ banner > revealer > widget {
 //
 
 viewswitcher {
-  border-spacing: $space-size / 2;
+  border-spacing: $space-size * 0.5;
   min-height: 24px;
 
   &.narrow {
@@ -634,7 +634,7 @@ viewswitcher {
         font-size: 0.75rem;
         padding-top: $space-size;
         padding-bottom: $space-size;
-        border-spacing: $space-size / 2;
+        border-spacing: $space-size * 0.5;
 
         > stack > label {
           padding-left: $space-size + 2px;

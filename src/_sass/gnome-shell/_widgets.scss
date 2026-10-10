@@ -10,23 +10,24 @@
 @import 'widgets/base';
 @import 'widgets/entries';
 @import 'widgets/buttons';
-@import 'widgets/check-box';
-@import 'widgets/switches';
-@import 'widgets/slider';
+@import 'widgets/check-box-47';
+@import 'widgets/switches-47';
+@import 'widgets/slider-47';
 @import 'widgets/scrollbars';
 // Popovers
-@import 'widgets/popovers';
-@import 'widgets/calendar';
-@import 'widgets/message-list';
+@import 'widgets/popovers-46';
+@import 'widgets/calendar-44';
+@import 'widgets/message-list-48';
 @import 'widgets/ibus-popup';
+@import 'widgets/quick-settings-48';
 // Notifications
-@import 'widgets/notifications';
+@import 'widgets/notifications-47';
 @import 'widgets/hotplug';
 // Dialogs
-@import 'widgets/dialogs';
+@import 'widgets/dialogs-47';
 @import 'widgets/network-dialog';
 // OSDs
-@import 'widgets/osd';
+@import 'widgets/osd-42';
 @import 'widgets/switcher-popup';
 @import 'widgets/workspace-switcher';
 // Panel
@@ -36,9 +37,9 @@
 @import 'widgets/overview';
 @import 'widgets/window-picker';
 @import 'widgets/search-entry';
-@import 'widgets/search-results';
-@import 'widgets/dash';
-@import 'widgets/app-grid';
+@import 'widgets/search-results-46';
+@import 'widgets/dash-46';
+@import 'widgets/app-grid-46';
 @import 'widgets/workspace-thumbnails';
 // A11y / misc
 @import 'widgets/a11y';
@@ -46,6 +47,7 @@
 @import 'widgets/tiled-previews';
 @import 'widgets/keyboard';
 @import 'widgets/looking-glass';
+@import 'widgets/screenshot';
 // Lock / login screens
 @import 'widgets/login-dialog';
 @import 'widgets/screen-shield';

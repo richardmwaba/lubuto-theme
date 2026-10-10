@@ -3,7 +3,7 @@
 
 $panel_transition_duration: 250ms; // same as the overview transition duration
 $panel_height: if($panel_style == 'compact', $medium-size - 2px, $medium-size + 2px);
-$panel_button_hpadding: ($panel_height - $base-icon-size) / 2;
+$panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
 
 #panel {
   font-weight: bold;
@@ -24,8 +24,8 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) / 2;
     margin: 0;
     border-radius: 0;
   } @else {
-    margin: $space-size / 2;
-    border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size / 2);
+    margin: $space-size * 0.5;
+    border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size * 0.5);
   }
 
   // transparent panel on lock & login screens
@@ -59,8 +59,8 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) / 2;
     color: transparent !important;
     background-color: transparent !important;
     font-size: 0;
-    -natural-hpadding: $space-size / 2 !important;
-    -minimum-hpadding: $space-size / 2 !important;
+    -natural-hpadding: $space-size * 0.5 !important;
+    -minimum-hpadding: $space-size * 0.5 !important;
 
     > * {
       width: $panel_height - $space-size;
@@ -95,8 +95,8 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) / 2;
     -natural-hpadding: $panel_button_hpadding;
     -minimum-hpadding: $panel_button_hpadding;
     transition-duration: 150ms;
-    border: $space-size / 2 solid transparent;
-    border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size / 2);
+    border: $space-size * 0.5 solid transparent;
+    border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size * 0.5);
     margin: 0;
 
     &.clock-display {
@@ -110,7 +110,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) / 2;
       }
 
       .clock {
-        border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size / 2);
+        border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size * 0.5);
         padding: 0 $space-size * 2 !important;
       }
     }
@@ -215,8 +215,8 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) / 2;
     border: 0 none transparent !important;
     margin: 0 !important;
     padding: 0 !important;
-    -natural-hpadding: $space-size / 2 !important;
-    -minimum-hpadding: $space-size / 2 !important;
+    -natural-hpadding: $space-size * 0.5 !important;
+    -minimum-hpadding: $space-size * 0.5 !important;
 
     .panel-status-menu-box {
       spacing: 0;
@@ -230,7 +230,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) / 2;
     .arc-menu-icon {
       border-radius: if($corner_style == 'circular', $circular-radius, $material-radius);
       width: $panel_height - $space-size + 1px;
-      margin: $space-size / 2 0;
+      margin: $space-size * 0.5 0;
 
       &:hover {
         background-color: on(dark, divider);
@@ -248,8 +248,8 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) / 2;
     .arcmenu-menu-button {
       border-radius: if($corner_style == 'circular', $circular-radius, $material-radius);
       // width: $panel_height - $space-size + 1px;
-      margin: $space-size / 2 0;
-      padding: 0 ($panel_height - 16px - $space-size) / 2;
+      margin: $space-size * 0.5 0;
+      padding: 0 ($panel_height - 16px - $space-size) * 0.5;
 
       &:hover {
         background-color: on(dark, divider);
