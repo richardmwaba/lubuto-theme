@@ -1,6 +1,6 @@
 # Lubuto plan
 
-Status: Phase 0 done on 2026-10-10. Phase 1 next.
+Status: Phase 1 in review on 2026-10-10. Visual walk-through pending, then Phase 2.
 
 Lubuto (Bemba: light) is a fork of [Orchis](https://github.com/vinceliuice/Orchis-theme) aimed at one target:
 GNOME 50 on Wayland, styled after macOS 27 Liquid Glass. It ships as two parts that install together: GTK
@@ -175,16 +175,25 @@ selected with the same flags as the previous Orchis install (`--tweaks compact b
 
 ### Phase 1: GNOME 50 baseline
 
-- [ ] Extract the GNOME 50 default stylesheet from `/usr/share/gnome-shell/gnome-shell-theme.gresource` and
+- [x] Extract the GNOME 50 default stylesheet from `/usr/share/gnome-shell/gnome-shell-theme.gresource` and
       diff its selector list against the fork's shell SASS. Record missing and dead selectors.
-- [ ] Fix every missing selector. Likely areas: quick settings, calendar and notifications, OSD, screenshot
-      UI, app grid folders, workspace switcher, lock screen.
+- [x] Fix every missing selector: scrollbar handles, workspace switcher OSD, screen recording and sharing
+      pills, keyboard subkeys popover, notification action bin, message list clear button, calendar events,
+      panel indicator boxes, break countdown, search status box, restart message, access dialog.
+- [ ] Deferred shell nodes, 29 of them: login dialog auth list, unlock dialog notifications, parental
+      controls shield, conflicting session dialog, polkit user label, Looking Glass panes. Style them before
+      Phase 9.
 - [x] Calendar popover: bottom corners rendered square while the top corners were round. Cause: Blur my
       Shell's popup blur sizes its surface from the popover actor, not from `.popup-menu-content`, which has
       a 14 px bottom margin in Orchis. Popup blur is off on the reference machine until the `blur` module
       replaces it.
-- [ ] Check the libadwaita stylesheet Fedora 44 ships against `_common-4.0.scss`. Record selector drift.
-- [ ] Verify the accent-colour follow path (`accent_type`) on GNOME 50.
+- [x] Check the libadwaita stylesheet Fedora 44 ships (libadwaita 1.9.4, GTK 4.22) against the GTK 4 theme.
+      Fourteen named colours and five :root variables were never defined and fell back to Adwaita greys;
+      AdwDialog, bottom sheet, toggle group, tab overview and shortcut label had no theme rules. All added.
+- [x] Verify the accent-colour follow path (`accent_type`) on GNOME 50. GTK 4 follows the system accent
+      through `@accent_bg_color`; the shell uses the theme colour. The legacy `theme_selected_bg_color`
+      define used a CSS variable, which GTK rejects, so every GTK 4 app logged a parse error. Fixed.
+- [x] `tools/check-gtk-css.py` runs the real GTK 3 and GTK 4 parsers over compiled stylesheets. CI runs it.
 
 Exit: no unstyled or default-styled surface in a walk-through checklist covering shell and the core GNOME apps.
 
