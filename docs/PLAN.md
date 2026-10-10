@@ -1,6 +1,6 @@
 # Lubuto plan
 
-Status: Phase 1 in review on 2026-10-10. Visual walk-through pending, then Phase 2.
+Status: Phase 2 done on 2026-10-10. Phase 3 next.
 
 Lubuto (Bemba: light) is a fork of [Orchis](https://github.com/vinceliuice/Orchis-theme) aimed at one target:
 GNOME 50 on Wayland, styled after macOS 27 Liquid Glass. It ships as two parts that install together: GTK
@@ -199,15 +199,23 @@ Exit: no unstyled or default-styled surface in a walk-through checklist covering
 
 ### Phase 2: extension skeleton and theme loader
 
-- [ ] `extension/` with `metadata.json` (shell-version 50), schema, `extension.js` module loader, empty prefs.
-- [ ] ESLint config from gnome-shell, `npm run lint`, wired into CI.
-- [ ] `theme` module: read theme name and variant from the schema, set the shell theme, follow
+- [x] `extension/` with `metadata.json` (shell-version 50), schema, `extension.js` module loader, empty prefs.
+- [x] ESLint config from gnome-shell, `npm run lint`, wired into CI.
+- [x] `theme` module: read theme name and variant from the schema, set the shell theme, follow
       `org.gnome.desktop.interface color-scheme` for light and dark.
-- [ ] `tools/build-extension.sh` and an `install.sh --extension` step that installs and enables it, and
+- [x] `tools/build-extension.sh` and an `install.sh --extension` step that installs and enables it, and
       disables user-theme if enabled.
-- [ ] Prefs window with theme colour and variant pickers.
+- [x] Prefs window with theme colour and variant pickers.
+
+- [ ] The libadwaita link in `~/.config/gtk-4.0` is static, so GTK 4 apps keep one variant while the shell
+      follows the colour scheme. Have the theme module manage that link (or the `gtk-theme` setting is
+      enough once libadwaita reads themes from it). Decide in Phase 7.
 
 Exit: user-theme disabled, the extension loads the shell CSS, switching variant in prefs applies live.
+
+Result: on the reference machine Lubuto retired user-theme on first start, loaded Lubuto-Teal-Dark-Compact
+and synced the GTK theme setting. The prefs window opens. A new extension directory is only discovered at
+login, so a first install enables through the setting and takes effect next login.
 
 ### Phase 3: design tokens and glass flag
 
