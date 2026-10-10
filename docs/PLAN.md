@@ -179,6 +179,8 @@ selected with the same flags as the previous Orchis install (`--tweaks compact b
       diff its selector list against the fork's shell SASS. Record missing and dead selectors.
 - [ ] Fix every missing selector. Likely areas: quick settings, calendar and notifications, OSD, screenshot
       UI, app grid folders, workspace switcher, lock screen.
+- [ ] Calendar popover: bottom corners render square while the top corners are round. Present in Orchis
+      too. Find which GNOME 50 node clips it and fix the radius.
 - [ ] Check the libadwaita stylesheet Fedora 44 ships against `_common-4.0.scss`. Record selector drift.
 - [ ] Verify the accent-colour follow path (`accent_type`) on GNOME 50.
 
