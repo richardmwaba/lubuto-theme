@@ -64,7 +64,7 @@ under `extension/src/`. Each module has `enable()` and `disable()` and a setting
 | Module | Origin | Approach |
 | --- | --- | --- |
 | `theme` | user-theme (GNOME) | Rewrite. Sets `St.ThemeContext` theme from the selected theme directory, follows the GNOME colour scheme for light and dark. About 100 lines. |
-| `blur` | Blur my Shell | Rewrite on `Shell.BlurEffect`. Static blur of the background actor behind panel, dock, overview and popovers. Pipelines fixed per surface, radius and brightness per light and dark. About 800 lines. |
+| `blur` | Blur my Shell | Rewrite on `Shell.BlurEffect`. Static blur of the background actor behind panel, dock, overview and popovers. Pipelines fixed per surface, radius and brightness per light and dark. The blur surface takes its geometry from the styled content box, including margins, and its corner radius from that node's theme, so it never outgrows the rounded content. About 800 lines. |
 | `corners` | Rounded Window Corners Reborn | Copy the built JS with attribution. Shader clip at 16 px, off when maximised or fullscreen. |
 | `dock` | Dash to Dock | Decide in Phase 5 after blur ships. Option A: minimal macOS dock, about 2k lines, dots for running apps, magnify on hover, no previews. Option B: embed Dash to Dock core with prefs and preview code stripped, about 6k lines. |
 | `move` | Transparent Window Moving | Copy with attribution. About 200 lines. |
@@ -179,8 +179,10 @@ selected with the same flags as the previous Orchis install (`--tweaks compact b
       diff its selector list against the fork's shell SASS. Record missing and dead selectors.
 - [ ] Fix every missing selector. Likely areas: quick settings, calendar and notifications, OSD, screenshot
       UI, app grid folders, workspace switcher, lock screen.
-- [ ] Calendar popover: bottom corners render square while the top corners are round. Present in Orchis
-      too. Find which GNOME 50 node clips it and fix the radius.
+- [x] Calendar popover: bottom corners rendered square while the top corners were round. Cause: Blur my
+      Shell's popup blur sizes its surface from the popover actor, not from `.popup-menu-content`, which has
+      a 14 px bottom margin in Orchis. Popup blur is off on the reference machine until the `blur` module
+      replaces it.
 - [ ] Check the libadwaita stylesheet Fedora 44 ships against `_common-4.0.scss`. Record selector drift.
 - [ ] Verify the accent-colour follow path (`accent_type`) on GNOME 50.
 
