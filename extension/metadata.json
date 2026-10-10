@@ -1,0 +1,10 @@
+{
+  "uuid": "lubuto@richardmwaba.github.io",
+  "name": "Lubuto",
+  "description": "Loads the Lubuto shell theme and provides its blur, rounded corners, dock and window effects.",
+  "shell-version": ["50"],
+  "settings-schema": "org.gnome.shell.extensions.lubuto",
+  "gettext-domain": "lubuto",
+  "url": "https://github.com/richardmwaba/orchis-theme-extended",
+  "version-name": "0.1.0"
+}

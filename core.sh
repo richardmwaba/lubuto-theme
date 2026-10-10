@@ -353,3 +353,52 @@ link_theme() {
     done
   done
 }
+
+EXTENSION_UUID="lubuto@richardmwaba.github.io"
+USER_THEME_UUID="user-theme@gnome-shell-extensions.gcampax.github.com"
+
+# Packs, installs and enables the shell extension for the current user, and
+# disables user-theme because the extension loads the shell stylesheet itself.
+install_extension() {
+  if [[ "$UID" == "$ROOT_UID" ]]; then
+    echo "Do not run --extension with sudo. The extension installs per user."
+    exit 1
+  fi
+
+  if ! has_command gnome-extensions; then
+    echo "'gnome-extensions' not found. GNOME Shell 50 is required for the extension."
+    exit 1
+  fi
+
+  local zip
+  zip="$("$REPO_DIR/tools/build-extension.sh")"
+  gnome-extensions install --force "$zip"
+
+  local ext_dir="$HOME/.local/share/gnome-shell/extensions/$EXTENSION_UUID"
+  glib-compile-schemas "$ext_dir/schemas"
+
+  # A running shell only learns about a new extension directory at login, so a
+  # first install is enabled through the setting and takes effect next login.
+  # The extension disables user-theme itself when it starts.
+  if gnome-extensions list | grep -qx "$EXTENSION_UUID"; then
+    gnome-extensions enable "$EXTENSION_UUID"
+    echo -e "\nInstalled and enabled $EXTENSION_UUID. Log out and back in once so the shell loads the new version."
+  else
+    local enabled
+    enabled="$(gsettings get org.gnome.shell enabled-extensions 2> /dev/null | tail -n 1)"
+    if [[ "$enabled" != *"$EXTENSION_UUID"* ]]; then
+      if [[ "$enabled" == "@as []" || -z "$enabled" ]]; then
+        gsettings set org.gnome.shell enabled-extensions "['$EXTENSION_UUID']"
+      else
+        gsettings set org.gnome.shell enabled-extensions "${enabled%]}, '$EXTENSION_UUID']"
+      fi
+    fi
+    echo -e "\nInstalled $EXTENSION_UUID. Log out and back in to start it; it replaces user-theme on first start."
+  fi
+}
+
+uninstall_extension() {
+  if gnome-extensions list | grep -qx "$EXTENSION_UUID"; then
+    gnome-extensions uninstall "$EXTENSION_UUID" && echo "Removed $EXTENSION_UUID."
+  fi
+}

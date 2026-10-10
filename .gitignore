@@ -5,3 +5,4 @@
 node_modules/
 src/gnome-shell/*/*.css
 src/gtk/*/*.css
+build/

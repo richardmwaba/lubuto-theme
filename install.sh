@@ -20,6 +20,7 @@ OPTIONS:
                           (Default: ChromeOS style)
 
   -l, --libadwaita        Link the installed gtk-4.0 theme into ~/.config/gtk-4.0 so libadwaita apps use it
+  -e, --extension         Install and enable the Lubuto shell extension (loads the shell theme, replaces user-theme)
   -f, --fixed             Fixed accent (blue) colour instead of following the GNOME accent colour
 
   --tweaks                Specify versions for tweaks [solid|compact|black|primary|macos|submenu|(nord/dracula)] (Options can mix)
@@ -71,6 +72,10 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     -l|--libadwaita)
       libadwaita="true"
+      shift
+      ;;
+    -e|--extension)
+      extension="true"
       shift
       ;;
     -f|--fixed)
@@ -381,8 +386,8 @@ fi
 if [[ ${remove} == 'true' ]]; then
   if [[ "$libadwaita" == 'true' ]]; then
     uninstall_link
-  elif [[ "$all" == 'true' ]]; then
-    uninstall_theme && uninstall_link
+  elif [[ "$extension" == 'true' ]]; then
+    uninstall_extension
   else
     uninstall_theme
   fi
@@ -397,6 +402,10 @@ else
 
   if [[ "$libadwaita" == 'true' && "$UID" != "$ROOT_UID" ]]; then
     link_theme
+  fi
+
+  if [[ "$extension" == 'true' ]]; then
+    install_extension
   fi
 fi
 

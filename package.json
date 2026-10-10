@@ -6,10 +6,16 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "build:css": "./parse-sass.sh",
-    "lint:scss": "FATAL_DEPRECATIONS=slash-div ./parse-sass.sh"
+    "lint:scss": "FATAL_DEPRECATIONS=slash-div ./parse-sass.sh",
+    "lint": "eslint extension",
+    "build:extension": "./tools/build-extension.sh"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
     "sass-embedded": "1.105.1",
     "sass-migrator": "2.6.1"
-  }
+  },
+  "type": "module"
 }

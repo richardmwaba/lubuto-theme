@@ -15,6 +15,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Lint the extension
+        run: npm run lint
+      - name: Pack the extension
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q gnome-shell-extensions libglib2.0-bin
+          ./tools/build-extension.sh
+          glib-compile-schemas --strict --dry-run extension/schemas
       - name: Compile every variant
         run: FATAL_DEPRECATIONS=slash-div ./parse-sass.sh
       - name: Install the full matrix into a scratch directory

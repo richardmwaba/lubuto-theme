@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="lubuto">
+  <enum id="org.gnome.shell.extensions.lubuto.color">
+    <value value="0" nick="blue"/>
+    <value value="1" nick="purple"/>
+    <value value="2" nick="pink"/>
+    <value value="3" nick="red"/>
+    <value value="4" nick="orange"/>
+    <value value="5" nick="yellow"/>
+    <value value="6" nick="green"/>
+    <value value="7" nick="teal"/>
+    <value value="8" nick="grey"/>
+  </enum>
+  <enum id="org.gnome.shell.extensions.lubuto.color-scheme">
+    <value value="0" nick="auto"/>
+    <value value="1" nick="light"/>
+    <value value="2" nick="dark"/>
+  </enum>
+  <enum id="org.gnome.shell.extensions.lubuto.light-style">
+    <value value="0" nick="standard"/>
+    <value value="1" nick="light"/>
+  </enum>
+
+  <schema id="org.gnome.shell.extensions.lubuto" path="/org/gnome/shell/extensions/lubuto/">
+    <key name="theme-name" type="s">
+      <default>"Lubuto"</default>
+      <summary>Base theme name</summary>
+      <description>The name the theme directories start with. Variants append the colour, the colour scheme and the size.</description>
+    </key>
+    <key name="color" enum="org.gnome.shell.extensions.lubuto.color">
+      <default>"teal"</default>
+      <summary>Accent colour variant</summary>
+    </key>
+    <key name="color-scheme" enum="org.gnome.shell.extensions.lubuto.color-scheme">
+      <default>"auto"</default>
+      <summary>Light or dark variant</summary>
+      <description>With "auto" the shell theme follows the GNOME colour scheme.</description>
+    </key>
+    <key name="light-style" enum="org.gnome.shell.extensions.lubuto.light-style">
+      <default>"standard"</default>
+      <summary>Which variant to use when the scheme is light</summary>
+      <description>"standard" keeps a dark top bar on the light variant. "light" uses the fully light variant.</description>
+    </key>
+    <key name="compact" type="b">
+      <default>false</default>
+      <summary>Use the compact size variant</summary>
+    </key>
+    <key name="sync-gtk-theme" type="b">
+      <default>true</default>
+      <summary>Set the GTK theme to the same variant</summary>
+      <description>Writes the selected variant to org.gnome.desktop.interface gtk-theme whenever it changes.</description>
+    </key>
+  </schema>
+</schemalist>
