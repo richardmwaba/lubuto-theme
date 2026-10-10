@@ -1,6 +1,6 @@
 # Lubuto plan
 
-Status: draft, 2026-10-10. Nothing built yet.
+Status: Phase 0 done on 2026-10-10. Phase 1 next.
 
 Lubuto (Bemba: light) is a fork of [Orchis](https://github.com/vinceliuice/Orchis-theme) aimed at one target:
 GNOME 50 on Wayland, styled after macOS 27 Liquid Glass. It ships as two parts that install together: GTK
@@ -152,22 +152,26 @@ New SASS tokens in `_variables.scss`, derived per colour and variant so the whol
 
 ### Phase 0: bootstrap
 
-- [ ] Rename the theme to `Lubuto` in `install.sh`, `core.sh`, `README.md`, `index.theme` templates.
-- [ ] Remove Cinnamon, XFWM4, Plank, Metacity, GTK 2, Firefox and shell 3.28 to 47 sources and installer paths.
-- [ ] Collapse `shell-48-0` into `shell-50`, keep `_widgets-48-0.scss` content as the starting point.
-- [ ] Trim `parse-sass.sh` and `core.sh` to the remaining targets. Keep colour, variant and size loops.
-- [ ] Port the two uncommitted fixes:
-  - `~/Projects/Orchis-theme`: libadwaita colour variables (`_colors-libadwaita.scss`, `_colors-public.scss`,
-    `_common-4.0.scss`). Review each hunk against current upstream first, since that clone predates it.
-  - `~/Projects/Themes/Orchis-theme`: sidebar `image` and `label` selectors replacing `.sidebar-icon` and
-    `.sidebar-label` in GTK 3 and GTK 4 common and GNOME app styles.
-- [ ] Replace `sassc` with Dart Sass (`npm` package `sass`, pinned). Fix `/` division with `math.div`.
-      `@import` stays for now; the `@use` migration is Phase 3.
-- [ ] GitHub Actions: build the full CSS matrix with Dart Sass on push, fail on errors and on deprecation
+- [x] Rename the theme to `Lubuto` in `install.sh`, `core.sh`, `README.md`, `index.theme` templates.
+- [x] Remove Cinnamon, XFWM4, Plank, Metacity, GTK 2, Firefox and shell 3.28 to 47 sources and installer paths.
+- [x] Collapse `shell-48-0` into `shell-50`, keep `_widgets-48-0.scss` content as the starting point.
+- [x] Trim `parse-sass.sh` and `core.sh` to the remaining targets. Keep colour, variant and size loops.
+- [x] Port the two uncommitted fixes. The libadwaita CSS variable interpolation and the server-side
+      decoration headerbar rule are in. The sidebar selector change and the `theme($theme)` selection colour
+      were already upstream.
+- [x] Replace `sassc` with Dart Sass (`sass-embedded`, the native compiler, pinned; the JS `sass` package
+      compiles five times slower). Fix `/` division with `math.div`. `@import` stays for now; the `@use`
+      migration is Phase 3. Recursive `@extend rubberband` chains now extend a placeholder, since Dart Sass
+      expanded them into a tenfold larger GTK 3 stylesheet.
+- [x] GitHub Actions: build the full CSS matrix with Dart Sass on push, fail on errors and on deprecation
       warnings.
 
 Exit: `./install.sh` builds and installs every colour, variant and size on the reference machine, and the
 desktop looks the same as today with user-theme still loading the shell CSS.
+
+Result: 54 variants build in under a minute. The Teal dark compact output matches the sassc build of the
+same source except for rule order and fractional colour notation. Lubuto-Teal-Dark-Compact is installed and
+selected with the same flags as the previous Orchis install (`--tweaks compact black submenu`, libadwaita link).
 
 ### Phase 1: GNOME 50 baseline
 
