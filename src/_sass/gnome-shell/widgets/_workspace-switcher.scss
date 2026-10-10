@@ -1,37 +1,23 @@
 /* Workspace Switcher */
-.workspace-switcher-group {
-  padding: $space-size * 2;
-}
-
-.workspace-switcher-container {
-  @extend %osd_panel;
-  border-radius: $window-radius;
-}
+// Workspace switcher OSD: one dot per workspace, the active one larger and in the accent colour.
 
 .workspace-switcher {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
+  @extend %osd_panel;
+  border-radius: $circular-radius;
+  margin-bottom: 8em;
   spacing: $space-size * 2;
+  padding: $space-size * 2 $space-size * 3;
 }
 
-.ws-switcher-box {
-  height: 50px;
-  background-size: 32px;
-  border: none;
-  background: $secondary-fill;
-  border-radius: $material-radius;
-}
+.ws-switcher-indicator {
+  background-color: on(dark, disabled);
+  padding: 3px;
+  margin: 13px;
+  border-radius: $circular-radius;
 
-// active workspace in the switcher
-.ws-switcher-active-up,
-.ws-switcher-active-down,
-.ws-switcher-active-left,
-.ws-switcher-active-right {
-  height: 52px;
-  background-color: $primary;
-  border: none;
-  border-radius: $material-radius + $space-size * 0.5;
-  color: on(dark);
+  &:active {
+    background-color: $primary;
+    padding: 5px;
+    margin: 11px;
+  }
 }

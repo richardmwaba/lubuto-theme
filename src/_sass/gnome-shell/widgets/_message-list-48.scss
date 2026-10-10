@@ -46,18 +46,8 @@
   spacing: $space-size * 2;
   @extend %heading;
 
-  .dnd-button {
-    // We need this because the focus outline isn't inset like for the buttons
-    // so the dnd button would grow when it gets focus if we didn't change only
-    // its color when focusing.
-    border-width: 2px;
-    border-color: transparent;
-    border-radius: 32px;
-    border-style: solid;
-
-    &:focus {
-      border-color: transparentize($primary, 0.4);
-    }
+  .message-list-clear-button {
+    border-radius: $circular-radius;
   }
 }
 
@@ -255,4 +245,17 @@
       icon-size: $large-icon-size !important; // 32px
     }
   }
+}
+
+// action buttons under a notification body
+.message .message-action-bin {
+  padding: $margin-size * 2;
+  spacing: $space-size;
+
+  * { margin: 0 $margin-size * 2; }
+
+  *:first-child:ltr { margin-left: 0; }
+  *:first-child:rtl { margin-right: 0; }
+  *:last-child:ltr { margin-right: 0; }
+  *:last-child:rtl { margin-left: 0; }
 }

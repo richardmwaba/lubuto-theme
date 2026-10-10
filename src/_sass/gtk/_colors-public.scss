@@ -7,6 +7,11 @@
 // warning, it's innocuous and can be defeated by using "" + $var
 /*
 widget text/foreground color */
+// When GTK 4 follows the system accent, $primary is a CSS variable. @define-color needs
+// a colour, so the legacy named colours alias libadwaita's accent colour instead. GTK 3
+// always has a colour here.
+$selected-bg-color: if(type-of($primary) == color, '' + $primary, unquote('@accent_bg_color'));
+
 @define-color theme_fg_color #{"" + $text};
 
 /*
@@ -23,7 +28,7 @@ text widgets and the like base background color */
 
 /*
 base background color of selections */
-@define-color theme_selected_bg_color #{"" + $primary};
+@define-color theme_selected_bg_color #{$selected-bg-color};
 
 /*
 text/foreground color of selections */
@@ -59,7 +64,7 @@ text widgets and the like base background color on backdrop windows */
 
 /*
 base background color of selections on backdrop windows */
-@define-color theme_unfocused_selected_bg_color #{"" + $primary};
+@define-color theme_unfocused_selected_bg_color #{$selected-bg-color};
 
 /*
 text/foreground color of selections on backdrop windows */

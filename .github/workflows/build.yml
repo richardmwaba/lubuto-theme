@@ -25,3 +25,9 @@ jobs:
           test -s "$RUNNER_TEMP/themes/Lubuto-Teal-Dark-Compact/gtk-4.0/gtk.css"
           test -s "$RUNNER_TEMP/themes/Lubuto-Light/gtk-3.0/gtk.css"
           ls "$RUNNER_TEMP/themes" | wc -l
+      - name: Install the GTK parsers
+        run: sudo apt-get update -q && sudo apt-get install -y -q python3-gi gir1.2-gtk-3.0 gir1.2-gtk-4.0 xvfb
+      - name: Parse every GTK stylesheet with GTK itself
+        run: |
+          xvfb-run -a python3 -I tools/check-gtk-css.py 4 "$RUNNER_TEMP"/themes/*/gtk-4.0/*.css
+          xvfb-run -a python3 -I tools/check-gtk-css.py 3 "$RUNNER_TEMP"/themes/*/gtk-3.0/*.css

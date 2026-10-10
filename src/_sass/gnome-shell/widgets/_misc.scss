@@ -58,3 +58,19 @@
 .workspace-animation {
   background-color: $system;
 }
+
+// Search results status line
+.search-statusbox {
+  spacing: $space-size * 4;
+}
+
+// Restart dialog
+.restart-message {
+  @include font(subheading);
+  font-weight: bold;
+}
+
+// Portal access dialog
+.access-dialog {
+  text-align: center;
+}

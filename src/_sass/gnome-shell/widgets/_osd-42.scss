@@ -42,8 +42,9 @@ $osd_levelbar_height: 4px;
   }
 }
 
-// Monitor number label
-.osd-monitor-label {
+// Monitor number label and break reminder countdown
+.osd-monitor-label,
+.osd-break-countdown-label {
   @extend %osd_panel;
   border-radius: $window-radius;
   font-size: 3em;

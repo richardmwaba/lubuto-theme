@@ -197,13 +197,6 @@
   border-width: 0;
 }
 
-.calendar-day-top { border-top-width: 0; }
-.calendar-day-left { border-left-width: 0; }
-// .calendar-work-day { }
-.calendar-nonwork-day {
-  color: $text;
-}
-
 .calendar-today {
   font-weight: bold !important;
   color: on($primary) !important;
@@ -231,10 +224,6 @@
   background-image: url("assets/calendar-today.svg");
   background-size: contain;
 
-  &.calendar-work-day {
-    color: $text-disabled;
-    font-weight: bold;
-  }
 }
 
 .calendar-other-month {
@@ -315,14 +304,34 @@
 
   .events-list {
     color: $text-secondary;
-    spacing: 12px;
+    spacing: $space-size;
     text-shadow: none;
+  }
+
+  .event-box {
+    spacing: $space-size;
+    border-radius: $material-radius;
+  }
+
+  .event-summary {
+    font-weight: bold;
   }
 
   .event-time {
     color: $text-secondary-disabled;
     font-feature-settings: "tnum";
   }
+
+  .event-placeholder {
+    color: $text-secondary-disabled;
+    font-style: italic;
+  }
+}
+
+// Empty-state headers
+.weather-header.no-location,
+.world-clocks-header.no-world-clocks {
+  color: $text-secondary;
 }
 
 // World clocks button

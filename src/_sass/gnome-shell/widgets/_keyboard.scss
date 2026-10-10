@@ -68,7 +68,7 @@ $keyboard_active_bg_color: if($variant == 'light', darken($keyboard, 20%), light
 }
 
 // long press on a key popup
-.keyboard-subkeys {
+.keyboard-subkeys-boxpointer {
   color: inherit;
   -arrow-border-radius: $material-radius;
   -arrow-background-color: rgba(black, 0.45);
@@ -77,7 +77,13 @@ $keyboard_active_bg_color: if($variant == 'light', darken($keyboard, 20%), light
   -arrow-base: 20px;
   -arrow-rise: 10px;
   -boxpointer-gap: 5px;
+  border-radius: $material-radius;
   box-shadow: $shell-shadow-z2;
+
+  .key-container {
+    padding: $space-size * 2;
+    spacing: $space-size + 2px;
+  }
 }
 
 // emoji

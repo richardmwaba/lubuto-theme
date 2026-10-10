@@ -166,16 +166,26 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
     //   padding: $space-size;
     // }
 
-    // .panel-status-indicators-box {
-    //   spacing: $space-size;
-    //
-    //   .system-status-icon {
-    //     padding: $space-size / 2;
-    //   }
-    // }
+    .panel-status-indicators-box {
+      spacing: $margin-size * 2;
 
-    // spacing between power icon and (optional) percentage label
-    // .power-status.panel-status-indicators-box { }
+      > .system-status-icon {
+        padding: 0;
+      }
+
+      // power icon and its optional percentage label sit flush
+      &.power-status {
+        spacing: 0;
+      }
+    }
+
+    .privacy-indicator {
+      color: $warning;
+    }
+
+    &.clock-display .messages-indicator {
+      icon-size: $scalable-icon-size;
+    }
 
     .panel-status-menu-box { // indicators and menubutton icons
       spacing: $space-size;
@@ -185,11 +195,6 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
       .system-status-icon {
         padding: 0;
       }
-    }
-
-    // app menu icon
-    .app-menu-icon {
-      -st-icon-style: symbolic;
     }
 
     // Gjs_ui_panelAppMenuButton.panel-button {
@@ -278,18 +283,28 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
   //   -minimum-hpadding: 3px !important;
   // }
 
-  // indicator for active
-  .screencast-indicator,
-  .remote-access-indicator { color: $warning; }
-}
+  // screen recording and screen sharing pills
+  .panel-button.screen-recording-indicator,
+  .panel-button.screen-sharing-indicator {
+    border-radius: $circular-radius;
+    font-weight: bold;
+    color: on(dark);
 
-// App Menu
-#appMenu {
-  spacing: $space-size;
-  .label-shadow { color: transparent; }
-}
+    StBoxLayout { spacing: $margin-size * 2; }
+    StIcon { icon-size: $scalable-icon-size; }
+  }
 
-#appMenu .panel-status-menu-box {
-  padding: 0 $space-size;
-  spacing: $space-size;
+  .panel-button.screen-recording-indicator {
+    background-color: $destructive;
+
+    &:hover, &:focus { background-color: lighten($destructive, 5%); }
+    &:active, &:checked { background-color: lighten($destructive, 10%); }
+  }
+
+  .panel-button.screen-sharing-indicator {
+    background-color: $warning;
+
+    &:hover, &:focus { background-color: lighten($warning, 5%); }
+    &:active, &:checked { background-color: lighten($warning, 10%); }
+  }
 }
