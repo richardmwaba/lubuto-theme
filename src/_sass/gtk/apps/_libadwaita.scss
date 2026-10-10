@@ -1333,3 +1333,160 @@ floating-sheet {
     outline: none;
   }
 }
+
+//
+// AdwDialog
+//
+
+// Alert dialogs are AdwDialog sheets since libadwaita 1.5. They mirror the message dialog.
+dialog-host > dialog.alert sheet {
+  border-radius: $window-radius;
+
+  .body-scrolled-window > viewport {
+    border-top-left-radius: $window-radius;
+    border-top-right-radius: $window-radius;
+  }
+}
+
+dialog.alert {
+  .message-area separator {
+    background-color: transparent;
+    min-height: 0;
+  }
+
+  .response-area {
+    padding: $space-size;
+    box-shadow: none;
+    border: none;
+
+    > button {
+      @extend %button-flat;
+      border: none;
+      box-shadow: none;
+      border-radius: $circular-radius;
+
+      &:not(:last-child) { margin-right: $space-size; }
+
+      &.suggested:not(:disabled) { color: $suggested; }
+
+      &.destructive:not(:disabled) { color: $destructive; }
+    }
+
+    separator {
+      background-color: transparent;
+      min-width: 0;
+    }
+  }
+}
+
+//
+// Bottom sheet
+//
+
+bottom-sheet {
+  > dimming {
+    background-color: rgba(black, 0.25);
+  }
+
+  > sheet {
+    box-shadow: $shadow-z16;
+
+    &, > outline, > stack > widget, > stack > button, > stack > button > widget {
+      border-top-left-radius: $window-radius;
+      border-top-right-radius: $window-radius;
+    }
+
+    > outline {
+      box-shadow: inset 0 1px highlight($surface);
+    }
+
+    > stack > widget > drag-handle {
+      background-color: $track;
+    }
+
+    &.bottom-bar > outline {
+      box-shadow: none;
+    }
+  }
+}
+
+//
+// Toggle group and inline view switcher (libadwaita 1.7)
+//
+
+toggle-group {
+  background-color: $fill;
+  border-radius: $corner-radius;
+
+  > toggle {
+    border-radius: $corner-radius - 3px;
+    font-weight: bold;
+
+    &:hover {
+      background-color: $overlay-hover;
+      box-shadow: none;
+    }
+
+    &:active {
+      background-color: $overlay-active;
+      box-shadow: none;
+    }
+
+    &:checked {
+      background-color: $base;
+      color: $text;
+      box-shadow: $shadow-z1;
+
+      &:disabled {
+        background-color: $divider;
+        box-shadow: none;
+      }
+    }
+  }
+
+  &.round {
+    border-radius: $circular-radius;
+
+    > toggle { border-radius: $circular-radius; }
+  }
+
+  &.flat {
+    background: none;
+
+    > toggle:checked {
+      background-color: $overlay-checked;
+      box-shadow: none;
+
+      &:hover { background-color: $overlay-hover; }
+      &:active { background-color: $overlay-active; }
+    }
+  }
+
+  > separator {
+    background-color: $divider;
+  }
+}
+
+//
+// Tab overview (libadwaita 1.3)
+//
+
+tabthumbnail {
+  border-radius: $window-radius;
+
+  .card picture {
+    border-radius: $corner-radius;
+    outline: 1px solid $border;
+  }
+
+  button > image {
+    background-color: rgba($surface, 0.8);
+  }
+}
+
+// Keyboard shortcut labels, used in the shortcuts dialog and preference rows
+shortcut-label .keycap {
+  background-color: $fill;
+  box-shadow: inset 0 -2px $divider;
+  border-radius: $corner-radius - 2px;
+}

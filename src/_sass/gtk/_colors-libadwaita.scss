@@ -205,9 +205,41 @@ $dark_5: #000000;
 @define-color popover_bg_color #{$surface};
 @define-color popover_fg_color #{$text};
 
+// Sidebars. libadwaita 1.4 and later paint sidebar panes from these, and the
+// stock values are Adwaita greys, so every variant needs its own.
+$sidebar-color: if($variant == 'light' and $topbar == 'dark', $titlebar, $base-alt);
+$sidebar-backdrop-color: if($variant == 'light' and $topbar == 'dark', $titlebar-backdrop, $background);
+
+@define-color sidebar_bg_color #{$sidebar-color};
+@define-color sidebar_fg_color #{on($sidebar-color)};
+@define-color sidebar_backdrop_color #{$sidebar-backdrop-color};
+@define-color sidebar_border_color #{$border};
+@define-color sidebar_shade_color #{$border};
+
+@define-color secondary_sidebar_bg_color #{$background};
+@define-color secondary_sidebar_fg_color #{$text};
+@define-color secondary_sidebar_backdrop_color #{$background};
+@define-color secondary_sidebar_border_color #{$border};
+@define-color secondary_sidebar_shade_color #{$border};
+
+// Tab overview thumbnails
+@define-color thumbnail_bg_color #{$surface};
+@define-color thumbnail_fg_color #{$text};
+
 // Miscellaneous
+@define-color headerbar_darker_shade_color #{$border};
+@define-color popover_shade_color #{$border};
 @define-color shade_color #{$border};
 @define-color scrollbar_outline_color #{$border};
+
+// Variables libadwaita defines only at :root, with no named colour behind them.
+:root {
+  --window-radius: #{$window-radius};
+  --overview-bg-color: #{$background};
+  --overview-fg-color: #{$text};
+  --active-toggle-bg-color: #{$base};
+  --active-toggle-fg-color: #{$text};
+}
 
 @if $gnome_version == 'new' and $accent_type != "fixed" {
   :root {
