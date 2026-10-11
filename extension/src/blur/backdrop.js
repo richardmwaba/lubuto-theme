@@ -28,16 +28,20 @@ export class Backdrop {
         // samples past the edge of its texture, which would darken the rim.
         // The monitor-sized wallpaper sits inside the inner actor, offset so
         // the right part shows through.
+        // Both start empty and hidden. A backdrop that has not been framed yet
+        // must paint nothing: the panel layer sits above every window, and a
+        // monitor-sized blurred wallpaper there hides the whole desktop.
         this.actor = new St.Widget({
             name: 'lubuto-backdrop',
             clip_to_allocation: true,
-            width: monitor.width,
-            height: monitor.height,
+            width: 0,
+            height: 0,
+            visible: false,
         });
         this._blurred = new St.Widget({
             name: 'lubuto-backdrop-blur',
-            width: monitor.width,
-            height: monitor.height,
+            width: 0,
+            height: 0,
         });
         this.actor.add_child(this._blurred);
 
@@ -119,6 +123,8 @@ export class Backdrop {
             if (child instanceof Meta.BackgroundActor)
                 child.set_position(-(f.x - left), -(f.y - top));
         }
+
+        this.actor.show();
 
         if (f.radius > 0) {
             if (!this._corners) {

@@ -100,7 +100,12 @@ export class WindowCorners {
 
         this._state.set(actor, {rounded: false, shadow: null});
 
-        actor.connectObject('notify::size', () => this._refresh(actor), this);
+        // Window actors can go away without a window-manager destroy signal,
+        // for example when Xwayland restarts on a monitor hotplug.
+        actor.connectObject(
+            'destroy', () => this._unwatch(actor, {disposed: true}),
+            'notify::size', () => this._refresh(actor),
+            this);
         texture.connectObject('size-changed', () => this._refresh(actor), this);
         actor.metaWindow.connectObject(
             'notify::fullscreen', () => this._refresh(actor),
@@ -111,16 +116,23 @@ export class WindowCorners {
         this._refresh(actor);
     }
 
-    _unwatch(actor) {
+    _unwatch(actor, {disposed = false} = {}) {
         const state = this._state.get(actor);
         if (!state)
             return;
+
+        this._state.delete(actor);
+        if (disposed) {
+            // The actor and its texture are gone; only our own shadow remains.
+            if (state.shadow)
+                destroyShadow(state.shadow);
+            return;
+        }
 
         actor.disconnectObject(this);
         actor.get_texture()?.disconnectObject(this);
         actor.metaWindow?.disconnectObject(this);
         this._remove(actor, state);
-        this._state.delete(actor);
     }
 
     _shouldRound(win) {
@@ -205,7 +217,9 @@ export class WindowCorners {
 
     _restack() {
         for (const [actor, state] of this._state) {
-            if (actor.visible && state.shadow)
+            if (!state.shadow || !actor.get_parent())
+                continue;
+            if (actor.visible)
                 global.windowGroup.set_child_below_sibling(state.shadow.shadow, actor);
         }
     }

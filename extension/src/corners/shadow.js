@@ -38,11 +38,16 @@ export function createShadow(actor) {
 }
 
 export function destroyShadow({shadow, bindings}) {
-    for (const binding of bindings)
-        binding.unbind();
+    for (const binding of bindings) {
+        try {
+            binding.unbind();
+        } catch {
+            // The source actor was disposed; the binding died with it.
+        }
+    }
     for (const constraint of shadow.get_constraints())
         shadow.remove_constraint(constraint);
-    global.windowGroup.remove_child(shadow);
+    shadow.get_parent()?.remove_child(shadow);
     shadow.clear_effects();
     shadow.destroy();
 }
