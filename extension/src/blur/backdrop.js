@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
-// A blurred copy of one monitor's wallpaper, clipped to a rectangle. The actor
-// is monitor sized; the clip selects the part under the surface being glassed,
-// and the actor is moved so that part lands at the parent's origin.
+// A blurred copy of one monitor's wallpaper, framed to a rectangle. The actor
+// is the size of the frame; the monitor-sized wallpaper inside it is offset so
+// the part under the glassed surface shows.
 //
 // Static by design: the wallpaper rarely changes, so the blurred result is
 // painted once and cached by Clutter until the background or the clip changes.
@@ -19,20 +19,26 @@ export class Backdrop {
     constructor(monitorIndex, {radius, brightness}) {
         const monitor = Main.layoutManager.monitors[monitorIndex];
         this.monitor = monitor;
+        this._monitorIndex = monitorIndex;
+        this._bgManager = null;
+        this._offset = [0, 0];
 
+        // The actor is exactly the framed rectangle. Effects render the actor
+        // into a texture of its own size, so the corner shader's coordinates
+        // match the frame. The monitor-sized wallpaper sits inside, offset so
+        // the right part shows through.
         this.actor = new St.Widget({
             name: 'lubuto-backdrop',
+            clip_to_allocation: true,
             width: monitor.width,
             height: monitor.height,
         });
 
-        this._monitorIndex = monitorIndex;
-        this._bgManager = null;
-
-        // BackgroundManager adds its actor later; keep it below anything else.
         this.actor.connect('child-added', (container, child) => {
-            if (child instanceof Meta.BackgroundActor)
+            if (child instanceof Meta.BackgroundActor) {
                 container.set_child_below_sibling(child, null);
+                child.set_position(...this._offset);
+            }
         });
 
         this._blur = new StaticBlurEffect({brightness});
@@ -61,22 +67,27 @@ export class Backdrop {
     }
 
     // Show the monitor region at (x, y, width, height), monitor relative, with
-    // the region's top-left at (originX, originY) in the parent's coordinates.
+    // its top-left at (originX, originY) in the parent's coordinates.
     frame(x, y, width, height, radius = 0, originX = 0, originY = 0) {
-        const cx = Math.floor(x);
-        const cy = Math.floor(y);
-        const cw = Math.ceil(width);
-        const ch = Math.ceil(height);
+        const fx = Math.floor(x);
+        const fy = Math.floor(y);
+        const fw = Math.max(1, Math.ceil(width));
+        const fh = Math.max(1, Math.ceil(height));
 
-        this.actor.set_clip(cx, cy, cw, ch);
-        this.actor.set_position(originX - cx, originY - cy);
+        this._offset = [-fx, -fy];
+        this.actor.set_position(originX, originY);
+        this.actor.set_size(fw, fh);
+        for (const child of this.actor.get_children()) {
+            if (child instanceof Meta.BackgroundActor)
+                child.set_position(-fx, -fy);
+        }
 
         if (radius > 0) {
             if (!this._corners) {
                 this._corners = new RoundedClipEffect();
                 this.actor.add_effect_with_name('lubuto-corners', this._corners);
             }
-            this._corners.setFrame(cw, ch, radius);
+            this._corners.setFrame(fw, fh, radius);
         } else if (this._corners) {
             this.actor.remove_effect(this._corners);
             this._corners = null;
