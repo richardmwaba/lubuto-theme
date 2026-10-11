@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
-// A blurred copy of one monitor's wallpaper, framed to a rectangle. The actor
-// is the size of the frame; the monitor-sized wallpaper inside it is offset so
-// the part under the glassed surface shows.
+// A blurred copy of one monitor's wallpaper, framed to a rectangle.
 //
 // Static by design: the wallpaper rarely changes, so the blurred result is
 // painted once and cached by Clutter until the background or the clip changes.
@@ -21,11 +19,14 @@ export class Backdrop {
         this.monitor = monitor;
         this._monitorIndex = monitorIndex;
         this._bgManager = null;
-        this._offset = [0, 0];
+        this._radius = radius;
+        this._frame = null;
 
-        // The actor is exactly the framed rectangle. Effects render the actor
-        // into a texture of its own size, so the corner shader's coordinates
-        // match the frame. The monitor-sized wallpaper sits inside, offset so
+        // Two actors. The outer one is exactly the framed rectangle and is
+        // what gets rounded corners. The inner one is the frame plus a margin
+        // of blur radius on each side and carries the blur, so the blur never
+        // samples past the edge of its texture, which would darken the rim.
+        // The monitor-sized wallpaper sits inside the inner actor, offset so
         // the right part shows through.
         this.actor = new St.Widget({
             name: 'lubuto-backdrop',
@@ -33,17 +34,23 @@ export class Backdrop {
             width: monitor.width,
             height: monitor.height,
         });
+        this._blurred = new St.Widget({
+            name: 'lubuto-backdrop-blur',
+            width: monitor.width,
+            height: monitor.height,
+        });
+        this.actor.add_child(this._blurred);
 
-        this.actor.connect('child-added', (container, child) => {
+        this._blurred.connect('child-added', (container, child) => {
             if (child instanceof Meta.BackgroundActor) {
                 container.set_child_below_sibling(child, null);
-                child.set_position(...this._offset);
+                this._layout();
             }
         });
 
         this._blur = new StaticBlurEffect({brightness});
         this._blur.unscaledRadius = radius;
-        this.actor.add_effect_with_name('lubuto-blur', this._blur);
+        this._blurred.add_effect_with_name('lubuto-blur', this._blur);
         this._corners = null;
     }
 
@@ -55,15 +62,17 @@ export class Backdrop {
             parent.set_child_below_sibling(this.actor, below);
 
         this._bgManager = new Background.BackgroundManager({
-            container: this.actor,
+            container: this._blurred,
             monitorIndex: this._monitorIndex,
             controlPosition: false,
         });
     }
 
     setBlur({radius, brightness}) {
+        this._radius = radius;
         this._blur.unscaledRadius = radius;
         this._blur.brightness = brightness;
+        this._layout();
     }
 
     // Show the monitor region at (x, y, width, height), monitor relative, with
@@ -73,25 +82,50 @@ export class Backdrop {
         if (![x, y, width, height, originX, originY].every(Number.isFinite))
             return;
 
-        const fx = Math.floor(x);
-        const fy = Math.floor(y);
-        const fw = Math.max(1, Math.ceil(width));
-        const fh = Math.max(1, Math.ceil(height));
+        this._frame = {
+            x: Math.floor(x),
+            y: Math.floor(y),
+            width: Math.max(1, Math.ceil(width)),
+            height: Math.max(1, Math.ceil(height)),
+            radius,
+            originX,
+            originY,
+        };
+        this._layout();
+    }
 
-        this._offset = [-fx, -fy];
-        this.actor.set_position(originX, originY);
-        this.actor.set_size(fw, fh);
-        for (const child of this.actor.get_children()) {
+    _layout() {
+        const f = this._frame;
+        if (!f)
+            return;
+
+        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        const margin = Math.ceil(this._radius * scale * 2);
+        const monitor = this.monitor;
+
+        // Margin per side, no further than the wallpaper extends.
+        const left = Math.min(margin, f.x);
+        const top = Math.min(margin, f.y);
+        const right = Math.min(margin, monitor.width - (f.x + f.width));
+        const bottom = Math.min(margin, monitor.height - (f.y + f.height));
+
+        this.actor.set_position(f.originX, f.originY);
+        this.actor.set_size(f.width, f.height);
+
+        this._blurred.set_position(-left, -top);
+        this._blurred.set_size(f.width + left + right, f.height + top + bottom);
+
+        for (const child of this._blurred.get_children()) {
             if (child instanceof Meta.BackgroundActor)
-                child.set_position(-fx, -fy);
+                child.set_position(-(f.x - left), -(f.y - top));
         }
 
-        if (radius > 0) {
+        if (f.radius > 0) {
             if (!this._corners) {
                 this._corners = new RoundedClipEffect();
                 this.actor.add_effect_with_name('lubuto-corners', this._corners);
             }
-            this._corners.setFrame(fw, fh, radius);
+            this._corners.setFrame(f.width, f.height, f.radius);
         } else if (this._corners) {
             this.actor.remove_effect(this._corners);
             this._corners = null;
@@ -103,5 +137,6 @@ export class Backdrop {
         this._bgManager = null;
         this.actor?.destroy();
         this.actor = null;
+        this._blurred = null;
     }
 }
