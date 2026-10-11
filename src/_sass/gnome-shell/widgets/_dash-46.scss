@@ -99,3 +99,48 @@ $dash_border_radius: if(sass($corner_style == 'circular'): $circular-radius; els
   -y-offset: 0; // distance from the dash edge
   -x-offset: 0;
 }
+
+// Lubuto dock: the same Dash, on the desktop, in a glass pill. The extension
+// paints a blurred backdrop under .dash-background; the tint, rim and shadow
+// are here. Icons grow under the pointer, so the pill gets room above.
+.lubuto-dock #dash {
+  padding: $space-size * 2 $space-size 0;
+
+  .dash-background {
+    background-color: $glass-tint;
+    border: 1px solid $glass-rim;
+    border-radius: $radius-window + $space-size;
+    box-shadow: $shell-shadow-z4;
+    margin-bottom: $space-size * 1.5;
+  }
+
+  .dash-separator {
+    margin-bottom: $space-size * 1.5;
+  }
+
+  .dash-item-container {
+    .show-apps,
+    .overview-tile {
+      padding-bottom: $space-size * 1.5;
+
+      .overview-icon {
+        background-color: transparent;
+      }
+
+      &:hover .overview-icon,
+      &:focus .overview-icon {
+        background-color: transparent;
+      }
+
+      &:active .overview-icon,
+      &:checked .overview-icon {
+        background-color: on($system, divider);
+      }
+    }
+
+    .app-grid-running-dot {
+      offset-y: -$space-size * 1.5 + 2px;
+      background-color: $primary;
+    }
+  }
+}

@@ -61,6 +61,10 @@
       <default>true</default>
       <summary>Glass behind panel popovers</summary>
     </key>
+    <key name="blur-dock" type="b">
+      <default>true</default>
+      <summary>Glass behind the dock</summary>
+    </key>
     <key name="blur-radius" type="i">
       <range min="0" max="100"/>
       <default>30</default>
@@ -95,6 +99,31 @@
     <key name="corners-blacklist" type="as">
       <default>[]</default>
       <summary>Window classes that keep square corners</summary>
+    </key>
+    <key name="dock-enabled" type="b">
+      <default>true</default>
+      <summary>Show the dock</summary>
+    </key>
+    <key name="dock-icon-size" type="i">
+      <range min="24" max="96"/>
+      <default>48</default>
+      <summary>Dock icon size in logical pixels</summary>
+    </key>
+    <key name="dock-monitor" type="i">
+      <default>-1</default>
+      <summary>Monitor index for the dock, -1 for the primary monitor</summary>
+    </key>
+    <key name="dock-magnify" type="b">
+      <default>true</default>
+      <summary>Grow icons under the pointer</summary>
+    </key>
+    <key name="dock-reserve-space" type="b">
+      <default>true</default>
+      <summary>Keep windows from overlapping the dock</summary>
+    </key>
+    <key name="dock-show-apps" type="b">
+      <default>true</default>
+      <summary>Show the applications button</summary>
     </key>
     <key name="sync-gtk-theme" type="b">
       <default>true</default>

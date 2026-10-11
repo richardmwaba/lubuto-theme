@@ -63,6 +63,7 @@ export default class LubutoPreferences extends ExtensionPreferences {
             ['blur-panel', _('Top panel')],
             ['blur-overview', _('Overview')],
             ['blur-popups', _('Panel popovers')],
+            ['blur-dock', _('Dock')],
         ]) {
             const row = new Adw.SwitchRow({title});
             settings.bind(key, row, 'active', Gio.SettingsBindFlags.DEFAULT);
@@ -104,6 +105,35 @@ export default class LubutoPreferences extends ExtensionPreferences {
         });
         settings.bind('corners-radius', cornerRadius, 'value', Gio.SettingsBindFlags.DEFAULT);
         corners.add(cornerRadius);
+
+        const dock = new Adw.PreferencesGroup({title: _('Dock')});
+        page.add(dock);
+
+        for (const [key, title] of [
+            ['dock-enabled', _('Show the dock')],
+            ['dock-magnify', _('Grow icons under the pointer')],
+            ['dock-reserve-space', _('Keep windows from overlapping the dock')],
+            ['dock-show-apps', _('Applications button')],
+        ]) {
+            const row = new Adw.SwitchRow({title});
+            settings.bind(key, row, 'active', Gio.SettingsBindFlags.DEFAULT);
+            dock.add(row);
+        }
+
+        const dockIconSize = new Adw.SpinRow({
+            title: _('Icon size'),
+            adjustment: new Gtk.Adjustment({lower: 24, upper: 96, step_increment: 2}),
+        });
+        settings.bind('dock-icon-size', dockIconSize, 'value', Gio.SettingsBindFlags.DEFAULT);
+        dock.add(dockIconSize);
+
+        const dockMonitor = new Adw.SpinRow({
+            title: _('Monitor'),
+            subtitle: _('-1 for the primary monitor'),
+            adjustment: new Gtk.Adjustment({lower: -1, upper: 8, step_increment: 1}),
+        });
+        settings.bind('dock-monitor', dockMonitor, 'value', Gio.SettingsBindFlags.DEFAULT);
+        dock.add(dockMonitor);
     }
 
     _comboRow(settings, key, title, choices, subtitle = null) {
