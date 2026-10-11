@@ -1,6 +1,6 @@
 # Lubuto plan
 
-Status: Phase 4 done on 2026-10-11. Phase 5 (dock and window effects) next; dock option A or B to decide.
+Status: Phase 4 in review on 2026-10-11. Backdrop edge artefacts being fixed. Phase 5 next; dock option A or B to decide.
 
 Lubuto (Bemba: light) is a fork of [Orchis](https://github.com/vinceliuice/Orchis-theme) aimed at one target:
 GNOME 50 on Wayland, styled after macOS 27 Liquid Glass. It ships as two parts that install together: GTK
@@ -249,7 +249,7 @@ Result: done 2026-10-11. The only remaining Sass deprecation is `@import`.
 Exit: panel, popovers, overview and windows look like glass with Blur my Shell and Rounded Window Corners
 disabled.
 
-Result: done 2026-10-11 for panel, popovers, overview and windows. Rounded Window Corners Reborn is
+Result: in review 2026-10-11 for panel, popovers, overview and windows. Rounded Window Corners Reborn is
 disabled. Blur my Shell stays enabled only for its Dash to Dock blur until the `dock` module ships; its
 panel, overview, popup and application blur are off. Two mistakes worth remembering: an offscreen effect
 renders the whole actor, not its clip, so a backdrop must be the size of its frame; and Blur my Shell's
