@@ -32,9 +32,23 @@ jobs:
           test -s "$RUNNER_TEMP/themes/Lubuto-Teal-Dark-Compact/gtk-4.0/gtk.css"
           test -s "$RUNNER_TEMP/themes/Lubuto-Light/gtk-3.0/gtk.css"
           ls "$RUNNER_TEMP/themes" | wc -l
-      - name: Install the GTK parsers
-        run: sudo apt-get update -q && sudo apt-get install -y -q python3-gi gir1.2-gtk-3.0 gir1.2-gtk-4.0 xvfb
+
+  gtk-parse:
+    name: Parse stylesheets with the target GTK
+    runs-on: ubuntu-latest
+    # The theme targets GNOME 50. Ubuntu's GTK is older and rejects newer CSS,
+    # so the parser check runs on Fedora 44, the reference platform.
+    container: fedora:44
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GTK, libadwaita, Xvfb and node
+        run: dnf install -y -q gtk3 gtk4 libadwaita python3-gobject xorg-x11-server-Xvfb nodejs npm
+      - run: npm ci
+      - name: Install a representative set into a scratch directory
+        run: ./install.sh -d /tmp/themes -t default teal -c light dark
       - name: Parse every GTK stylesheet with GTK itself
+        env:
+          GDK_BACKEND: x11
         run: |
-          xvfb-run -a python3 -I tools/check-gtk-css.py 4 "$RUNNER_TEMP"/themes/*/gtk-4.0/*.css
-          xvfb-run -a python3 -I tools/check-gtk-css.py 3 "$RUNNER_TEMP"/themes/*/gtk-3.0/*.css
+          xvfb-run -a python3 -I tools/check-gtk-css.py 4 /tmp/themes/*/gtk-4.0/*.css
+          xvfb-run -a python3 -I tools/check-gtk-css.py 3 /tmp/themes/*/gtk-3.0/*.css
