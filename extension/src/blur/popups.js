@@ -106,6 +106,8 @@ export class PopupBlur {
         const pointer = menu.actor;
         const parent = pointer.get_parent();
         const monitor = state.backdrop.monitor;
+        if (!box.has_allocation() || !parent)
+            return;
 
         // Positions without the open animation's translation, which the
         // backdrop mirrors through its own bound translation.

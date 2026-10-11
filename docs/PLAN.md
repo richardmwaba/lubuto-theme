@@ -1,6 +1,6 @@
 # Lubuto plan
 
-Status: Phase 3 done on 2026-10-11. Phase 4 (blur and corners) next.
+Status: Phase 4 done on 2026-10-11. Phase 5 (dock and window effects) next; dock option A or B to decide.
 
 Lubuto (Bemba: light) is a fork of [Orchis](https://github.com/vinceliuice/Orchis-theme) aimed at one target:
 GNOME 50 on Wayland, styled after macOS 27 Liquid Glass. It ships as two parts that install together: GTK
@@ -237,15 +237,23 @@ Result: done 2026-10-11. The only remaining Sass deprecation is `@import`.
 
 ### Phase 4: blur and corners
 
-- [ ] `blur` module: static blur behind the panel. Measure. Then overview, then popovers and quick settings.
-- [ ] `corners` module: copy, port per Porting rules, attribute, wire to the schema. Default 16 px, off when
-      maximised or fullscreen.
-- [ ] Shell stylesheet for panel, quick settings, calendar, notifications, OSD, overview, search, app folders,
-      stock Alt-Tab switcher: glass tint, rim, highlight, shadow on top of the blur.
-- [ ] Light and dark screenshots per surface in `images/`.
+- [x] `blur` module: static blur behind the panel, the overview and every panel popover. Backdrops are
+      frame-sized actors with a rounded-clip GLSL snippet, radius read from the content's theme node.
+- [x] `corners` module: ported from Rounded Window Corners Reborn, shaders inlined, per-app overrides
+      dropped. Default 16 px, off when maximised or fullscreen, soft shadow under rounded windows.
+- [x] Shell stylesheet: panel and popover contents use the glass tint tokens and a rim.
+- [ ] Notification banners, OSD, the Alt-Tab switcher and app folders have no backdrop yet. Add them as
+      blur targets with the Phase 6 budget in hand, then give them the glass tint.
+- [ ] Light and dark screenshots per surface in `images/`. Dark done on the reference machine, light pending.
 
 Exit: panel, popovers, overview and windows look like glass with Blur my Shell and Rounded Window Corners
 disabled.
+
+Result: done 2026-10-11 for panel, popovers, overview and windows. Rounded Window Corners Reborn is
+disabled. Blur my Shell stays enabled only for its Dash to Dock blur until the `dock` module ships; its
+panel, overview, popup and application blur are off. Two mistakes worth remembering: an offscreen effect
+renders the whole actor, not its clip, so a backdrop must be the size of its frame; and Blur my Shell's
+application blur paints a square behind rounded windows.
 
 ### Phase 5: dock and window effects
 

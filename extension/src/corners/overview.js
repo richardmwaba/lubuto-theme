@@ -36,10 +36,13 @@ const OverviewShadowClone = GObject.registerClass({
             ? preview.windowContainer.get_allocation_box()
             : preview.get_allocation_box();
         const win = preview._windowActor?.get_meta_window();
-        if (!win)
+        const frameWidth = win?.get_frame_rect().width ?? 0;
+        if (!win || frameWidth <= 0) {
+            super.vfunc_allocate(box);
             return;
+        }
 
-        const scale = containerBox.get_width() / win.get_frame_rect().width;
+        const scale = containerBox.get_width() / frameWidth;
         const padding = SHADOW_PADDING * scale;
         box.set_origin(-padding, -padding);
         box.set_size(containerBox.get_width() + 2 * padding, containerBox.get_height() + 2 * padding);

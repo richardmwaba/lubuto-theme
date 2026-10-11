@@ -60,7 +60,7 @@ export class PanelBlur {
     }
 
     _update() {
-        if (!this._backdrop)
+        if (!this._backdrop || !Main.panel.has_allocation() || !this._group.has_allocation())
             return;
 
         const monitor = this._backdrop.monitor;

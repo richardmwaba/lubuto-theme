@@ -69,6 +69,10 @@ export class Backdrop {
     // Show the monitor region at (x, y, width, height), monitor relative, with
     // its top-left at (originX, originY) in the parent's coordinates.
     frame(x, y, width, height, radius = 0, originX = 0, originY = 0) {
+        // Positions read before the first layout pass come back NaN.
+        if (![x, y, width, height, originX, originY].every(Number.isFinite))
+            return;
+
         const fx = Math.floor(x);
         const fy = Math.floor(y);
         const fw = Math.max(1, Math.ceil(width));
