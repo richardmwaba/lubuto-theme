@@ -1,6 +1,6 @@
 # Lubuto plan
 
-Status: Phase 2 done on 2026-10-10. Phase 3 next.
+Status: Phase 3 done on 2026-10-11. Phase 4 (blur and corners) next.
 
 Lubuto (Bemba: light) is a fork of [Orchis](https://github.com/vinceliuice/Orchis-theme) aimed at one target:
 GNOME 50 on Wayland, styled after macOS 27 Liquid Glass. It ships as two parts that install together: GTK
@@ -219,14 +219,21 @@ login, so a first install enables through the setting and takes effect next logi
 
 ### Phase 3: design tokens and glass flag
 
-- [ ] Add the tokens listed under Design tokens. Derive light and dark values from each colour palette.
-- [ ] Add the `glass` tweak flag and wire it through `install.sh`, `core.sh` and `_tweaks.scss`. Default on.
-- [ ] Make the `macos` window-button tweak the default. Keep the Orchis button style behind a flag.
-- [ ] Set `$default_corner` to 16 px and derive the smaller radii from it.
-- [ ] Migrate the SASS tree to `@use` and `@forward`. Tokens become a module every file imports explicitly.
-      Build must be warning-free after this.
+- [x] Add the tokens listed under Design tokens. Derive light and dark values from each colour palette.
+- [x] Add the `glass` tweak flag and wire it through `install.sh`, `core.sh` and `_tweaks.scss`. Default on.
+- [x] Make the `macos` window-button tweak the default. `--tweaks buttons` restores the Orchis style.
+- [x] Set `$default_corner` to 16 px and derive the smaller radii from it.
+- [x] Migrate off legacy `if()`, the global colour functions and unqualified built-ins, output-identical.
+      Lightness steps go through `lighter()` and `darker()`, which clamp and convert back to rgb, because
+      GTK 3 cannot parse the `hsl()` Dart Sass would otherwise emit.
+- [ ] `@use` and `@forward`: deferred. The module migrator refuses the tree because entry files configure
+      the shared partials with plain variables before importing them. Converting to `@use ... with ()` is
+      a manual refactor. `@import` keeps working while sass-embedded 1.x is pinned. Revisit before Phase 9
+      or when Dart Sass 3.0 ships.
 
 Exit: tokens compile across the matrix, no visual change yet except radii and window buttons.
+
+Result: done 2026-10-11. The only remaining Sass deprecation is `@import`.
 
 ### Phase 4: blur and corners
 
