@@ -1,7 +1,9 @@
+@use "sass:color";
+
 /* Slider */
 
-$slider_size: if($compact == 'false', 22px, 20px);
-$slider_color: if($variant == 'light', $primary, white);
+$slider_size: if(sass($compact == 'false'): 22px; else: 20px);
+$slider_color: if(sass($variant == 'light'): $primary; else: white);
 
 .slider {
 
@@ -17,6 +19,6 @@ $slider_color: if($variant == 'light', $primary, white);
   -slider-handle-radius: $slider_size * 0.5 - 4px; // half the size of the size
 
   color: $slider_color;
-  &:hover { color: lighten($slider_color, 5%); }
-  &:active { color: darken($slider_color, 5%); }
+  &:hover { color: color.scale($slider_color, $lightness: 5%); }
+  &:active { color: color.adjust($slider_color, $lightness: -5%, $space: hsl); }
 }

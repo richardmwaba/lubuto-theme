@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* Popovers/Menus */
 
 //.the popover itself
@@ -8,13 +10,13 @@
 
 // container of the popover menu
 .popup-menu {
-  min-width: if($compact == 'true', 10em, 12em);
+  min-width: if(sass($compact == 'true'): 10em; else: 12em);
   color: $text;
 
   .popup-menu-content {
     padding: $space-size;
     margin: 0 3px 14px;
-    background-color: if($opacity == 'solid', $popover, rgba($popover, 0.97));
+    background-color: if(sass($opacity == 'solid'): $popover; else: rgba($popover, 0.97));
     border-radius: $popup-radius;
     border: none;
     box-shadow: $shell-shadow-z3;
@@ -43,7 +45,7 @@
         color: $text-secondary !important;
         background-color: $fill !important;
       } @else {
-        background-color: if($variant == 'light', rgba(black, 0.10), rgba(white, 0.95)) !important;
+        background-color: if(sass($variant == 'light'): rgba(black, 0.10); else: rgba(white, 0.95)) !important;
         color: rgba(black, 0.75) !important;
       }
 
@@ -52,7 +54,7 @@
           color: $text !important;
           background-color: $secondary-fill !important;
         } @else {
-          background-color: if($variant == 'light', rgba(black, 0.2), #e5e5e5) !important;
+          background-color: if(sass($variant == 'light'): rgba(black, 0.2); else: #e5e5e5) !important;
           color: rgba(black, 0.85) !important;
         }
       }
@@ -70,9 +72,9 @@
       &.selected:active {
         @if $submenu_style == 'true' {
           color: $text !important;
-          background-color: darken(rgba($primary, 0.2), 10%) !important;
+          background-color: color.adjust(rgba($primary, 0.2), $lightness: -10%, $space: hsl) !important;
         } @else {
-          background-color: if($variant == 'light', rgba(black, 0.15), #e0e0e0) !important;
+          background-color: if(sass($variant == 'light'): rgba(black, 0.15); else: #e0e0e0) !important;
           color: rgba(black, 0.75) !important;
         }
       }
@@ -137,7 +139,7 @@
       background-color: $fill !important;
     } @else {
       color: rgba(black, 0.75) !important;
-      background-color: if($variant == 'light', rgba(black, 0.10), rgba(white, 0.95)) !important;
+      background-color: if(sass($variant == 'light'): rgba(black, 0.10); else: rgba(white, 0.95)) !important;
     }
 
     .popup-menu-item {

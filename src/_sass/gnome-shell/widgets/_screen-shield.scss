@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* Screen Shield */
 
 .unlock-dialog-clock {
@@ -42,7 +44,7 @@
     color: on(dark);
     border-radius: $material-radius;
 
-    &.critical { background-color: transparentize($system, 0.1) }
+    &.critical { background-color: color.adjust($system, $alpha: -0.1) }
   }
 }
 
@@ -71,8 +73,8 @@
 
 #unlockDialogNotifications {
   > .vhandle, > .hhandle {
-    background-color: transparentize($tooltip, 0.7);
-    &:hover, &:focus { background-color: transparentize($tooltip,0.5); }
-    &:active { background-color: transparentize($primary,0.5); }
+    background-color: color.adjust($tooltip, $alpha: -0.7);
+    &:hover, &:focus { background-color: color.adjust($tooltip,$alpha: -0.5); }
+    &:active { background-color: color.adjust($primary,$alpha: -0.5); }
   }
 }

@@ -1,13 +1,16 @@
+@use "sass:string";
+@use "sass:color";
+
 //
 // Nautilus
 //
 .nautilus-window {
   &.background.csd {
-    color: if($topbar =='dark' and $variant =='light', $titlebar-text-secondary, $text-secondary);
+    color: if(sass($topbar =='dark' and $variant =='light'): $titlebar-text-secondary; else: $text-secondary);
 
     &, &:backdrop {
       background-image: none;
-      background-color: if($topbar =='dark' and $variant =='light', $titlebar, $base);
+      background-color: if(sass($topbar =='dark' and $variant =='light'): $titlebar; else: $base);
     }
   }
 
@@ -207,14 +210,14 @@
 
   flap.unfolded > placessidebar,
   .sidebar-pane > toolbarview > placessidebar {
-    background-color: if($topbar =='dark' and $variant =='light', $titlebar, $base);
+    background-color: if(sass($topbar =='dark' and $variant =='light'): $titlebar; else: $base);
     border-radius: $window-radius;
     color: $titlebar-text-secondary;
 
     > scrolledwindow {
       margin: 0 0 $space-size * 2 $space-size * 2;
       border-radius: $window-radius - $space-size;
-      background-color: if($topbar =='dark' and $variant =='light', transparent, rgba(theme($theme), 0.08));
+      background-color: if(sass($topbar =='dark' and $variant =='light'): transparent; else: rgba(theme($theme), 0.08));
 
       > overshoot, > undershoot {
         &.top {
@@ -372,7 +375,7 @@
     .box {
       padding: 0 $window-radius - $space-size;
       background-color: transparent;
-      box-shadow: inset 0 -1px if($topbar =='dark' and $variant =='light', transparent, $solid-border);
+      box-shadow: inset 0 -1px if(sass($topbar =='dark' and $variant =='light'): transparent; else: $solid-border);
     }
 
     tab {
@@ -384,7 +387,7 @@
 
       &:hover:not(:selected):not(:active):not(:checked) {
         color: $titlebar-text;
-        background-color: if($topbar =='dark', rgba($titlebar-text, 0.05), transparent);
+        background-color: if(sass($topbar =='dark'): rgba($titlebar-text, 0.05); else: transparent);
       }
 
       &:active, &:checked, &:selected {
@@ -516,7 +519,7 @@
 .floating-bar {
   min-height: $menuitem-size;
   padding: $space-size * 0.5;
-  margin: if($variant =='light' and $topbar =='dark', $space-size * 2, $space-size);
+  margin: if(sass($variant =='light' and $topbar =='dark'): $space-size * 2; else: $space-size);
   border: none;
   border-radius: $circular-radius;
   background-color: rgba($background, 0.95);
@@ -1414,7 +1417,7 @@ carousel.card {
   }
 
   &.green, &.details-rating-0 {
-    color: darken($success, 15%);
+    color: color.adjust($success, $lightness: -15%, $space: hsl);
     background-color: rgba($success, 0.15);
   }
 
@@ -1425,7 +1428,7 @@ carousel.card {
   }
 
   &.yellow, &.details-rating-12 {
-    color: darken($warning, 15%);
+    color: color.adjust($warning, $lightness: -15%, $space: hsl);
     background-color: rgba($warning, 0.15);
   }
 
@@ -1435,7 +1438,7 @@ carousel.card {
   }
 
   &.red, &.details-rating-18 {
-    color: darken($error, 15%);
+    color: color.adjust($error, $lightness: -15%, $space: hsl);
     background-color: rgba($error, 0.15);
   }
 }
@@ -1522,13 +1525,13 @@ screenshot-carousel box.frame.view {
   background-position: -1px -4px, center -1px;
 
   &:hover {
-    background-color: lighten(#fdf8d7, 5%);
+    background-color: color.adjust(#fdf8d7, $lightness: 5%, $space: hsl);
     background-image: linear-gradient($border 1px, transparent 1px),
       linear-gradient(90deg, $border 1px, transparent 1px);
   }
 
   &:active {
-    background-color: darken(#fdf8d7, 5%);
+    background-color: color.adjust(#fdf8d7, $lightness: -5%, $space: hsl);
     background-image: linear-gradient($border 1px, transparent 1px),
       linear-gradient(90deg, $border 1px, transparent 1px);
   }
@@ -1539,13 +1542,13 @@ screenshot-carousel box.frame.view {
 //
 
 @define-color weather_temp_chart_fill_color #{rgba($warning, 0.5)};
-@define-color weather_temp_chart_stroke_color #{darken($warning, 10%)};
-@define-color weather_thermometer_warm_color #{if($variant == 'light', $yellow-dark, $yellow-light)};
-@define-color weather_thermometer_cold_color #{if($variant == 'light', $blue-dark, $blue-light)};
+@define-color weather_temp_chart_stroke_color #{color.adjust($warning, $lightness: -10%, $space: hsl)};
+@define-color weather_thermometer_warm_color #{if(sass($variant == 'light'): $yellow-dark; else: $yellow-light)};
+@define-color weather_thermometer_cold_color #{if(sass($variant == 'light'): $blue-dark; else: $blue-light)};
 
 $weather_thermometer_high_color: $yellow-light;
 $weather_thermometer_low_color: $blue-light;
-$weather_forecast_color: darken($warning, 10%);
+$weather_forecast_color: color.adjust($warning, $lightness: -10%, $space: hsl);
 
 #places-label {
   font-weight: bold;
@@ -1852,7 +1855,7 @@ popover.details-popover {
 //
 
 @function gtkcolor($c) {
-  @return unquote("@#{$c}");
+  @return string.unquote("@#{$c}");
 }
 
 button.colorpad {
@@ -2078,7 +2081,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: lighten($yellow-light, 10%);
+        background-color: color.adjust($yellow-light, $lightness: 10%, $space: hsl);
         color: on($yellow-light);
       }
     }
@@ -2102,7 +2105,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: lighten($pink-light, 10%);
+        background-color: color.adjust($pink-light, $lightness: 10%, $space: hsl);
         color: on($pink-light);
       }
     }
@@ -2126,7 +2129,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: lighten($green-light, 10%);
+        background-color: color.adjust($green-light, $lightness: 10%, $space: hsl);
         color: on($green-light);
       }
     }
@@ -2150,7 +2153,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: lighten($purple-light, 10%);
+        background-color: color.adjust($purple-light, $lightness: 10%, $space: hsl);
         color: on($purple-light);
       }
     }
@@ -2174,7 +2177,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: lighten($blue-light, 10%);
+        background-color: color.adjust($blue-light, $lightness: 10%, $space: hsl);
         color: on($blue-light);
       }
     }
@@ -2198,7 +2201,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: lighten($grey-500, 10%);
+        background-color: color.adjust($grey-500, $lightness: 10%, $space: hsl);
         color: on($grey-500);
       }
     }

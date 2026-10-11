@@ -1,3 +1,5 @@
+@use "sass:math";
+@use "sass:color";
 /************
  * Nautilus *
  ************/
@@ -14,17 +16,17 @@ $theme_list_radius: $window-radius - $space-size;
   }
 
   &.background.csd {
-    background-color: if($topbar == 'dark' and $variant == 'light', $titlebar, $base);
+    background-color: if(sass($topbar == 'dark' and $variant == 'light'): $titlebar; else: $base);
     border-radius: 0 0 $window-radius $window-radius;
 
     headerbar {
       padding-left: $space-size * 2;
-      background-color: if($topbar == 'dark' and $variant == 'light', $titlebar, $base);
+      background-color: if(sass($topbar == 'dark' and $variant == 'light'): $titlebar; else: $base);
       box-shadow: inset 0 1px highlight($titlebar);
     }
 
     > grid.horizontal > paned.horizontal > separator,
-    > deck > box.vertical > paned.horizontal > separator { margin-left: if($topbar == 'dark' and $variant == 'light', -1px, 0); }
+    > deck > box.vertical > paned.horizontal > separator { margin-left: if(sass($topbar == 'dark' and $variant == 'light'): -1px; else: 0); }
 
     placessidebar {
       background-color: transparent;
@@ -34,7 +36,7 @@ $theme_list_radius: $window-radius - $space-size;
 
       > viewport.frame {
         border-radius: $theme_list_radius;
-        background-color: if($topbar == 'dark' and $variant == 'light', transparent, rgba($primary, 0.08));
+        background-color: if(sass($topbar == 'dark' and $variant == 'light'): transparent; else: rgba($primary, 0.08));
 
         > list {
           padding: 12px 0 12px 0;
@@ -181,26 +183,26 @@ $theme_list_radius: $window-radius - $space-size;
 
     notebook {
       background: none;
-      margin: if($topbar == 'dark' and $variant == 'light', (0 6px 6px 0), 0);
+      margin: if(sass($topbar == 'dark' and $variant == 'light'): (0 6px 6px 0); else: 0);
 
       > header {
         padding: 0 16px;
         background: none;
-        border-color: if($topbar == 'dark' and $variant == 'light', transparent, $solid-border);
+        border-color: if(sass($topbar == 'dark' and $variant == 'light'): transparent; else: $solid-border);
 
         tab {
           color: $titlebar-text-secondary;
 
           &:hover:not(:checked):not(:active) {
             color: $titlebar-text;
-            background-color: if($topbar == 'dark', rgba($titlebar-text, 0.05), $fill);
+            background-color: if(sass($topbar == 'dark'): rgba($titlebar-text, 0.05); else: $fill);
           }
 
           &:disabled { color: $titlebar-text-secondary-disabled; }
 
           &:checked, &:active {
             color: $text;
-            border-color: if($topbar == 'dark' and $variant == 'light', transparent, $solid-border);
+            border-color: if(sass($topbar == 'dark' and $variant == 'light'): transparent; else: $solid-border);
 
             &:disabled { color: $text-disabled; }
 
@@ -228,7 +230,7 @@ $theme_list_radius: $window-radius - $space-size;
       }
 
       scrolledwindow .view:selected {
-        background-color: mix($primary, $base, 15%);
+        background-color: color.mix($primary, $base, 15%);
       }
 
       placesview {
@@ -425,7 +427,7 @@ $theme_list_radius: $window-radius - $space-size;
   @extend .entry-tag;
 }
 
-.conflict-row:not(:selected) { background-color: mix($warning, $base, percentage(0.3)); }
+.conflict-row:not(:selected) { background-color: color.mix($warning, $base, math.percentage(0.3)); }
 
 // Icon view
 .nautilus-window flowboxchild {
@@ -1625,17 +1627,17 @@ overlay grid.horizontal > revealer > scrolledwindow.frame {
 }
 
 .side-panel .view {
-  // background-color: mix(@theme_fg_color, @theme_bg_color, 0.9);
+  // background-color: color.mix(@theme_fg_color, @theme_bg_color, 0.9);
   background-image: image($base-alt);
 
-  &:hover { background-image: image(mix($text, $base-alt, percentage(0.08))); }
+  &:hover { background-image: image(color.mix($text, $base-alt, math.percentage(0.08))); }
 }
 
 .side-panel .view:selected {
-  // background-color: mix(@theme_fg_color, @theme_bg_color, 0.5);
+  // background-color: color.mix(@theme_fg_color, @theme_bg_color, 0.5);
   background-image: image($primary);
 
-  &:hover { background-image: image(mix(on($primary), $primary, percentage(0.08))); }
+  &:hover { background-image: image(color.mix(on($primary), $primary, math.percentage(0.08))); }
 }
 
 .songs-list {
@@ -1986,7 +1988,7 @@ preferencesgroup, .geary-accounts-editor-pane {
   > deck > overlay > .geary-main-layout {
     background-color: $base-alt;
 
-    $titlebar-size: if($variant == 'light' and $topbar == 'dark', $large-size, $large-size - 1px);
+    $titlebar-size: if(sass($variant == 'light' and $topbar == 'dark'): $large-size; else: $large-size - 1px);
 
     > leaflet > separator.sidebar, // centry
     > leaflet > separator.geary-sidebar-pane-separator, // centry > = 44.0

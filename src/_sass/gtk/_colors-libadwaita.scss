@@ -207,8 +207,8 @@ $dark_5: #000000;
 
 // Sidebars. libadwaita 1.4 and later paint sidebar panes from these, and the
 // stock values are Adwaita greys, so every variant needs its own.
-$sidebar-color: if($variant == 'light' and $topbar == 'dark', $titlebar, $base-alt);
-$sidebar-backdrop-color: if($variant == 'light' and $topbar == 'dark', $titlebar-backdrop, $background);
+$sidebar-color: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar; else: $base-alt);
+$sidebar-backdrop-color: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar-backdrop; else: $background);
 
 @define-color sidebar_bg_color #{$sidebar-color};
 @define-color sidebar_fg_color #{on($sidebar-color)};

@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* Date/Time Menu */
 
 // overall menu
@@ -142,8 +144,8 @@
 .calendar-day {
   @include font(caption);
   text-align: center;
-  width: if($compact == 'false', 3em, 2.5em) !important;
-  height: if($compact == 'false', 3em, 2.5em) !important;
+  width: if(sass($compact == 'false'): 3em; else: 2.5em) !important;
+  height: if(sass($compact == 'false'): 3em; else: 2.5em) !important;
   padding: 0 !important;
   margin: 2px !important;
   border-radius: $circular-radius;
@@ -204,7 +206,7 @@
   border: none;
 
   &:hover, &:focus {
-    background-color: lighten($primary, 3%) !important;
+    background-color: color.adjust($primary, $lightness: 3%, $space: hsl) !important;
     color: on($primary) !important;
   }
 
@@ -213,7 +215,7 @@
     color: on($primary) !important;
 
     &:hover, &:focus {
-      background-color: lighten($primary, 3%) !important;
+      background-color: color.adjust($primary, $lightness: 3%, $space: hsl) !important;
       color: on($primary) !important;
     }
   }
@@ -239,7 +241,7 @@
   margin: 6px !important;
   padding: 0 $margin-size * 0.5 + $space-size !important;
   border-radius: $circular-radius;
-  background-color: if($variant == 'light', rgba(black, 0.04), rgba(white, 0.03));
+  background-color: if(sass($variant == 'light'): rgba(black, 0.04); else: rgba(white, 0.03));
   color: $text-disabled;
   font-size: pt(11px);
   font-weight: bold;
@@ -293,7 +295,7 @@
 .events-section-title {
   color: $text-disabled;
   font-weight: bold;
-  font-size: if($compact == 'true', 0.9em, 1em);
+  font-size: if(sass($compact == 'true'): 0.9em; else: 1em);
 }
 
 // Events button
@@ -339,14 +341,14 @@
   .world-clocks-city {
     color: $text-disabled;
     font-weight: normal;
-    font-size: if($compact == 'true', 0.9em, 1em);
+    font-size: if(sass($compact == 'true'): 0.9em; else: 1em);
   }
 
   .world-clocks-time {
     color: $text-disabled;
     font-feature-settings: "tnum";
     font-weight: bold;
-    font-size: if($compact == 'true', 0.9em, 1em);
+    font-size: if(sass($compact == 'true'): 0.9em; else: 1em);
 
     &:ltr { text-align: right; }
     &:rtl { text-align: left; }
@@ -355,7 +357,7 @@
   .world-clocks-timezone {
     color: $text-disabled;
     font-feature-settings: "tnum";
-    font-size: if($compact == 'true', 0.9em, 1em);
+    font-size: if(sass($compact == 'true'): 0.9em; else: 1em);
   }
 }
 
@@ -372,17 +374,17 @@
   .weather-header.location {
     font-weight: normal;
     color: $text-disabled;
-    font-size: if($compact == 'true', 0.8em, 0.9em);
+    font-size: if(sass($compact == 'true'): 0.8em; else: 0.9em);
   }
 
   .weather-forecast-icon {
-    icon-size: if($compact == 'true', 24px, 32px);
+    icon-size: if(sass($compact == 'true'): 24px; else: 32px);
     color: $text-disabled;
   }
 
   .weather-forecast-time {
     color: $text-disabled;
-    font-size: if($compact == 'true', 0.7em, 0.8em);
+    font-size: if(sass($compact == 'true'): 0.7em; else: 0.8em);
     font-feature-settings: "tnum";
     font-weight: normal;
     padding-top: 0.2em;
@@ -391,7 +393,7 @@
 
   .weather-forecast-temp {
     font-weight: bold;
-    color: transparentize($text, 0.35);
+    color: color.adjust($text, $alpha: -0.35);
     text-shadow: none;
   }
 }

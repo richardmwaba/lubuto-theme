@@ -106,7 +106,7 @@
   @if $t == normal {
     caret-color: $text-secondary;
     color: $text-secondary;
-    background-color: if($variant == 'light', $base, on(dark, divider));
+    background-color: if(sass($variant == 'light'): $base; else: on(dark, divider));
     margin: 2px 6px 6px;
     border: 2px solid transparent !important;
     box-shadow: 0 3px 3px rgba(black, 0.24), 0 5px 8px rgba(black, 0.05) !important;
@@ -173,7 +173,7 @@
 //
 
   @if $t == normal {
-    color: if($tc == $text, $text-secondary, $tc);
+    color: if(sass($tc == $text): $text-secondary; else: $tc);
     background-color: $c;
     border-color: transparent;
     box-shadow: none;
@@ -221,8 +221,8 @@
   }
 
   @if $t == insensitive {
-    color: if($tc == $text, $text-secondary-disabled, $tc);
-    background-color: if($c == $base, $secondary-fill, $c);
+    color: if(sass($tc == $text): $text-secondary-disabled; else: $tc);
+    background-color: if(sass($c == $base): $secondary-fill; else: $c);
     border-color: transparent;
     box-shadow: none;
     text-shadow: none;
@@ -230,7 +230,7 @@
   }
 
   @if $t == flat-normal {
-    color: if($tc != on(dark), $text-secondary, on(dark, secondary));
+    color: if(sass($tc != on(dark)): $text-secondary; else: on(dark, secondary));
     background-color: transparent;
     border-color: transparent;
     box-shadow: none;
@@ -239,7 +239,7 @@
   }
 
   @if $t == flat-focus {
-    color: if($tc != on(dark), $text, on(dark));
+    color: if(sass($tc != on(dark)): $text; else: on(dark));
     text-shadow: none;
     icon-shadow: none;
     box-shadow: none !important;
@@ -247,8 +247,8 @@
   }
 
   @if $t == flat-hover {
-    color: if($tc != on(dark), $text, on(dark));
-    background-color: if($tc != on(dark), $secondary-fill, on(dark, divider));
+    color: if(sass($tc != on(dark)): $text; else: on(dark));
+    background-color: if(sass($tc != on(dark)): $secondary-fill; else: on(dark, divider));
     border-color: transparent;
     box-shadow: none;
     text-shadow: none;
@@ -256,8 +256,8 @@
   }
 
   @if $t == flat-active {
-    color: if($tc != on(dark), $text, on(dark));
-    background-color: if($tc != on(dark), $track, on(dark, track));
+    color: if(sass($tc != on(dark)): $text; else: on(dark));
+    background-color: if(sass($tc != on(dark)): $track; else: on(dark, track));
     border-color: transparent;
     box-shadow: none;
     text-shadow: none;
@@ -265,8 +265,8 @@
   }
 
   @if $t == flat-checked {
-    color: if($tc != on(dark), $text, on($primary));
-    background-color: if($tc != on(dark), $track, $primary);
+    color: if(sass($tc != on(dark)): $text; else: on($primary));
+    background-color: if(sass($tc != on(dark)): $track; else: $primary);
     border-color: transparent;
     box-shadow: none;
     text-shadow: none;
@@ -274,7 +274,7 @@
   }
 
   @if $t == flat-insensitive {
-    color: if($tc != on(dark), $text-secondary-disabled, on(dark, secondary-disabled));
+    color: if(sass($tc != on(dark)): $text-secondary-disabled; else: on(dark, secondary-disabled));
     background-color: transparent;
     border-color: transparent;
     box-shadow: none;

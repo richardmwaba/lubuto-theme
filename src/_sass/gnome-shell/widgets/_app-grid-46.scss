@@ -157,7 +157,7 @@ StWidget.focused {
       height: 32px;
       width: 32px;
       padding: $space-size;
-      border-radius: if($corner_style == 'circular', $circular-radius, $material-radius);
+      border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
 
       & > StIcon { icon-size: $base-icon-size }
 

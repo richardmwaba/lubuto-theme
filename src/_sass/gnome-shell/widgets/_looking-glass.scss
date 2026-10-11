@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* Looking Glass */
 
 // Dialog
@@ -14,7 +16,7 @@
     padding: $space-size $space-size * 1.5;
     border: none;
     border-radius: $popup-radius $popup-radius 0 0;
-    background-color: lighten($system, 10%);
+    background-color: color.adjust($system, $lightness: 10%, $space: hsl);
     box-shadow: inset 0 -1px 0 on(dark, divider);
     color: on(dark, secondary);
   }
@@ -75,8 +77,8 @@
   .actor-link {
     color: on(dark, disabled);
 
-    &:hover { color: lighten(on(dark, disabled), 20%); }
-    &:active { color: darken(on(dark, disabled), 20%); }
+    &:hover { color: color.scale(on(dark, disabled), $lightness: 20%); }
+    &:active { color: color.adjust(on(dark, disabled), $lightness: -20%, $space: hsl); }
 
     & StIcon { icon-size: 12px; }
    }
@@ -138,7 +140,7 @@
 
 #LookingGlassPropertyInspector {
   color: on(dark);
-  background: lighten($system, 6%);
+  background: color.adjust($system, $lightness: 6%, $space: hsl);
   border: none;
   border-radius: $material-radius;
   padding: $space-size;
@@ -153,8 +155,8 @@
   StLabel { padding: $space-size, 2 * $space-size; }
   color: on(dark);
 
-  &:hover { color: lighten(on(dark), 20%); }
-  &:active { color: darken(on(dark), 20%); }
+  &:hover { color: color.scale(on(dark), $lightness: 20%); }
+  &:active { color: color.adjust(on(dark), $lightness: -20%, $space: hsl); }
 }
 
 .lg-debug-flags-header {

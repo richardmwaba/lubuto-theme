@@ -1,11 +1,13 @@
+@use "sass:color";
+
 /* Modal Dialogs */
 
-$mdborder_color: if($variant == 'light', rgba(black, 0.15), rgba(black, 0.75));
+$mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(black, 0.75));
 
 .headline { @include font(title); }
 
 .modal-dialog {
-  border-radius: if($corner_style == 'circular', 20px + $space-size, $material-radius + $space-size);
+  border-radius: if(sass($corner_style == 'circular'): 20px + $space-size; else: $material-radius + $space-size);
   color: $text;
   background-color: $base;
   border: 0 none $mdborder_color;
@@ -42,12 +44,12 @@ $mdborder_color: if($variant == 'light', rgba(black, 0.15), rgba(black, 0.75));
 
     &:hover {
       color: on($destructive) !important;
-      background-color: lighten($destructive, 9%);
+      background-color: color.adjust($destructive, $lightness: 9%, $space: hsl);
     }
 
     &:active {
       color: on($destructive) !important;
-      background-color: darken($destructive, 5%);
+      background-color: color.adjust($destructive, $lightness: -5%, $space: hsl);
     }
   }
 
@@ -133,12 +135,12 @@ $mdborder_color: if($variant == 'light', rgba(black, 0.15), rgba(black, 0.75));
 
     &:hover {
       color: on($suggested) !important;
-      background-color: lighten($suggested, 9%);
+      background-color: color.adjust($suggested, $lightness: 9%, $space: hsl);
     }
 
     &:active {
       color: on($suggested) !important;
-      background-color: darken($suggested, 5%);
+      background-color: color.adjust($suggested, $lightness: -5%, $space: hsl);
     }
 
     &:insensitive {

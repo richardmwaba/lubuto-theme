@@ -1,3 +1,6 @@
+@use "sass:math";
+@use "sass:color";
+
 
 /***************
  * Base States *
@@ -608,16 +611,16 @@ button {
 
       &:hover {
         color: on($b_color);
-        background-color: mix(on($b_color), $b_color, percentage(0.1));
+        background-color: color.mix(on($b_color), $b_color, math.percentage(0.1));
         box-shadow: none;
       }
 
       &:active {
         color: on($b_color);
-        background-color: mix(on($b_color), $b_color, percentage(0.2));
+        background-color: color.mix(on($b_color), $b_color, math.percentage(0.2));
       }
 
-      &:checked { background-color: mix(on($b_color), $b_color, percentage(0.15)); }
+      &:checked { background-color: color.mix(on($b_color), $b_color, math.percentage(0.15)); }
 
       &:focus { box-shadow: 0 0 0 2px rgba($b_color, 0.35); }
 
@@ -1567,7 +1570,7 @@ window.devel {
     > image { background-color: $titlebutton-min; }
 
     &:active > image {
-      background-color: mix(black, $titlebutton-min, 25%);
+      background-color: color.mix(black, $titlebutton-min, 25%);
     }
   }
 
@@ -1575,7 +1578,7 @@ window.devel {
     > image { background-color: $titlebutton-max; }
 
     &:active > image {
-      background-color: mix(black, $titlebutton-max, 25%);
+      background-color: color.mix(black, $titlebutton-max, 25%);
     }
   }
 
@@ -1583,12 +1586,12 @@ window.devel {
     > image { background-color: $titlebutton-close; }
 
     &:active > image {
-      background-color: mix(black, $titlebutton-close, 25%);
+      background-color: color.mix(black, $titlebutton-close, 25%);
     }
   }
 }
 
-$window-space: if($mac_style == 'true', $space-size * 1.5, $space-size);
+$window-space: if(sass($mac_style == 'true'): $space-size * 1.5; else: $space-size);
 
 headerbar windowcontrols {
   border-spacing: $space-size;
@@ -4533,7 +4536,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if($variant == 'light', lighten($warning, 5%), darken($warning, 5%));
+      background-color: if(sass($variant == 'light'): color.adjust($warning, $lightness: 5%, $space: hsl); else: color.adjust($warning, $lightness: -5%, $space: hsl));
     }
   }
 
@@ -4551,7 +4554,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if($variant == 'light', lighten($error, 5%), darken($error, 5%));
+      background-color: if(sass($variant == 'light'): color.adjust($error, $lightness: 5%, $space: hsl); else: color.adjust($error, $lightness: -5%, $space: hsl));
     }
   }
 }
@@ -4931,7 +4934,7 @@ popover.emoji-picker {
 button.emoji-section {
   margin: 0;
   padding: $space-size;
-  border-radius: $corner-radius -$space-size * 0.5;
+  border-radius: $corner-radius - $space-size * 0.5;
 
   &:checked {
     color: $primary;

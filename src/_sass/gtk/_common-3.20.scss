@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @use "sass:math";
 
 * {
@@ -39,7 +41,7 @@
 
 %selected_items {
   color: $text;
-  background-color: mix($text, $base, 10%);
+  background-color: color.mix($text, $base, 10%);
 }
 
 %selected_items_color {
@@ -111,12 +113,12 @@
   color: $titlebar-text;
 
   &:hover {
-    background-color: darken($titlebar, 5%);
+    background-color: color.adjust($titlebar, $lightness: -5%, $space: hsl);
     color: $titlebar-text;
   }
 
   &:active {
-    background-color: darken($titlebar, 10%);
+    background-color: color.adjust($titlebar, $lightness: -10%, $space: hsl);
     color: $titlebar-text;
   }
 
@@ -598,12 +600,12 @@ button {
     }
 
     &:hover {
-      background-color: mix(white, $osd, 15%);
+      background-color: color.mix(white, $osd, 15%);
       color: on($osd);
     }
 
     &:active {
-      background-color: mix(white, $osd, 25%);
+      background-color: color.mix(white, $osd, 25%);
       color: on($osd);
     }
 
@@ -636,7 +638,7 @@ button {
                     0 1px (10px * .6) 0 rgba($b_color, 0.12);
       }
 
-      &:checked { background-color: mix(on($b_color), $b_color, percentage(0.3)); }
+      &:checked { background-color: color.mix(on($b_color), $b_color, math.percentage(0.3)); }
 
       &:checked:hover {
         box-shadow: inset 0 0 0 9999px transparent,
@@ -1482,7 +1484,7 @@ window.background.csd {
     }
 
     &:active {
-      box-shadow: inset 0 0 0 9999px rgba(black, if($topbar == 'dark', 0.12, 0));
+      box-shadow: inset 0 0 0 9999px rgba(black, if(sass($topbar == 'dark'): 0.12; else: 0));
       background-image: radial-gradient(circle, rgba(black, 0.12) 10%, transparent 0%);
     }
 
@@ -1504,7 +1506,7 @@ window.background.csd {
     background-color: $titlebutton-min;
 
     &:active {
-      background-color: mix($titlebar-text, $titlebutton-min, 25%);
+      background-color: color.mix($titlebar-text, $titlebutton-min, 25%);
     }
   }
 
@@ -1512,7 +1514,7 @@ window.background.csd {
     background-color: $titlebutton-max;
 
     &:active {
-      background-color: mix($titlebar-text, $titlebutton-max, 25%);
+      background-color: color.mix($titlebar-text, $titlebutton-max, 25%);
     }
   }
 
@@ -1520,7 +1522,7 @@ window.background.csd {
     background-color: $titlebutton-close;
 
     &:active {
-      background-color: mix($titlebar-text, $titlebutton-close, 25%);
+      background-color: color.mix($titlebar-text, $titlebutton-close, 25%);
     }
   }
 }
@@ -1863,7 +1865,7 @@ menu {
   }
 
   .view:selected {
-    background-color: mix($text, $surface, 10%);
+    background-color: color.mix($text, $surface, 10%);
   }
 
   // overflow arrows
@@ -3716,7 +3718,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if($variant == 'light', lighten($primary, 5%), darken($primary, 5%));
+      background-color: if(sass($variant == 'light'): color.adjust($primary, $lightness: 5%, $space: hsl); else: color.adjust($primary, $lightness: -5%, $space: hsl));
     }
   }
 
@@ -3736,7 +3738,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if($variant == 'light', lighten($warning, 5%), darken($warning, 5%));
+      background-color: if(sass($variant == 'light'): color.adjust($warning, $lightness: 5%, $space: hsl); else: color.adjust($warning, $lightness: -5%, $space: hsl));
     }
   }
 
@@ -3754,7 +3756,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if($variant == 'light', lighten($error, 5%), darken($error, 5%));
+      background-color: if(sass($variant == 'light'): color.adjust($error, $lightness: 5%, $space: hsl); else: color.adjust($error, $lightness: -5%, $space: hsl));
     }
   }
 }

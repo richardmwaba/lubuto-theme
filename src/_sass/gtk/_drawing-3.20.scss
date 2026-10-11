@@ -43,12 +43,12 @@
 
   @if $t == focus {
     background-color: $overlay-focus;
-    box-shadow: inset 0 0 0 2px if($fc == $primary, $track, $fc);
+    box-shadow: inset 0 0 0 2px if(sass($fc == $primary): $track; else: $fc);
   }
 
   @if $t == checked {
     background-color: $entry;
-    box-shadow: inset 0 0 0 2px if($fc == $primary, $primary, $fc);
+    box-shadow: inset 0 0 0 2px if(sass($fc == $primary): $primary; else: $fc);
   }
 
   @if $t == disabled {
@@ -61,8 +61,8 @@
     transition: $transition, box-shadow $ripple-fade-out-duration $ease-out;
     border-image: none;
     box-shadow: inset 0 0 0 2px transparent;
-    background-color: if($fc == $primary, $surface, $fc);
-    color: if($fc == $primary, $text, on($fc));
+    background-color: if(sass($fc == $primary): $surface; else: $fc);
+    color: if(sass($fc == $primary): $text; else: on($fc));
   }
 
   @if $t == raised-hover {
@@ -71,7 +71,7 @@
 
   @if $t == raised-focus {
     border-image: none;
-    box-shadow: inset 0 0 0 2px if($fc == $primary, $primary, $fc);
+    box-shadow: inset 0 0 0 2px if(sass($fc == $primary): $primary; else: $fc);
   }
 
   @if $t == raised-disabled {

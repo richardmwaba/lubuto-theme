@@ -1,3 +1,6 @@
+@use "sass:list";
+@use "sass:color";
+
 avatar {
   border-radius: $circular-radius;
   font-weight: bold;
@@ -24,11 +27,11 @@ avatar {
    (#d8d7d3, #c0bfbc, #6e6d71), // gray
   );
 
-  @for $i from 1 through length($avatarcolorlist) {
+  @for $i from 1 through list.length($avatarcolorlist) {
     &.color#{$i} {
-      $avatarcolor: nth($avatarcolorlist, $i);
-      background-image: linear-gradient(nth($avatarcolor, 2), nth($avatarcolor, 3));
-      color: nth($avatarcolor, 1);
+      $avatarcolor: list.nth($avatarcolorlist, $i);
+      background-image: linear-gradient(list.nth($avatarcolor, 2), list.nth($avatarcolor, 3));
+      color: list.nth($avatarcolor, 1);
     }
   }
 
@@ -37,7 +40,7 @@ avatar {
   &.image { background: none; }
 }
 
-$opaque_button_default_bg: mix($base, $text, 85%);
+$opaque_button_default_bg: color.mix($base, $text, 85%);
 
 button {
   @at-root %opaque-button {
@@ -55,19 +58,19 @@ button {
 
     &.keyboard-activating,
     &:active {
-      background-image: image(transparentize(black, .8));
+      background-image: image(color.adjust(black, $alpha: -.8));
     }
 
     &:checked {
-      background-image: image(transparentize(black, .85));
+      background-image: image(color.adjust(black, $alpha: -.85));
 
       &:hover {
-        background-image: image(transparentize(black, .95));
+        background-image: image(color.adjust(black, $alpha: -.95));
       }
 
       &.keyboard-activating,
       &:active {
-        background-image: image(transparentize(black, .7));
+        background-image: image(color.adjust(black, $alpha: -.7));
       }
     }
   }
@@ -864,8 +867,8 @@ navigation-view navigation-view-page .medium stack > button { // Nautilus proper
 // Sidebar
 .unfolded stacksidebar.sidebar { border: none; }
 
-$sidebar: if($variant == 'light' and $topbar == 'dark', $titlebar, $base-alt);
-$sidebar-backdrop: if($variant == 'light' and $topbar == 'dark', $titlebar-backdrop, $background);
+$sidebar: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar; else: $base-alt);
+$sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar-backdrop; else: $background);
 
 .sidebar-pane,
 .content-pane .sidebar-pane,

@@ -47,34 +47,34 @@
     outline: 0 solid transparent;
     outline-offset: 4px;
     background-color: $entry;
-    color: if($fc == $primary, $text, $fc);
+    color: if(sass($fc == $primary): $text; else: $fc);
   }
 
   @if $t == hover {
     background-color: $overlay-hover;
-    color: if($fc == $primary, $text, $fc);
+    color: if(sass($fc == $primary): $text; else: $fc);
     outline: 2px solid $overlay-hover;
     outline-offset: -2px;
   }
 
   @if $t == focus {
     background-color: $overlay-focus;
-    color: if($fc == $primary, $text, $fc);
-    outline: 2px solid if($fc == $primary, $track, $fc);
+    color: if(sass($fc == $primary): $text; else: $fc);
+    outline: 2px solid if(sass($fc == $primary): $track; else: $fc);
     outline-offset: -2px;
   }
 
   @if $t == checked {
     background-color: $entry;
-    color: if($fc == $primary, $text, $fc);
-    outline-color: if($fc == $primary, $primary, $fc);
+    color: if(sass($fc == $primary): $text; else: $fc);
+    outline-color: if(sass($fc == $primary): $primary; else: $fc);
     outline-width: 2px;
     outline-offset: -2px;
   }
 
   @if $t == disabled {
     background-color: $entry;
-    color: if($fc == $primary, $text-disabled, rgba($fc, 0.35));
+    color: if(sass($fc == $primary): $text-disabled; else: rgba($fc, 0.35));
     outline: none;
     filter: none;
     opacity: 1;
@@ -244,7 +244,7 @@
 
   $_border_pos: '';
   $_direction: '';
-  $_selector: if($neighbor, '~', '>');
+  $_selector: if(sass($neighbor): '~'; else: '>');
 
   @if $p==top {
     $_direction: bottom;

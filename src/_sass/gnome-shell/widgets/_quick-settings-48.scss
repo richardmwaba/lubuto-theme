@@ -1,3 +1,4 @@
+@use "sass:color";
 $toggle-height: $space-size * 4 + $margin-size + $base-icon-size;
 
 .quick-settings {
@@ -22,8 +23,8 @@ $toggle-height: $space-size * 4 + $margin-size + $base-icon-size;
 
 .quick-toggle, .quick-toggle-has-menu {
   border-radius: $circular-radius;
-  min-width: if($compact =='false', 12em, 10.5em);
-  max-width: if($compact =='false', 12em, 10.5em);
+  min-width: if(sass($compact =='false'): 12em; else: 10.5em);
+  max-width: if(sass($compact =='false'): 12em; else: 10.5em);
   min-height: $toggle-height;
   border: none;
 }
@@ -44,12 +45,12 @@ $toggle-height: $space-size * 4 + $margin-size + $base-icon-size;
     color: on($primary) !important;
 
     &:hover {
-      background-color: mix(on($primary), $primary, 10%) !important;
+      background-color: color.mix(on($primary), $primary, 10%) !important;
       color: on($primary) !important;
     }
 
     &:active {
-      background-color: mix(on($primary), $primary, 20%) !important;
+      background-color: color.mix(on($primary), $primary, 20%) !important;
       color: on($primary) !important;
     }
   }
@@ -134,16 +135,16 @@ $toggle-height: $space-size * 4 + $margin-size + $base-icon-size;
     }
 
     &:checked {
-      background-color: mix(on($primary), $primary, 5%) !important;
+      background-color: color.mix(on($primary), $primary, 5%) !important;
       color: on($primary) !important;
 
       &:hover {
-        background-color: mix(on($primary), $primary, 15%) !important;
+        background-color: color.mix(on($primary), $primary, 15%) !important;
         color: on($primary) !important;
       }
 
       &:active {
-        background-color: mix(on($primary), $primary, 25%) !important;
+        background-color: color.mix(on($primary), $primary, 25%) !important;
         color: on($primary) !important;
       }
     }

@@ -14,7 +14,7 @@ stage {
   color: on(dark, disabled);
 }
 
-$bubble_button_radius: if($corner_style == 'circular', $circular-radius, $material-radius);
+$bubble_button_radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
 
 %bubble_button {
   border: none;

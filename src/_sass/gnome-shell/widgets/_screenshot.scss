@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Screenshot UI
 .icon-label-button-container {
   spacing: $space-size;
@@ -55,13 +57,13 @@ $screenshot_ui_button_red: $error;
 
   &:hover, &:focus {
     .screenshot-ui-capture-button-circle {
-      background-color: darken(on(dark), 15%);
+      background-color: color.adjust(on(dark), $lightness: -15%, $space: hsl);
     }
   }
 
   &:active {
     .screenshot-ui-capture-button-circle {
-      background-color: darken(on(dark), 50%);
+      background-color: color.adjust(on(dark), $lightness: -50%, $space: hsl);
     }
   }
 
@@ -71,12 +73,12 @@ $screenshot_ui_button_red: $error;
     }
     &:hover, &:focus {
       .screenshot-ui-capture-button-circle {
-        background-color: lighten($screenshot_ui_button_red, 5%);
+        background-color: color.adjust($screenshot_ui_button_red, $lightness: 5%, $space: hsl);
       }
     }
     &:active {
       .screenshot-ui-capture-button-circle {
-        background-color: darken($screenshot_ui_button_red, 7%);
+        background-color: color.adjust($screenshot_ui_button_red, $lightness: -7%, $space: hsl);
       }
     }
   }
@@ -165,13 +167,13 @@ $screenshot_ui_button_red: $error;
 .screenshot-ui-window-selector-window {
   &:hover {
     .screenshot-ui-window-selector-window-border {
-      border-color: darken($primary, 15%);
+      border-color: color.adjust($primary, $lightness: -15%, $space: hsl);
     }
   }
   &:checked {
     .screenshot-ui-window-selector-window-border {
       border-color: $primary;
-      background-color: transparentize($primary, 0.8);
+      background-color: color.adjust($primary, $alpha: -0.8);
     }
 
     .screenshot-ui-window-selector-check {

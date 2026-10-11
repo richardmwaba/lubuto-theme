@@ -1,8 +1,10 @@
+@use "sass:color";
+
 /* Top Bar */
 // a.k.a. the panel
 
 $panel_transition_duration: 250ms; // same as the overview transition duration
-$panel_height: if($panel_style == 'compact', $medium-size - 2px, $medium-size + 2px);
+$panel_height: if(sass($panel_style == 'compact'): $medium-size - 2px; else: $medium-size + 2px);
 $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
 
 #panel {
@@ -25,7 +27,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
     border-radius: 0;
   } @else {
     margin: $space-size * 0.5;
-    border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size * 0.5);
+    border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius + $space-size * 0.5);
   }
 
   // transparent panel on lock & login screens
@@ -96,7 +98,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
     -minimum-hpadding: $panel_button_hpadding;
     transition-duration: 150ms;
     border: $space-size * 0.5 solid transparent;
-    border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size * 0.5);
+    border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius + $space-size * 0.5);
     margin: 0;
 
     &.clock-display {
@@ -110,7 +112,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
       }
 
       .clock {
-        border-radius: if($corner_style == 'circular', $circular-radius, $material-radius + $space-size * 0.5);
+        border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius + $space-size * 0.5);
         padding: 0 $space-size * 2 !important;
       }
     }
@@ -233,7 +235,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
   Gjs_arcmenu_arcmenu_com_menuButton_Arc_Menu_MenuButton.panel-button,
   Gjs_arcmenu_arcmenu_com_menuButton_ArcMenu_MenuButton.panel-button {
     .arc-menu-icon {
-      border-radius: if($corner_style == 'circular', $circular-radius, $material-radius);
+      border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
       width: $panel_height - $space-size + 1px;
       margin: $space-size * 0.5 0;
 
@@ -251,7 +253,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
 
   Gjs_arcmenu_arcmenu_com_menuButton_ArcMenuMenuButton.panel-button {
     .arcmenu-menu-button {
-      border-radius: if($corner_style == 'circular', $circular-radius, $material-radius);
+      border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
       // width: $panel_height - $space-size + 1px;
       margin: $space-size * 0.5 0;
       padding: 0 ($panel_height - 16px - $space-size) * 0.5;
@@ -297,14 +299,14 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
   .panel-button.screen-recording-indicator {
     background-color: $destructive;
 
-    &:hover, &:focus { background-color: lighten($destructive, 5%); }
-    &:active, &:checked { background-color: lighten($destructive, 10%); }
+    &:hover, &:focus { background-color: color.adjust($destructive, $lightness: 5%, $space: hsl); }
+    &:active, &:checked { background-color: color.adjust($destructive, $lightness: 10%, $space: hsl); }
   }
 
   .panel-button.screen-sharing-indicator {
     background-color: $warning;
 
-    &:hover, &:focus { background-color: lighten($warning, 5%); }
-    &:active, &:checked { background-color: lighten($warning, 10%); }
+    &:hover, &:focus { background-color: color.adjust($warning, $lightness: 5%, $space: hsl); }
+    &:active, &:checked { background-color: color.adjust($warning, $lightness: 10%, $space: hsl); }
   }
 }
