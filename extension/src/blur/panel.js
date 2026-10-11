@@ -55,7 +55,7 @@ export class PanelBlur {
             return;
 
         this._backdrop = new Backdrop(monitor.index, this._getParams());
-        this._group.add_child(this._backdrop.actor);
+        this._backdrop.attach(this._group);
         this._update();
     }
 

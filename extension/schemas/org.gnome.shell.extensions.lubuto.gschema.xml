@@ -68,8 +68,33 @@
     </key>
     <key name="blur-brightness" type="d">
       <range min="0.1" max="1.0"/>
-      <default>0.65</default>
+      <default>0.75</default>
       <summary>Brightness of the blurred wallpaper</summary>
+    </key>
+    <key name="corners-enabled" type="b">
+      <default>true</default>
+      <summary>Round window corners</summary>
+    </key>
+    <key name="corners-radius" type="i">
+      <range min="0" max="40"/>
+      <default>16</default>
+      <summary>Window corner radius in logical pixels</summary>
+    </key>
+    <key name="corners-shadow" type="b">
+      <default>true</default>
+      <summary>Draw a shadow under rounded windows</summary>
+    </key>
+    <key name="corners-keep-maximized" type="b">
+      <default>false</default>
+      <summary>Keep rounded corners on maximized windows</summary>
+    </key>
+    <key name="corners-keep-fullscreen" type="b">
+      <default>false</default>
+      <summary>Keep rounded corners on fullscreen windows</summary>
+    </key>
+    <key name="corners-blacklist" type="as">
+      <default>[]</default>
+      <summary>Window classes that keep square corners</summary>
     </key>
     <key name="sync-gtk-theme" type="b">
       <default>true</default>

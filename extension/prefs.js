@@ -83,6 +83,27 @@ export default class LubutoPreferences extends ExtensionPreferences {
         });
         settings.bind('blur-brightness', brightness, 'value', Gio.SettingsBindFlags.DEFAULT);
         blur.add(brightness);
+
+        const corners = new Adw.PreferencesGroup({title: _('Window corners')});
+        page.add(corners);
+
+        for (const [key, title] of [
+            ['corners-enabled', _('Round window corners')],
+            ['corners-shadow', _('Shadow under rounded windows')],
+            ['corners-keep-maximized', _('Keep corners when maximized')],
+            ['corners-keep-fullscreen', _('Keep corners in fullscreen')],
+        ]) {
+            const row = new Adw.SwitchRow({title});
+            settings.bind(key, row, 'active', Gio.SettingsBindFlags.DEFAULT);
+            corners.add(row);
+        }
+
+        const cornerRadius = new Adw.SpinRow({
+            title: _('Corner radius'),
+            adjustment: new Gtk.Adjustment({lower: 0, upper: 40, step_increment: 1}),
+        });
+        settings.bind('corners-radius', cornerRadius, 'value', Gio.SettingsBindFlags.DEFAULT);
+        corners.add(cornerRadius);
     }
 
     _comboRow(settings, key, title, choices, subtitle = null) {

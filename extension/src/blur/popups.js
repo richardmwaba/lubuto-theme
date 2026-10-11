@@ -85,8 +85,7 @@ export class PopupBlur {
 
         const backdrop = new Backdrop(monitor.index, this._getParams());
         state.backdrop = backdrop;
-        parent.add_child(backdrop.actor);
-        parent.set_child_below_sibling(backdrop.actor, pointer);
+        backdrop.attach(parent, pointer);
 
         for (const prop of ['translation-x', 'translation-y', 'opacity']) {
             state.bindings.push(pointer.bind_property(prop, backdrop.actor, prop,

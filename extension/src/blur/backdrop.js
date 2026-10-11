@@ -26,22 +26,33 @@ export class Backdrop {
             height: monitor.height,
         });
 
+        this._monitorIndex = monitorIndex;
+        this._bgManager = null;
+
         // BackgroundManager adds its actor later; keep it below anything else.
         this.actor.connect('child-added', (container, child) => {
             if (child instanceof Meta.BackgroundActor)
                 container.set_child_below_sibling(child, null);
         });
 
-        this._bgManager = new Background.BackgroundManager({
-            container: this.actor,
-            monitorIndex,
-            controlPosition: false,
-        });
-
         this._blur = new StaticBlurEffect({brightness});
         this._blur.unscaledRadius = radius;
         this.actor.add_effect_with_name('lubuto-blur', this._blur);
         this._corners = null;
+    }
+
+    // Parent the actor, then load the background. Loading first would map a
+    // background actor with no allocation, which Clutter warns about.
+    attach(parent, below = null) {
+        parent.add_child(this.actor);
+        if (below)
+            parent.set_child_below_sibling(this.actor, below);
+
+        this._bgManager = new Background.BackgroundManager({
+            container: this.actor,
+            monitorIndex: this._monitorIndex,
+            controlPosition: false,
+        });
     }
 
     setBlur({radius, brightness}) {
