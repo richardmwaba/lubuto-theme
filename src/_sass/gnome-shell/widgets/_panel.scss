@@ -16,8 +16,11 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
   border: none;
   box-shadow: none;
 
+  // Glass: a tint over the blurred wallpaper the extension paints below the panel.
   @if $opacity == 'solid' {
     background-color: $panel-solid;
+  } @else if $glass == 'true' {
+    background-color: $glass-tint;
   } @else {
     background-color: $shell;
   }

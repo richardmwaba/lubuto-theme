@@ -54,6 +54,35 @@ export default class LubutoPreferences extends ExtensionPreferences {
         });
         settings.bind('sync-gtk-theme', sync, 'active', Gio.SettingsBindFlags.DEFAULT);
         group.add(sync);
+
+        const blur = new Adw.PreferencesGroup({title: _('Glass blur')});
+        page.add(blur);
+
+        for (const [key, title] of [
+            ['blur-enabled', _('Blur the wallpaper behind glass surfaces')],
+            ['blur-panel', _('Top panel')],
+            ['blur-overview', _('Overview')],
+            ['blur-popups', _('Panel popovers')],
+        ]) {
+            const row = new Adw.SwitchRow({title});
+            settings.bind(key, row, 'active', Gio.SettingsBindFlags.DEFAULT);
+            blur.add(row);
+        }
+
+        const radius = new Adw.SpinRow({
+            title: _('Blur radius'),
+            adjustment: new Gtk.Adjustment({lower: 0, upper: 100, step_increment: 1}),
+        });
+        settings.bind('blur-radius', radius, 'value', Gio.SettingsBindFlags.DEFAULT);
+        blur.add(radius);
+
+        const brightness = new Adw.SpinRow({
+            title: _('Brightness'),
+            digits: 2,
+            adjustment: new Gtk.Adjustment({lower: 0.1, upper: 1, step_increment: 0.05}),
+        });
+        settings.bind('blur-brightness', brightness, 'value', Gio.SettingsBindFlags.DEFAULT);
+        blur.add(brightness);
     }
 
     _comboRow(settings, key, title, choices, subtitle = null) {

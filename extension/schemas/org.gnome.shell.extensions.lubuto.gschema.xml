@@ -45,6 +45,32 @@
       <default>false</default>
       <summary>Use the compact size variant</summary>
     </key>
+    <key name="blur-enabled" type="b">
+      <default>true</default>
+      <summary>Blur the wallpaper behind glass surfaces</summary>
+    </key>
+    <key name="blur-panel" type="b">
+      <default>true</default>
+      <summary>Glass behind the top panel</summary>
+    </key>
+    <key name="blur-overview" type="b">
+      <default>true</default>
+      <summary>Blurred wallpaper behind the overview</summary>
+    </key>
+    <key name="blur-popups" type="b">
+      <default>true</default>
+      <summary>Glass behind panel popovers</summary>
+    </key>
+    <key name="blur-radius" type="i">
+      <range min="0" max="100"/>
+      <default>30</default>
+      <summary>Blur radius in logical pixels</summary>
+    </key>
+    <key name="blur-brightness" type="d">
+      <range min="0.1" max="1.0"/>
+      <default>0.65</default>
+      <summary>Brightness of the blurred wallpaper</summary>
+    </key>
     <key name="sync-gtk-theme" type="b">
       <default>true</default>
       <summary>Set the GTK theme to the same variant</summary>

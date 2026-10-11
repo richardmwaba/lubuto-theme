@@ -299,6 +299,9 @@ like one family.
       `font-antialiasing grayscale`, shell font sizes that match the stylesheet.
 - [ ] Try `rgba` antialiasing on the reference displays and record which one reads sharper. Ship that.
 - [ ] `install.sh --fonts` applies the preset and prints how to undo it.
+- [ ] `install.sh --flatpak`: grant Flatpak apps read access to `~/.themes` and set `GTK_THEME` for the
+      selected variant through `flatpak override --user`, with a printed undo. Sandboxed apps (GIMP, the
+      snap App Center) otherwise draw their own title bars with their bundled theme.
 
 Exit: text in shell, GTK 4 and GTK 3 renders at the same weight and sharpness side by side.
 

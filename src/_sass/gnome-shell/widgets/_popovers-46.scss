@@ -16,10 +16,21 @@
   .popup-menu-content {
     padding: $space-size;
     margin: 0 3px 14px;
-    background-color: if(sass($opacity == 'solid'): $popover; else: rgba($popover, 0.97));
     border-radius: $popup-radius;
-    border: none;
     box-shadow: $shell-shadow-z3;
+
+    // Glass: tint over the blurred backdrop the extension places under the box,
+    // with a rim so the surface separates from whatever is behind it.
+    @if $opacity == 'solid' {
+      background-color: $popover;
+      border: none;
+    } @else if $glass == 'true' {
+      background-color: $glass-tint-strong;
+      border: 1px solid $glass-rim;
+    } @else {
+      background-color: rgba($popover, 0.97);
+      border: none;
+    }
   }
 
   $submenu_item_radius: $popup-radius - $space-size;
