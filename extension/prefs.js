@@ -113,6 +113,7 @@ export default class LubutoPreferences extends ExtensionPreferences {
             ['dock-enabled', _('Show the dock')],
             ['dock-magnify', _('Grow icons under the pointer')],
             ['dock-reserve-space', _('Keep windows from overlapping the dock')],
+            ['dock-autohide', _('Hide until the pointer pushes the bottom edge')],
             ['dock-show-apps', _('Applications button')],
         ]) {
             const row = new Adw.SwitchRow({title});

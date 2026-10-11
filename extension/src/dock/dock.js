@@ -5,8 +5,12 @@
 // windows, and steps aside while the overview shows its own dash.
 
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import * as Layout from 'resource:///org/gnome/shell/ui/layout.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import {Backdrop} from '../blur/backdrop.js';
@@ -14,6 +18,11 @@ import {LubutoDash} from './dash.js';
 
 // The overview's own dash is hidden while the dock runs, but keeps a height so
 // the overview layout still leaves room at the bottom for the dock.
+
+const SLIDE_TIME = 200;
+const HIDE_DELAY = 400;
+const PRESSURE_THRESHOLD = 100;
+const PRESSURE_TIMEOUT = 1000;
 
 export class Dock {
     constructor(getConfig, getBlurParams) {
@@ -24,6 +33,11 @@ export class Dock {
         this._backdrop = null;
         this._monitor = null;
         this._reserveSpace = null;
+        this._autohide = false;
+        this._shown = true;
+        this._hideTimeout = 0;
+        this._pressureBarrier = null;
+        this._barrier = null;
     }
 
     enable() {
@@ -39,13 +53,19 @@ export class Dock {
         this._dash.showAppsButton.connectObject('notify::checked', () => this._onShowApps(), this);
         this._container.add_child(this._dash);
 
-        this._reserveSpace = this._getConfig().reserveSpace;
+        this._autohide = this._getConfig().autohide;
+        this._reserveSpace = this._getConfig().reserveSpace && !this._autohide;
         Main.layoutManager.addChrome(this._container, {
             affectsStruts: this._reserveSpace,
             trackFullscreen: true,
         });
 
         Main.layoutManager.connectObject('monitors-changed', () => this._relayout(), this);
+        Main.overview.connectObject(
+            'showing', () => this._onOverviewShowing(),
+            'hidden', () => this._scheduleHide(),
+            this);
+        this._container.connectObject('notify::hover', () => this._onHoverChanged(), this);
         this._hideOverviewDash();
         this._dash.connectObject(
             'notify::allocation', () => this._place(),
@@ -57,7 +77,11 @@ export class Dock {
     }
 
     disable() {
+        this._cancelHide();
+        this._destroyBarrier();
         Main.layoutManager.disconnectObject(this);
+        Main.overview.disconnectObject(this);
+        this._container?.disconnectObject(this);
         this._restoreOverviewDash();
         this._dash?.showAppsButton.disconnectObject(this);
         this._dash?.disconnectObject(this);
@@ -75,8 +99,10 @@ export class Dock {
 
     updateConfig() {
         const config = this._getConfig();
-        if (config.reserveSpace !== this._reserveSpace) {
-            this._reserveSpace = config.reserveSpace;
+        this._autohide = config.autohide;
+        const reserve = config.reserveSpace && !this._autohide;
+        if (reserve !== this._reserveSpace) {
+            this._reserveSpace = reserve;
             Main.layoutManager.removeChrome(this._container);
             Main.layoutManager.addChrome(this._container, {
                 affectsStruts: this._reserveSpace,
@@ -89,6 +115,10 @@ export class Dock {
         if (!config.magnify)
             this._dash.resetMagnify();
         this._relayout();
+        if (this._autohide)
+            this._scheduleHide();
+        else
+            this._show();
     }
 
     updateBlur() {
@@ -122,6 +152,119 @@ export class Dock {
         this._dash._adjustIconSize();
         this._dash._queueRedisplay();
         this._place();
+        this._setupBarrier();
+    }
+
+    // Autohide. The dock slides below the screen edge and comes back when the
+    // pointer pushes against that edge, hovers the dock, or the overview opens.
+    // It stays while something holds a grab, such as an app menu or a drag.
+
+    _setupBarrier() {
+        this._destroyBarrier();
+        if (!this._autohide || !this._monitor)
+            return;
+
+        const monitor = this._monitor;
+        this._pressureBarrier = new Layout.PressureBarrier(
+            PRESSURE_THRESHOLD, PRESSURE_TIMEOUT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW);
+        this._pressureBarrier.connect('trigger', () => this._show());
+
+        this._barrier = new Meta.Barrier({
+            backend: global.backend,
+            x1: monitor.x,
+            x2: monitor.x + monitor.width,
+            y1: monitor.y + monitor.height,
+            y2: monitor.y + monitor.height,
+            directions: Meta.BarrierDirection.NEGATIVE_Y,
+        });
+        this._pressureBarrier.addBarrier(this._barrier);
+    }
+
+    _destroyBarrier() {
+        if (this._barrier) {
+            this._pressureBarrier?.removeBarrier(this._barrier);
+            this._barrier.destroy();
+            this._barrier = null;
+        }
+        this._pressureBarrier?.destroy();
+        this._pressureBarrier = null;
+    }
+
+    _onOverviewShowing() {
+        // The shell raises the overview group above other chrome; the dock
+        // goes back on top so the app grid slides in behind it.
+        const uiGroup = Main.layoutManager.uiGroup;
+        if (uiGroup.contains(this._container) && uiGroup.contains(Main.layoutManager.overviewGroup))
+            uiGroup.set_child_above_sibling(this._container, Main.layoutManager.overviewGroup);
+        this._show();
+    }
+
+    _onHoverChanged() {
+        if (this._container.hover)
+            this._cancelHide();
+        else
+            this._scheduleHide();
+    }
+
+    _show() {
+        this._cancelHide();
+        if (this._shown)
+            return;
+        this._shown = true;
+
+        this._container.show();
+        this._container.remove_all_transitions();
+        this._container.ease({
+            translation_y: 0,
+            duration: SLIDE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _hide() {
+        this._cancelHide();
+        if (!this._shown || !this._autohide)
+            return;
+        this._shown = false;
+
+        this._container.remove_all_transitions();
+        this._container.ease({
+            translation_y: this._container.height,
+            duration: SLIDE_TIME,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            onComplete: () => {
+                if (!this._shown)
+                    this._container.hide();
+            },
+        });
+    }
+
+    _scheduleHide() {
+        this._cancelHide();
+        if (!this._autohide)
+            return;
+        this._hideTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, HIDE_DELAY, () => {
+            this._hideTimeout = 0;
+            if (this._shouldStayShown())
+                this._scheduleHide();
+            else
+                this._hide();
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _cancelHide() {
+        if (this._hideTimeout) {
+            GLib.source_remove(this._hideTimeout);
+            this._hideTimeout = 0;
+        }
+    }
+
+    _shouldStayShown() {
+        return this._container.hover ||
+            Main.overview.visible ||
+            global.stage.get_grab_actor() !== null;
     }
 
     _place() {

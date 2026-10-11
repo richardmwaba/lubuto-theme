@@ -19,6 +19,7 @@ export class DockModule {
             'changed::dock-monitor', () => this._dock?.updateConfig(),
             'changed::dock-magnify', () => this._dock?.updateConfig(),
             'changed::dock-reserve-space', () => this._dock?.updateConfig(),
+            'changed::dock-autohide', () => this._dock?.updateConfig(),
             'changed::dock-show-apps', () => this._dock?.updateConfig(),
             'changed::blur-enabled', () => this._restart(),
             'changed::blur-dock', () => this._restart(),
@@ -45,6 +46,7 @@ export class DockModule {
             magnify: this._settings.get_boolean('dock-magnify'),
             magnifyScale: 1.2,
             reserveSpace: this._settings.get_boolean('dock-reserve-space'),
+            autohide: this._settings.get_boolean('dock-autohide'),
             showApps: this._settings.get_boolean('dock-show-apps'),
         };
     }
