@@ -7,6 +7,7 @@
 
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
 
 import * as Dash from 'resource:///org/gnome/shell/ui/dash.js';
 
@@ -48,7 +49,7 @@ export const LubutoDash = GObject.registerClass({
         this._magnified.add(item);
 
         const child = item.child;
-        child.pivot_point = new Clutter.Point({x: 0.5, y: 1});
+        child.pivot_point = new Graphene.Point({x: 0.5, y: 1});
         child.connectObject('notify::hover', () => {
             if (!this._getConfig().magnify)
                 return;

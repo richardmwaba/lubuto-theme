@@ -41,7 +41,6 @@ export class Dock {
         this._reserveSpace = this._getConfig().reserveSpace;
         Main.layoutManager.addChrome(this._container, {
             affectsStruts: this._reserveSpace,
-            affectsInputRegion: true,
             trackFullscreen: true,
         });
 
@@ -83,7 +82,6 @@ export class Dock {
             Main.layoutManager.removeChrome(this._container);
             Main.layoutManager.addChrome(this._container, {
                 affectsStruts: this._reserveSpace,
-                affectsInputRegion: true,
                 trackFullscreen: true,
             });
         }
