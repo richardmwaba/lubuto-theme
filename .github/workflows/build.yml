@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install GTK, libadwaita, Xvfb and node
-        run: dnf install -y -q gtk3 gtk4 libadwaita python3-gobject xorg-x11-server-Xvfb nodejs npm
+        run: dnf install -y -q gtk3 gtk4 libadwaita python3-gobject python3-cairo cairo-gobject gobject-introspection xorg-x11-server-Xvfb nodejs npm
       - run: npm ci
       - name: Install a representative set into a scratch directory
         run: ./install.sh -d /tmp/themes -t default teal -c light dark
