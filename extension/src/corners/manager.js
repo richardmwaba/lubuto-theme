@@ -150,7 +150,21 @@ export class WindowCorners {
         return true;
     }
 
+    // A window actor disposed from C keeps its JS wrapper; touching any
+    // property throws. Such an actor is dropped on first contact.
+    _alive(actor) {
+        try {
+            actor.get_stage();
+            return true;
+        } catch {
+            this._unwatch(actor, {disposed: true});
+            return false;
+        }
+    }
+
     _refresh(actor) {
+        if (!this._alive(actor))
+            return;
         const state = this._state.get(actor);
         const win = actor.metaWindow;
         if (!state || !win)
@@ -216,8 +230,8 @@ export class WindowCorners {
     }
 
     _restack() {
-        for (const [actor, state] of this._state) {
-            if (!state.shadow || !actor.get_parent())
+        for (const [actor, state] of [...this._state]) {
+            if (!state.shadow || !this._alive(actor) || !actor.get_parent())
                 continue;
             if (actor.visible)
                 global.windowGroup.set_child_below_sibling(state.shadow.shadow, actor);
