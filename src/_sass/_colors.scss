@@ -163,7 +163,7 @@ $entry:                                 gtkalpha(currentColor, 0.05);
 // With $glass off every tint is the solid surface colour.
 
 $glass-tint:                            if(sass($glass == 'true'): if(sass($variant == 'light'): rgba(white, 0.65); else: rgba(background(e), 0.60)); else: $surface);
-$glass-tint-strong:                     if(sass($glass == 'true'): if(sass($variant == 'light'): rgba(white, 0.80); else: rgba(background(f), 0.72)); else: $base-alt);
+$glass-tint-strong:                     if(sass($glass == 'true'): if(sass($variant == 'light'): rgba(white, 0.88); else: rgba(background(f), 0.84)); else: $base-alt);
 $glass-rim:                             if(sass($variant == 'light'): rgba(black, 0.10); else: rgba(white, 0.14));
 $glass-highlight:                       if(sass($variant == 'light'): rgba(white, 0.90); else: rgba(white, 0.10));
 $glass-shadow:                          0 1px 2px rgba(black, 0.12), 0 4px 12px rgba(black, if(sass($variant == 'light'): 0.08; else: 0.24));
