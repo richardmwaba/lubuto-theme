@@ -206,7 +206,7 @@
   border: none;
 
   &:hover, &:focus {
-    background-color: color.adjust($primary, $lightness: 3%, $space: hsl) !important;
+    background-color: lighter($primary, 3%) !important;
     color: on($primary) !important;
   }
 
@@ -215,7 +215,7 @@
     color: on($primary) !important;
 
     &:hover, &:focus {
-      background-color: color.adjust($primary, $lightness: 3%, $space: hsl) !important;
+      background-color: lighter($primary, 3%) !important;
       color: on($primary) !important;
     }
   }

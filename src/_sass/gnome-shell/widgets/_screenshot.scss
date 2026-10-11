@@ -57,13 +57,13 @@ $screenshot_ui_button_red: $error;
 
   &:hover, &:focus {
     .screenshot-ui-capture-button-circle {
-      background-color: color.adjust(on(dark), $lightness: -15%, $space: hsl);
+      background-color: darker(on(dark), 15%);
     }
   }
 
   &:active {
     .screenshot-ui-capture-button-circle {
-      background-color: color.adjust(on(dark), $lightness: -50%, $space: hsl);
+      background-color: darker(on(dark), 50%);
     }
   }
 
@@ -73,12 +73,12 @@ $screenshot_ui_button_red: $error;
     }
     &:hover, &:focus {
       .screenshot-ui-capture-button-circle {
-        background-color: color.adjust($screenshot_ui_button_red, $lightness: 5%, $space: hsl);
+        background-color: lighter($screenshot_ui_button_red, 5%);
       }
     }
     &:active {
       .screenshot-ui-capture-button-circle {
-        background-color: color.adjust($screenshot_ui_button_red, $lightness: -7%, $space: hsl);
+        background-color: darker($screenshot_ui_button_red, 7%);
       }
     }
   }
@@ -167,7 +167,7 @@ $screenshot_ui_button_red: $error;
 .screenshot-ui-window-selector-window {
   &:hover {
     .screenshot-ui-window-selector-window-border {
-      border-color: color.adjust($primary, $lightness: -15%, $space: hsl);
+      border-color: darker($primary, 15%);
     }
   }
   &:checked {

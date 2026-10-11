@@ -20,5 +20,5 @@ $slider_color: if(sass($variant == 'light'): $primary; else: white);
 
   color: $slider_color;
   &:hover { color: color.scale($slider_color, $lightness: 5%); }
-  &:active { color: color.adjust($slider_color, $lightness: -5%, $space: hsl); }
+  &:active { color: darker($slider_color, 5%); }
 }

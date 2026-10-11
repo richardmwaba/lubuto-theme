@@ -72,7 +72,7 @@
       &.selected:active {
         @if $submenu_style == 'true' {
           color: $text !important;
-          background-color: color.adjust(rgba($primary, 0.2), $lightness: -10%, $space: hsl) !important;
+          background-color: darker(rgba($primary, 0.2), 10%) !important;
         } @else {
           background-color: if(sass($variant == 'light'): rgba(black, 0.15); else: #e0e0e0) !important;
           color: rgba(black, 0.75) !important;

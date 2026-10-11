@@ -44,12 +44,12 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
 
     &:hover {
       color: on($destructive) !important;
-      background-color: color.adjust($destructive, $lightness: 9%, $space: hsl);
+      background-color: lighter($destructive, 9%);
     }
 
     &:active {
       color: on($destructive) !important;
-      background-color: color.adjust($destructive, $lightness: -5%, $space: hsl);
+      background-color: darker($destructive, 5%);
     }
   }
 
@@ -135,12 +135,12 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
 
     &:hover {
       color: on($suggested) !important;
-      background-color: color.adjust($suggested, $lightness: 9%, $space: hsl);
+      background-color: lighter($suggested, 9%);
     }
 
     &:active {
       color: on($suggested) !important;
-      background-color: color.adjust($suggested, $lightness: -5%, $space: hsl);
+      background-color: darker($suggested, 5%);
     }
 
     &:insensitive {

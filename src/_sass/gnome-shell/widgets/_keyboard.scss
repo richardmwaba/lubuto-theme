@@ -2,8 +2,8 @@
 
 /* On-screen Keyboard */
 
-$keyboard_hover_bg_color: if(sass($variant == 'light'): color.adjust($keyboard, $lightness: -10%, $space: hsl); else: color.adjust($keyboard, $lightness: 10%, $space: hsl));
-$keyboard_active_bg_color: if(sass($variant == 'light'): color.adjust($keyboard, $lightness: -20%, $space: hsl); else: color.adjust($keyboard, $lightness: 20%, $space: hsl));
+$keyboard_hover_bg_color: if(sass($variant == 'light'): darker($keyboard, 10%); else: lighter($keyboard, 10%));
+$keyboard_active_bg_color: if(sass($variant == 'light'): darker($keyboard, 20%); else: lighter($keyboard, 20%));
 
 // draw keys using button function
 #keyboard {
@@ -53,15 +53,15 @@ $keyboard_active_bg_color: if(sass($variant == 'light'): color.adjust($keyboard,
     background-color: $keyboard-alt;
     box-shadow: 0 1px rgba($black, 0.2);
     &:focus, &:hover { color: $text-secondary; background-color: $keyboard; }
-    &:checked, &:active { color: $text-secondary; background-color: color.adjust($keyboard, $lightness: -6%, $space: hsl); }
+    &:checked, &:active { color: $text-secondary; background-color: darker($keyboard, 6%); }
   }
 
   &.enter-key {
     background-color: $primary;
     color: on(dark);
 
-    &:focus, &:hover { color: on(dark); background-color: color.adjust($primary, $lightness: 5%, $space: hsl); }
-    &:checked, &:active { color: on(dark); background-color: color.adjust($primary, $lightness: -10%, $space: hsl); }
+    &:focus, &:hover { color: on(dark); background-color: lighter($primary, 5%); }
+    &:checked, &:active { color: on(dark); background-color: darker($primary, 10%); }
   }
 
   &.shift-key-uppercase { color: $primary }
@@ -99,7 +99,7 @@ $keyboard_active_bg_color: if(sass($variant == 'light'): color.adjust($keyboard,
 
 .emoji-panel {
   .keyboard-key:latched {
-    border-color: color.adjust($primary, $lightness: 5%, $space: hsl);
+    border-color: lighter($primary, 5%);
     background-color: $primary;
   }
 }

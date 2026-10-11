@@ -28,11 +28,12 @@ OPTIONS:
                           2. compact            No floating panel variant
                           3. black              Full black variant
                           4. primary            Change radio icon checked color to primary theme color (Default is Green)
-                          5. macos              Change window buttons to macOS style
+                          5. buttons            Orchis window buttons instead of the default macOS style
                           6. submenu            Set normal submenus color contrast (dark submenu style on dark version)
                           7. [nord|dracula]     Nord/dracula colorscheme themes (nord and dracula can not mix use!)
+                          8. noglass            Solid surfaces instead of translucent glass
 
-  --round                 Change theme round corner border-radius [Input the px value you want] (Suggested: 2px < value < 16px)
+  --round                 Change theme round corner border-radius [Input the px value you want] (Default: 16px, suggested 4px to 20px)
                           1. 3px
                           2. 4px
                           3. 5px
@@ -112,9 +113,18 @@ while [[ "$#" -gt 0 ]]; do
             echo "Change radio and check assets color ..."
             shift
             ;;
+          buttons)
+            orchisbuttons="true"
+            echo -e "Install Orchis window button version ..."
+            shift
+            ;;
           macos)
-            macstyle="true"
-            echo -e "Install macOS style window button version ..."
+            echo -e "macOS window buttons are the default; the flag is accepted and ignored."
+            shift
+            ;;
+          noglass)
+            noglass="true"
+            echo -e "Install solid surfaces version ..."
             shift
             ;;
           submenu)

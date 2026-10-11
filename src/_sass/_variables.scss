@@ -51,6 +51,13 @@ $menuitem-radius: $default_corner * 0.25 + 2px;
 $circular-radius: 9999px;
 $panel-corner-radius: 0; // For gnome-shell
 
+// Glass radii. Windows, floating surfaces and controls step down together so
+// nested corners stay concentric. The window radius matches the rounded window
+// corners the extension applies, so CSD and SSD windows look alike.
+$radius-window: $default_corner;
+$radius-surface: $default_corner - 4px;
+$radius-control: $default_corner * 0.5;
+
 // font families
 $font-family: "M+ 1c", Roboto, Cantarell, Sans-Serif;
 $large-font-family: Roboto, "M+ 1c", Cantarell, Sans-Serif;

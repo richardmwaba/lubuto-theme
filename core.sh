@@ -199,12 +199,16 @@ install_black() {
   sed -i "/\$blackness:/s/false/true/" "$SRC_DIR/_sass/_tweaks-temp.scss"
 }
 
-install_mac() {
-  sed -i "/\$mac_style:/s/false/true/" "$SRC_DIR/_sass/_tweaks-temp.scss"
+install_orchis_buttons() {
+  sed -i "/\$mac_style:/s/true/false/" "$SRC_DIR/_sass/_tweaks-temp.scss"
+}
+
+install_solid_surfaces() {
+  sed -i "/\$glass:/s/true/false/" "$SRC_DIR/_sass/_tweaks-temp.scss"
 }
 
 round_corner() {
-  sed -i "/\$default_corner:/s/12px/${corner}/" "$SRC_DIR/_sass/_tweaks-temp.scss"
+  sed -i "/\$default_corner:/s/16px/${corner}/" "$SRC_DIR/_sass/_tweaks-temp.scss"
 }
 
 install_submenu() {
@@ -268,8 +272,12 @@ theme_tweaks() {
     round_corner
   fi
 
-  if [[ "$macstyle" == "true" ]] ; then
-    install_mac
+  if [[ "$orchisbuttons" == "true" ]] ; then
+    install_orchis_buttons
+  fi
+
+  if [[ "$noglass" == "true" ]] ; then
+    install_solid_surfaces
   fi
 
   if [[ "$submenu" == "true" ]] ; then

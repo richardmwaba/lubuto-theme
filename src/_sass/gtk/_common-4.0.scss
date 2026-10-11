@@ -4536,7 +4536,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if(sass($variant == 'light'): color.adjust($warning, $lightness: 5%, $space: hsl); else: color.adjust($warning, $lightness: -5%, $space: hsl));
+      background-color: if(sass($variant == 'light'): lighter($warning, 5%); else: darker($warning, 5%));
     }
   }
 
@@ -4554,7 +4554,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if(sass($variant == 'light'): color.adjust($error, $lightness: 5%, $space: hsl); else: color.adjust($error, $lightness: -5%, $space: hsl));
+      background-color: if(sass($variant == 'light'): lighter($error, 5%); else: darker($error, 5%));
     }
   }
 }

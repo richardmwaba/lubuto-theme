@@ -12,6 +12,17 @@
   @return string.unquote("alpha(#{$c}, #{$a})");
 }
 
+// Lightness steps. Dart Sass keeps a colour in the space it was adjusted in, and
+// GTK 3 cannot parse hsl(), so the result goes back to rgb before it is emitted.
+@function lighter($c, $amount) {
+  $l: math.clamp(0%, color.channel($c, "lightness", $space: hsl) + $amount, 100%);
+  @return color.to-space(color.change($c, $lightness: $l, $space: hsl), rgb);
+}
+
+@function darker($c, $amount) {
+  @return lighter($c, -$amount);
+}
+
 @function gtkmix($c1,$c2,$r) {
   $ratio: 1 -  math.div($r, 100%); // match SCSS color.mix()
   @return string.unquote("mix(#{$c1},#{$c2},#{$ratio})");
@@ -123,7 +134,7 @@ $base-alt:                              if(sass($variant == 'light'): background
   $base-alt:                            if(sass($variant == 'light'): background(c); else: background(f));
 }
 
-$tooltip:                               if(sass($variant == 'dark'): rgba(color.adjust(background(e), $lightness: -3%, $space: hsl), 0.9); else: rgba(color.adjust(background(h), $lightness: -3%, $space: hsl), 0.9));
+$tooltip:                               if(sass($variant == 'dark'): rgba(darker(background(e), 3%), 0.9); else: rgba(darker(background(h), 3%), 0.9));
 $osd:                                   background(e);
 $scrim:                                 background(f);
 $scrim-alt:                             background(g);
@@ -144,6 +155,21 @@ $button:                                gtkalpha(currentColor, 0.05);
 $entry:                                 gtkalpha(currentColor, 0.05);
 
 //
+// Glass surfaces
+//
+// A glass surface is a translucent tint over a blurred backdrop, a 1px rim that
+// separates it from what is behind, and a thin highlight along the top edge
+// that reads as a lit glass edge. The blur itself comes from the extension.
+// With $glass off every tint is the solid surface colour.
+
+$glass-tint:                            if(sass($glass == 'true'): if(sass($variant == 'light'): rgba(white, 0.72); else: rgba(background(e), 0.72)); else: $surface);
+$glass-tint-strong:                     if(sass($glass == 'true'): if(sass($variant == 'light'): rgba(white, 0.86); else: rgba(background(f), 0.86)); else: $base-alt);
+$glass-rim:                             if(sass($variant == 'light'): rgba(black, 0.10); else: rgba(white, 0.14));
+$glass-highlight:                       if(sass($variant == 'light'): rgba(white, 0.90); else: rgba(white, 0.10));
+$glass-shadow:                          0 1px 2px rgba(black, 0.12), 0 4px 12px rgba(black, if(sass($variant == 'light'): 0.08; else: 0.24));
+$glass-shadow-raised:                   0 2px 4px rgba(black, 0.16), 0 12px 32px rgba(black, if(sass($variant == 'light'): 0.14; else: 0.36));
+
+//
 // Misc colors
 //
 
@@ -161,7 +187,7 @@ $check_radio_primary:                   if(sass($check_radio == 'default'): $suc
 
 $frame:                                 if(sass($variant == 'light'): rgba(black, 0.1); else: rgba(black, 0.25)); // instead of shadows
 $border:                                if(sass($variant == 'light'): rgba(black, 0.12); else: rgba(white, 0.12));
-$solid-border:                          if(sass($variant == 'light'): color.adjust($background, $lightness: -8%, $space: hsl); else: color.adjust($background, $lightness: 12%, $space: hsl));
+$solid-border:                          if(sass($variant == 'light'): darker($background, 8%); else: lighter($background, 12%));
 $border-alt:                            rgba(black, 0.16); // darker border color for Chrome and Firefox
 $titlebar-indicator:                    if(sass($topbar == 'dark'): currentColor; else: $primary);
 

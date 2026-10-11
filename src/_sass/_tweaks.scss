@@ -24,10 +24,10 @@ $theme: 'default';
 $check_radio: 'default';
 
 // Windows button style
-$mac_style: 'false';
+$mac_style: 'true';
 
 // Default corner radius value
-$default_corner: 12px;
+$default_corner: 16px;
 
 $corner_style: 'default';
 
@@ -45,3 +45,7 @@ $gnome_version: 'new';
 
 // Accent type
 $accent_type: 'default';
+
+// Liquid Glass surfaces: translucent tint, rim light and inner highlight.
+// 'false' keeps surfaces solid for machines without blur.
+$glass: 'true';

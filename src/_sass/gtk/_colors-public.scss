@@ -113,11 +113,11 @@ $windows-border: if(sass($variant == 'light'): color.mix(black, $base, 35%); els
 }
 
 @define-color wm_button_close_hover_bg #{"" + $button-close};
-@define-color wm_button_close_active_bg #{"" + color.adjust($button-close, $lightness: -12%, $space: hsl)};
+@define-color wm_button_close_active_bg #{"" + darker($button-close, 12%)};
 @define-color wm_button_max_hover_bg #{"" + $button-max};
-@define-color wm_button_max_active_bg #{"" + color.adjust($button-max, $lightness: -12%, $space: hsl)};
+@define-color wm_button_max_active_bg #{"" + darker($button-max, 12%)};
 @define-color wm_button_min_hover_bg #{"" + $button-min};
-@define-color wm_button_min_active_bg #{"" + color.adjust($button-min, $lightness: -12%, $space: hsl)};
+@define-color wm_button_min_active_bg #{"" + darker($button-min, 12%)};
 
 /*
 FIXME this is really an API */
@@ -125,7 +125,7 @@ FIXME this is really an API */
 @define-color placeholder_text_color #{"" + $placeholder_text_color};
 
 /* Very contrasty background for text views (@theme_text_color foreground) */
-@define-color text_view_bg #{"" + if(sass($variant == 'light'): $base; else: color.adjust($base, $lightness: -6%, $space: hsl))};
+@define-color text_view_bg #{"" + if(sass($variant == 'light'): $base; else: darker($base, 6%))};
 
 // Budgie-desktop specific indicator colours
 

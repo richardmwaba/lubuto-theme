@@ -5,8 +5,8 @@
   width: 48px;
   height: 48px;
   border-radius: 24px; // radius equals the size of the box to give us the curve
-  background-color: color.adjust(color.adjust($primary, $alpha: -0.7), $lightness: 30%, $space: hsl);
-  box-shadow: 0 0 2px 2px color.adjust($primary, $lightness: 20%, $space: hsl);
+  background-color: lighter(color.adjust($primary, $alpha: -0.7), 30%);
+  box-shadow: 0 0 2px 2px lighter($primary, 20%);
 }
 
 // Pointer accessibility notifications
@@ -15,7 +15,7 @@
   height: 60px;
   -pie-border-width: 3px;
   -pie-border-color: $primary;
-  -pie-background-color: color.adjust(color.adjust($primary, $alpha: -0.7), $lightness: 40%, $space: hsl);
+  -pie-background-color: lighter(color.adjust($primary, $alpha: -0.7), 40%);
 }
 
 // Screen zoom/Magnifier

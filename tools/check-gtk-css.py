@@ -23,11 +23,18 @@ failed = False
 for path in sys.argv[2:]:
     errors = []
     provider = Gtk.CssProvider()
-    provider.connect(
-        "parsing-error",
-        lambda _p, section, error: errors.append(f"{section.to_string()}: {error.message}"),
-    )
-    provider.load_from_path(path)
+    def on_error(_provider, section, error):
+        try:
+            where = section.to_string()
+        except AttributeError:
+            where = f"line {section.get_start_line() + 1}"
+        errors.append(f"{where}: {error.message}")
+
+    provider.connect("parsing-error", on_error)
+    try:
+        provider.load_from_path(path)
+    except Exception as e:  # GTK 3 also raises on the first error
+        errors.append(str(e))
     for e in errors:
         print(f"{path}: {e}")
     if errors:

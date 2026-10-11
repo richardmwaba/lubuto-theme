@@ -113,12 +113,12 @@
   color: $titlebar-text;
 
   &:hover {
-    background-color: color.adjust($titlebar, $lightness: -5%, $space: hsl);
+    background-color: darker($titlebar, 5%);
     color: $titlebar-text;
   }
 
   &:active {
-    background-color: color.adjust($titlebar, $lightness: -10%, $space: hsl);
+    background-color: darker($titlebar, 10%);
     color: $titlebar-text;
   }
 
@@ -3718,7 +3718,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if(sass($variant == 'light'): color.adjust($primary, $lightness: 5%, $space: hsl); else: color.adjust($primary, $lightness: -5%, $space: hsl));
+      background-color: if(sass($variant == 'light'): lighter($primary, 5%); else: darker($primary, 5%));
     }
   }
 
@@ -3738,7 +3738,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if(sass($variant == 'light'): color.adjust($warning, $lightness: 5%, $space: hsl); else: color.adjust($warning, $lightness: -5%, $space: hsl));
+      background-color: if(sass($variant == 'light'): lighter($warning, 5%); else: darker($warning, 5%));
     }
   }
 
@@ -3756,7 +3756,7 @@ infobar {
     }
 
     &:hover > revealer > box {
-      background-color: if(sass($variant == 'light'): color.adjust($error, $lightness: 5%, $space: hsl); else: color.adjust($error, $lightness: -5%, $space: hsl));
+      background-color: if(sass($variant == 'light'): lighter($error, 5%); else: darker($error, 5%));
     }
   }
 }

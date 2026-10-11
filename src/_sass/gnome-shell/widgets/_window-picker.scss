@@ -37,12 +37,12 @@ $window_close_button_padding: 3px;
   & StIcon { icon-size: 24px; }
 
   &:hover {
-    background-color: color.adjust($system, $lightness: 15%, $space: hsl);
+    background-color: lighter($system, 15%);
   }
 
   &:active {
     color: color.adjust(on(dark), $alpha: -0.2);
-    background-color: color.adjust($system, $lightness: -5%, $space: hsl);
+    background-color: darker($system, 5%);
   }
 }
 

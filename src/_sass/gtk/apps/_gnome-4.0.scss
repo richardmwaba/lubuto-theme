@@ -1417,7 +1417,7 @@ carousel.card {
   }
 
   &.green, &.details-rating-0 {
-    color: color.adjust($success, $lightness: -15%, $space: hsl);
+    color: darker($success, 15%);
     background-color: rgba($success, 0.15);
   }
 
@@ -1428,7 +1428,7 @@ carousel.card {
   }
 
   &.yellow, &.details-rating-12 {
-    color: color.adjust($warning, $lightness: -15%, $space: hsl);
+    color: darker($warning, 15%);
     background-color: rgba($warning, 0.15);
   }
 
@@ -1438,7 +1438,7 @@ carousel.card {
   }
 
   &.red, &.details-rating-18 {
-    color: color.adjust($error, $lightness: -15%, $space: hsl);
+    color: darker($error, 15%);
     background-color: rgba($error, 0.15);
   }
 }
@@ -1525,13 +1525,13 @@ screenshot-carousel box.frame.view {
   background-position: -1px -4px, center -1px;
 
   &:hover {
-    background-color: color.adjust(#fdf8d7, $lightness: 5%, $space: hsl);
+    background-color: lighter(#fdf8d7, 5%);
     background-image: linear-gradient($border 1px, transparent 1px),
       linear-gradient(90deg, $border 1px, transparent 1px);
   }
 
   &:active {
-    background-color: color.adjust(#fdf8d7, $lightness: -5%, $space: hsl);
+    background-color: darker(#fdf8d7, 5%);
     background-image: linear-gradient($border 1px, transparent 1px),
       linear-gradient(90deg, $border 1px, transparent 1px);
   }
@@ -1542,13 +1542,13 @@ screenshot-carousel box.frame.view {
 //
 
 @define-color weather_temp_chart_fill_color #{rgba($warning, 0.5)};
-@define-color weather_temp_chart_stroke_color #{color.adjust($warning, $lightness: -10%, $space: hsl)};
+@define-color weather_temp_chart_stroke_color #{darker($warning, 10%)};
 @define-color weather_thermometer_warm_color #{if(sass($variant == 'light'): $yellow-dark; else: $yellow-light)};
 @define-color weather_thermometer_cold_color #{if(sass($variant == 'light'): $blue-dark; else: $blue-light)};
 
 $weather_thermometer_high_color: $yellow-light;
 $weather_thermometer_low_color: $blue-light;
-$weather_forecast_color: color.adjust($warning, $lightness: -10%, $space: hsl);
+$weather_forecast_color: darker($warning, 10%);
 
 #places-label {
   font-weight: bold;
@@ -2081,7 +2081,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: color.adjust($yellow-light, $lightness: 10%, $space: hsl);
+        background-color: lighter($yellow-light, 10%);
         color: on($yellow-light);
       }
     }
@@ -2105,7 +2105,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: color.adjust($pink-light, $lightness: 10%, $space: hsl);
+        background-color: lighter($pink-light, 10%);
         color: on($pink-light);
       }
     }
@@ -2129,7 +2129,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: color.adjust($green-light, $lightness: 10%, $space: hsl);
+        background-color: lighter($green-light, 10%);
         color: on($green-light);
       }
     }
@@ -2153,7 +2153,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: color.adjust($purple-light, $lightness: 10%, $space: hsl);
+        background-color: lighter($purple-light, 10%);
         color: on($purple-light);
       }
     }
@@ -2177,7 +2177,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: color.adjust($blue-light, $lightness: 10%, $space: hsl);
+        background-color: lighter($blue-light, 10%);
         color: on($blue-light);
       }
     }
@@ -2201,7 +2201,7 @@ styleselector {
 
       > arrow,
       > contents {
-        background-color: color.adjust($grey-500, $lightness: 10%, $space: hsl);
+        background-color: lighter($grey-500, 10%);
         color: on($grey-500);
       }
     }
