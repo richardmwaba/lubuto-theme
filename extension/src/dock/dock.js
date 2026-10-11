@@ -12,7 +12,8 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {Backdrop} from '../blur/backdrop.js';
 import {LubutoDash} from './dash.js';
 
-const FADE_TIME = 150;
+// The overview's own dash is hidden while the dock runs, but keeps a height so
+// the overview layout still leaves room at the bottom for the dock.
 
 export class Dock {
     constructor(getConfig, getBlurParams) {
@@ -45,10 +46,7 @@ export class Dock {
         });
 
         Main.layoutManager.connectObject('monitors-changed', () => this._relayout(), this);
-        Main.overview.connectObject(
-            'showing', () => this._fade(false),
-            'hidden', () => this._fade(true),
-            this);
+        this._hideOverviewDash();
         this._dash.connectObject(
             'notify::allocation', () => this._place(),
             'icon-size-changed', () => this._place(),
@@ -60,7 +58,7 @@ export class Dock {
 
     disable() {
         Main.layoutManager.disconnectObject(this);
-        Main.overview.disconnectObject(this);
+        this._restoreOverviewDash();
         this._dash?.showAppsButton.disconnectObject(this);
         this._dash?.disconnectObject(this);
         this._dash?._background.disconnectObject(this);
@@ -141,6 +139,7 @@ export class Dock {
             Math.round(monitor.x + (monitor.width - width) / 2),
             monitor.y + monitor.height - height);
 
+        this._reserveOverviewSpace();
         this._placeBackdrop();
     }
 
@@ -162,15 +161,27 @@ export class Dock {
             bgX - containerX, bgY - containerY);
     }
 
-    _fade(visible) {
-        this._container.ease({
-            opacity: visible ? 255 : 0,
-            duration: FADE_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                this._container.reactive = visible;
-            },
-        });
+    _hideOverviewDash() {
+        const dash = Main.overview.dash;
+        dash.opacity = 0;
+        dash.reactive = false;
+        this._reserveOverviewSpace();
+    }
+
+    _restoreOverviewDash() {
+        const dash = Main.overview.dash;
+        dash.set_height(-1);
+        dash.opacity = 255;
+        dash.reactive = true;
+    }
+
+    _reserveOverviewSpace() {
+        if (!this._container)
+            return;
+        const dash = Main.overview.dash;
+        const height = this._container.height;
+        if (height > 0 && dash.height !== height)
+            dash.set_height(height);
     }
 
     _onShowApps() {
