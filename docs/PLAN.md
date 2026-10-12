@@ -354,6 +354,11 @@ like one family.
       installed by `install.sh --firefox` with `--remove --firefox` to undo. Chrome draws its frame
       buttons through the GTK theme only in its "GTK" appearance mode, which applies live, so that is a setting, not a
       preset. Electron apps follow their own `titleBarStyle`; "native" hands the frame to GTK.
+- [x] `install.sh --gdm`, opt-in by decision 2026-10-12: `tools/build-gdm-theme.py` takes the system
+      `gnome-shell-theme.gresource`, replaces the dark and light sheets with the variant's stylesheet, adds
+      the theme assets, compiles with `glib-compile-resources` and loads the result to check it. The
+      installer puts it over the system file with sudo and keeps `.lubuto-backup` for `--remove --gdm`.
+      GDM is a separate session with no user extensions, so this is the only way to reach the login screen.
 - [x] `install.sh --flatpak`: `flatpak override --user` grants read access to the themes directory and sets
       `GTK_THEME` to the same variant `-l` links; `--remove --flatpak` undoes it. The snap App Center is
       out of reach: snaps read themes through the gtk-common-themes snap only.

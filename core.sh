@@ -526,6 +526,70 @@ uninstall_firefox() {
   done
 }
 
+# GDM runs its own shell session with no user extensions and no ~/.themes, so
+# the login screen only ever reads the system gnome-shell-theme.gresource.
+# This builds a resource from the linked variant and puts it over the system
+# file, keeping the original next to it. A gnome-shell update restores the
+# stock file; run the step again after one.
+GDM_RESOURCE=/usr/share/gnome-shell/gnome-shell-theme.gresource
+GDM_BACKUP="$GDM_RESOURCE.lubuto-backup"
+
+install_gdm() {
+  local dest="$1"
+  local name="$2"
+  local theme="$3"
+  local color="$4"
+  local size="$5"
+  local ctype="$6"
+
+  local THEME_DIR="${1}/${2}${3}${4}${5}${6}"
+  local built="$REPO_DIR/build/gdm/gnome-shell-theme.gresource"
+
+  echo -e "\nGDM: building a login screen resource from '$THEME_DIR'..."
+  python3 "$REPO_DIR/tools/build-gdm-theme.py" "$THEME_DIR/gnome-shell" "$built" || exit 1
+
+  # The original is kept once; later runs replace a Lubuto resource.
+  local commands="[ -f '$GDM_BACKUP' ] || cp -p '$GDM_RESOURCE' '$GDM_BACKUP'; install -m 644 '$built' '$GDM_RESOURCE'"
+  if [[ "$UID" == "$ROOT_UID" ]]; then
+    sh -c "$commands"
+  elif [[ -t 0 ]] && command -v sudo > /dev/null; then
+    sudo sh -c "$commands"
+  else
+    echo "Install it as root with:"
+    echo "  sudo sh -c \"$commands\""
+    return 0
+  fi
+  echo "Installed. The login screen uses it at the next logout. Undo with: $0 --remove --gdm"
+}
+
+uninstall_gdm() {
+  if [[ ! -f "$GDM_BACKUP" ]]; then
+    echo -e "\nNo backup at $GDM_BACKUP; the GDM step was not applied."
+    return 0
+  fi
+  local commands="mv -f '$GDM_BACKUP' '$GDM_RESOURCE'"
+  if [[ "$UID" == "$ROOT_UID" ]]; then
+    sh -c "$commands"
+  elif [[ -t 0 ]] && command -v sudo > /dev/null; then
+    sudo sh -c "$commands"
+  else
+    echo "Restore it as root with:"
+    echo "  sudo sh -c \"$commands\""
+    return 0
+  fi
+  echo -e "\nRestored the stock login screen resource."
+}
+
+gdm_theme() {
+  for theme in "${themes[@]}"; do
+    for color in "${lcolors[@]}"; do
+      for size in "${sizes[0]}"; do
+        install_gdm "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype"
+      done
+    done
+  done
+}
+
 # Flatpak apps run in a sandbox with their own GTK and no view of ~/.themes,
 # so they draw their bundled theme. A user override grants read access to the
 # themes directory and names the variant through GTK_THEME, which both GTK 3

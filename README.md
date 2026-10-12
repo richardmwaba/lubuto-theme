@@ -37,6 +37,9 @@ Log out and back in once after the first extension install; GNOME Shell on Wayla
 code at login. The extension retires `user-theme` if it is enabled, since it loads the shell stylesheet
 itself.
 
+The lock screen is part of your session and gets the theme with it. The login screen is GDM's own session,
+with no user extensions, so it needs `--gdm` (requires `glib2-devel` for `glib-compile-resources`).
+
 Everything the installer takes:
 
 | Flag | What it does |
@@ -52,11 +55,12 @@ Everything the installer takes:
 | `--fonts` | Crisp preset: Inter and JetBrains Mono, slight hinting, grayscale antialiasing |
 | `--flatpak` | Let Flatpak apps read the theme and set `GTK_THEME` to the linked variant |
 | `--firefox` | Lubuto window buttons in Firefox's own title bar, through `userChrome.css` |
+| `--gdm` | Style the login screen with the linked variant: builds a `gnome-shell-theme.gresource` and installs it over the system one with sudo, keeping a backup. A gnome-shell update restores the stock file; run it again after one |
 | `--icons [hatter\|tela]` | Fetch the pinned icon theme in the variant that matches the colour |
 | `--cursor [ice\|classic]` | Fetch Bibata-Modern-Ice or Bibata-Modern-Classic |
 | `--full` | `-l -e --fonts --icons hatter --cursor ice` |
 | `-d, --dest` | Install directory; default `~/.themes` |
-| `-r, --remove` | Uninstall. With `-l`, `-e`, `--fonts`, `--flatpak` or `--firefox` it undoes that step only |
+| `-r, --remove` | Uninstall. With `-l`, `-e`, `--fonts`, `--flatpak`, `--firefox` or `--gdm` it undoes that step only |
 
 The icon and cursor steps download pinned upstream releases, verify them, and keep any directory that is
 already there. Setting the GNOME keys is a separate y/N prompt, so an existing choice is never replaced

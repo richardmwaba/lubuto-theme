@@ -27,6 +27,9 @@ OPTIONS:
                           (same variant as -l; '--remove --flatpak' undoes the override)
   --firefox               Paint the Lubuto window buttons in Firefox's own title bar through a userChrome.css
                           in the default profile ('--remove --firefox' undoes it)
+  --gdm                   Style the login screen with the same variant -l links: builds a gnome-shell-theme.gresource
+                          and installs it over the system one with sudo, keeping a backup ('--remove --gdm' restores;
+                          a gnome-shell update restores the stock file, run the step again after one)
   --icons [hatter|tela]   Fetch the icon theme pinned in presets/icons.manifest, in the variant that matches
                           the theme colour, into ~/.icons (Default: hatter); then offers to set icon-theme
   --cursor [ice|classic]  Fetch Bibata-Modern-Ice or Bibata-Modern-Classic into ~/.icons (Default: ice);
@@ -100,6 +103,10 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     --firefox)
       firefox="true"
+      shift
+      ;;
+    --gdm)
+      gdm="true"
       shift
       ;;
     --icons)
@@ -455,6 +462,8 @@ if [[ ${remove} == 'true' ]]; then
     flatpak_unoverride
   elif [[ "$firefox" == 'true' ]]; then
     uninstall_firefox
+  elif [[ "$gdm" == 'true' ]]; then
+    uninstall_gdm
   else
     uninstall_theme
   fi
@@ -493,6 +502,10 @@ else
 
   if [[ -n "${cursor:-}" ]]; then
     install_cursor
+  fi
+
+  if [[ "$gdm" == 'true' ]]; then
+    gdm_theme
   fi
 fi
 

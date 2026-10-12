@@ -38,8 +38,8 @@ First Lubuto release, forked from Orchis.
 
 ### Installer and presets
 
-- `install.sh` flags for the GTK 4 link, the extension, fonts, Flatpak, Firefox, icons and cursor, each
-  with an undo.
+- `install.sh` flags for the GTK 4 link, the extension, fonts, Flatpak, Firefox, GDM, icons and cursor,
+  each with an undo.
 - Crisp font preset: fontconfig snippet and gsettings script with a saved undo.
 - Firefox window buttons through `userChrome.css`.
 - Icons and cursor fetched from pinned upstream releases listed in `presets/icons.manifest`: Hatter,
@@ -51,3 +51,5 @@ First Lubuto release, forked from Orchis.
 - `tools/render-gtk.py` renders a sample window to PNG with the active theme, GTK 3 or GTK 4.
 - `tools/fetch-icons.sh` installs a manifest entry.
 - `tools/build-extension.sh` packs the extension.
+- `tools/build-gdm-theme.py` builds a login screen resource from an installed variant.
+- `tools/measure.sh` and `tools/measure-frames.py` are the performance protocol.
