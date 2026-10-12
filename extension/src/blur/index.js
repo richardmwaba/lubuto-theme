@@ -24,6 +24,8 @@ export class BlurModule {
             'changed::blur-popups', () => this._sync(),
             'changed::blur-radius', () => this._updateParams(),
             'changed::blur-brightness', () => this._updateParams(),
+            'changed::glass-popover-opacity', () => this._updateParams(),
+            'changed::glass-panel-opacity', () => this._updateParams(),
             this);
 
         if (Main.layoutManager._startingUp) {
@@ -43,6 +45,8 @@ export class BlurModule {
         return {
             radius: this._settings.get_int('blur-radius'),
             brightness: this._settings.get_double('blur-brightness'),
+            popoverOpacity: this._settings.get_double('glass-popover-opacity'),
+            panelOpacity: this._settings.get_double('glass-panel-opacity'),
         };
     }
 
@@ -76,7 +80,9 @@ export class BlurModule {
     }
 
     _updateParams() {
-        for (const target of Object.values(this._targets))
+        for (const target of Object.values(this._targets)) {
             target.updateParams();
+            target.updateTint?.();
+        }
     }
 }

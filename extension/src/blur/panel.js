@@ -10,6 +10,7 @@ import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import {Backdrop} from './backdrop.js';
+import {applyTint, clearTint} from './tint.js';
 
 export class PanelBlur {
     constructor(getParams) {
@@ -28,9 +29,15 @@ export class PanelBlur {
         Main.panel.add_style_class_name('lubuto-glass');
 
         this._rebuild();
+        this.updateTint();
+    }
+
+    updateTint() {
+        applyTint(Main.panel, this._getParams().panelOpacity);
     }
 
     disable() {
+        clearTint(Main.panel);
         Main.panel.remove_style_class_name('lubuto-glass');
         Main.layoutManager.disconnectObject(this);
         Main.panel.disconnectObject(this);

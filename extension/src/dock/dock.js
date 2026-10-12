@@ -14,6 +14,7 @@ import * as Layout from 'resource:///org/gnome/shell/ui/layout.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import {Backdrop} from '../blur/backdrop.js';
+import {applyTint, clearTint} from '../blur/tint.js';
 import {LubutoDash} from './dash.js';
 
 // The overview's own dash is hidden while the dock runs, but keeps a height so
@@ -86,6 +87,7 @@ export class Dock {
         this._dash?.showAppsButton.disconnectObject(this);
         this._dash?.disconnectObject(this);
         this._dash?._background.disconnectObject(this);
+        clearTint(this._dash?._background);
 
         this._backdrop?.destroy();
         this._backdrop = null;
@@ -122,7 +124,17 @@ export class Dock {
     }
 
     updateBlur() {
-        this._backdrop?.setBlur(this._getBlurParams());
+        const params = this._getBlurParams();
+        this._backdrop?.setBlur(params);
+        this.updateTint();
+    }
+
+    updateTint() {
+        const params = this._getBlurParams();
+        if (params && this._dash)
+            applyTint(this._dash._background, params.dockOpacity);
+        else if (this._dash)
+            clearTint(this._dash._background);
     }
 
     _targetMonitor() {
@@ -153,6 +165,7 @@ export class Dock {
         this._dash._queueRedisplay();
         this._place();
         this._setupBarrier();
+        this.updateTint();
     }
 
     // Autohide. The dock slides below the screen edge and comes back when the

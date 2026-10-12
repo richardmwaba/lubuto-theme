@@ -14,6 +14,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 import {Backdrop} from './backdrop.js';
+import {applyTint, clearTint} from './tint.js';
 
 export class PopupBlur {
     constructor(getParams) {
@@ -45,8 +46,11 @@ export class PopupBlur {
 
     updateParams() {
         const params = this._getParams();
-        for (const state of this._tracked.values())
+        for (const [menu, state] of this._tracked) {
             state.backdrop?.setBlur(params);
+            if (state.backdrop)
+                applyTint(menu.box, params.popoverOpacity);
+        }
     }
 
     _track(menu) {
@@ -96,6 +100,7 @@ export class PopupBlur {
 
         box.connectObject('notify::allocation', () => this._update(menu), this);
         pointer.connectObject('notify::allocation', () => this._update(menu), this);
+        applyTint(box, this._getParams().popoverOpacity);
         this._update(menu);
     }
 
@@ -138,6 +143,7 @@ export class PopupBlur {
 
         state.backdrop.destroy();
         state.backdrop = null;
+        clearTint(menu.box);
     }
 }
 

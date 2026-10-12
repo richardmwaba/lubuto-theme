@@ -65,6 +65,21 @@
       <default>true</default>
       <summary>Glass behind the dock</summary>
     </key>
+    <key name="glass-popover-opacity" type="d">
+      <range min="0.2" max="1.0"/>
+      <default>0.72</default>
+      <summary>Tint strength of popovers over their blur, 0.2 to 1</summary>
+    </key>
+    <key name="glass-panel-opacity" type="d">
+      <range min="0.2" max="1.0"/>
+      <default>0.6</default>
+      <summary>Tint strength of the top panel</summary>
+    </key>
+    <key name="glass-dock-opacity" type="d">
+      <range min="0.2" max="1.0"/>
+      <default>0.6</default>
+      <summary>Tint strength of the dock</summary>
+    </key>
     <key name="blur-radius" type="i">
       <range min="0" max="100"/>
       <default>30</default>

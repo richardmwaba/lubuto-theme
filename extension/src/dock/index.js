@@ -25,6 +25,7 @@ export class DockModule {
             'changed::blur-dock', () => this._restart(),
             'changed::blur-radius', () => this._dock?.updateBlur(),
             'changed::blur-brightness', () => this._dock?.updateBlur(),
+            'changed::glass-dock-opacity', () => this._dock?.updateBlur(),
             this);
 
         if (Main.layoutManager._startingUp)
@@ -57,6 +58,7 @@ export class DockModule {
         return {
             radius: this._settings.get_int('blur-radius'),
             brightness: this._settings.get_double('blur-brightness'),
+            dockOpacity: this._settings.get_double('glass-dock-opacity'),
         };
     }
 

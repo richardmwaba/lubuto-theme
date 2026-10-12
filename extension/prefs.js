@@ -85,6 +85,21 @@ export default class LubutoPreferences extends ExtensionPreferences {
         settings.bind('blur-brightness', brightness, 'value', Gio.SettingsBindFlags.DEFAULT);
         blur.add(brightness);
 
+        for (const [key, title] of [
+            ['glass-popover-opacity', _('Popover tint')],
+            ['glass-panel-opacity', _('Panel tint')],
+            ['glass-dock-opacity', _('Dock tint')],
+        ]) {
+            const row = new Adw.SpinRow({
+                title,
+                subtitle: _('Lower is more transparent'),
+                digits: 2,
+                adjustment: new Gtk.Adjustment({lower: 0.2, upper: 1, step_increment: 0.02}),
+            });
+            settings.bind(key, row, 'value', Gio.SettingsBindFlags.DEFAULT);
+            blur.add(row);
+        }
+
         const corners = new Adw.PreferencesGroup({title: _('Window corners')});
         page.add(corners);
 
