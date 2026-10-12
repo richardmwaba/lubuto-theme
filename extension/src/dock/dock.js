@@ -269,7 +269,7 @@ export class Dock {
 
     _place() {
         const monitor = this._monitor;
-        if (!monitor || !this._container)
+        if (!monitor || !this._container || !this._container.get_stage())
             return;
 
         const [, natWidth] = this._dash.get_preferred_width(-1);

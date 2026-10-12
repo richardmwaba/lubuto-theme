@@ -4,6 +4,7 @@
 // returns to its own opacity when the grab ends.
 
 import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 
 const MOVE_OPS = new Set([
@@ -24,9 +25,10 @@ const RESIZE_OPS = new Set([
 ]);
 
 // The surface actors paint the window contents; fading them keeps mutter's
-// own shadow and frame untouched.
+// own shadow and frame untouched. MetaSurfaceActor is not in the typelib, so
+// the check goes by type name.
 function surfacesOf(actor) {
-    if (actor instanceof Meta.SurfaceActor)
+    if (GObject.type_name_from_instance(actor).startsWith('MetaSurfaceActor'))
         return [actor];
     return actor.get_children().flatMap(child => surfacesOf(child));
 }
