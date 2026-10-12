@@ -1,6 +1,6 @@
 # Lubuto plan
 
-Status: Phase 4 done, Phase 5 in progress on 2026-10-11: dock done, move, wobble and panel modules next.
+Status: Phase 5 done on 2026-10-11. Phase 6 (fluidity and performance) next.
 
 Lubuto (Bemba: light) is a fork of [Orchis](https://github.com/vinceliuice/Orchis-theme) aimed at one target:
 GNOME 50 on Wayland, styled after macOS 27 Liquid Glass. It ships as two parts that install together: GTK
@@ -69,7 +69,7 @@ under `extension/src/`. Each module has `enable()` and `disable()` and a setting
 | `dock` | Dash to Dock | Decide in Phase 5 after blur ships. Option A: minimal macOS dock, about 2k lines, dots for running apps, magnify on hover, no previews. Option B: embed Dash to Dock core with prefs and preview code stripped, about 6k lines. |
 | `move` | Transparent Window Moving | Copy with attribution. About 200 lines. |
 | `wobble` | Compiz Windows Effect | Copy with attribution, restrained defaults. About 1.5k lines plus shader. |
-| `panel` | Just Perfection | Rewrite only the toggles the theme needs: panel height, hide activities text, hide search hint, overview layout. About 200 lines. |
+| `panel` | Just Perfection | Skipped. The theme assumes no Just Perfection toggle, so the extension stays external. |
 | `prefs` | new | One libadwaita preferences window: theme colour, variant, per-module toggles, blur strength. |
 
 Copied modules keep upstream licence headers. `THIRD_PARTY.md` lists origin, version and licence per module.
@@ -267,13 +267,17 @@ application blur paints a square behind rounded windows.
       glass backdrop, autohide with an edge pressure barrier, and keeps the dock above the overview.
 - [x] `dock` module and its stylesheet: glass pill, dots for running apps, hover lift, bottom placement,
       per-monitor choice, autohide.
-- [ ] `move` module: copy, port per Porting rules, attribute, opacity and duration in the schema.
-- [ ] `wobble` module: copy, port per Porting rules, attribute, ship a restrained preset. Phase 6 decides whether it stays on by default.
-- [ ] `panel` module: the toggles the theme assumes.
-- [ ] Prefs: per-module toggles and the few numeric settings that matter.
+- [x] `move` module: written fresh, opacity and duration in the schema.
+- [x] `wobble` module: ported per Porting rules, attributed, upstream defaults. Phase 6 decides whether it stays on by default.
+- [x] `panel` module: skipped on 2026-10-11. The theme assumes no Just Perfection toggle; Just Perfection stays external.
+- [x] Prefs: per-module toggles and the few numeric settings that matter.
 
 Exit: Dash to Dock, Transparent Window Moving, Compiz Windows Effect and Just Perfection disabled, no
 visible regression.
+
+Result: done 2026-10-11. Dash to Dock, Transparent Window Moving, Compiz Windows Effect, Rounded Window
+Corners Reborn and Blur my Shell are all disabled on the reference machine. Just Perfection stays, by
+choice. `extension/THIRD_PARTY.md` lists the ported code.
 
 ### Phase 6: fluidity and performance
 
