@@ -129,6 +129,57 @@
       <default>true</default>
       <summary>Show the applications button</summary>
     </key>
+    <key name="move-enabled" type="b">
+      <default>true</default>
+      <summary>Make a window translucent while it is dragged</summary>
+    </key>
+    <key name="move-on-resize" type="b">
+      <default>false</default>
+      <summary>Also while it is resized</summary>
+    </key>
+    <key name="move-opacity" type="i">
+      <range min="0" max="255"/>
+      <default>200</default>
+      <summary>Opacity while dragging, 0 to 255</summary>
+    </key>
+    <key name="move-duration" type="i">
+      <range min="0" max="1000"/>
+      <default>150</default>
+      <summary>Fade duration in milliseconds</summary>
+    </key>
+    <key name="wobble-enabled" type="b">
+      <default>true</default>
+      <summary>Wobble windows while they are dragged</summary>
+    </key>
+    <key name="wobble-maximize" type="b">
+      <default>true</default>
+      <summary>Wobble on maximize and unmaximize</summary>
+    </key>
+    <key name="wobble-friction" type="d">
+      <range min="1.0" max="10.0"/>
+      <default>3.5</default>
+      <summary>Spring friction</summary>
+    </key>
+    <key name="wobble-spring" type="d">
+      <range min="1.0" max="10.0"/>
+      <default>3.8</default>
+      <summary>Spring constant</summary>
+    </key>
+    <key name="wobble-speedup" type="d">
+      <range min="1.0" max="40.0"/>
+      <default>12.0</default>
+      <summary>Simulation speed divider</summary>
+    </key>
+    <key name="wobble-mass" type="d">
+      <range min="10.0" max="99.0"/>
+      <default>70.0</default>
+      <summary>Mass</summary>
+    </key>
+    <key name="wobble-tiles" type="i">
+      <range min="2" max="20"/>
+      <default>6</default>
+      <summary>Deformation grid tiles per axis</summary>
+    </key>
     <key name="sync-gtk-theme" type="b">
       <default>true</default>
       <summary>Set the GTK theme to the same variant</summary>

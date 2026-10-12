@@ -135,6 +135,41 @@ export default class LubutoPreferences extends ExtensionPreferences {
         });
         settings.bind('dock-monitor', dockMonitor, 'value', Gio.SettingsBindFlags.DEFAULT);
         dock.add(dockMonitor);
+
+        const effects = new Adw.PreferencesGroup({title: _('Window effects')});
+        page.add(effects);
+
+        for (const [key, title] of [
+            ['move-enabled', _('Translucent while dragging')],
+            ['move-on-resize', _('Translucent while resizing')],
+            ['wobble-enabled', _('Wobble while dragging')],
+            ['wobble-maximize', _('Wobble on maximize and unmaximize')],
+        ]) {
+            const row = new Adw.SwitchRow({title});
+            settings.bind(key, row, 'active', Gio.SettingsBindFlags.DEFAULT);
+            effects.add(row);
+        }
+
+        const moveOpacity = new Adw.SpinRow({
+            title: _('Opacity while dragging'),
+            adjustment: new Gtk.Adjustment({lower: 0, upper: 255, step_increment: 5}),
+        });
+        settings.bind('move-opacity', moveOpacity, 'value', Gio.SettingsBindFlags.DEFAULT);
+        effects.add(moveOpacity);
+
+        for (const [key, title, lower, upper, step] of [
+            ['wobble-friction', _('Wobble friction'), 1, 10, 0.1],
+            ['wobble-spring', _('Wobble spring'), 1, 10, 0.1],
+            ['wobble-mass', _('Wobble mass'), 10, 99, 1],
+        ]) {
+            const row = new Adw.SpinRow({
+                title,
+                digits: 1,
+                adjustment: new Gtk.Adjustment({lower, upper, step_increment: step}),
+            });
+            settings.bind(key, row, 'value', Gio.SettingsBindFlags.DEFAULT);
+            effects.add(row);
+        }
     }
 
     _comboRow(settings, key, title, choices, subtitle = null) {
