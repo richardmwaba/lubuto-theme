@@ -1,0 +1,57 @@
+# Icon and cursor themes Lubuto installs from upstream. Nothing here is
+# redistributed: tools/fetch-icons.sh downloads the pinned release and copies
+# the theme directories into ~/.icons.
+#
+# One section per theme. Keys:
+#   kind     icons or cursor
+#   fetch    git: shallow clone of the tag, checked against commit
+#            archive: download url, checked against sha256, extracted
+#   url      repository, or the archive to download
+#   ref      the pinned tag or release
+#   commit   full commit the tag pointed at when it was pinned (git only)
+#   sha256   checksum of the archive (archive only)
+#   licence  SPDX identifier of the upstream licence
+#   base     directory every colour variant inherits from (copied first)
+#   map      Lubuto colour -> theme directory name, space separated
+#   install  upstream installer to run instead of copying, with DEST and
+#            COLOUR substituted; the map then names the result directories
+#   dirs     directories the archive extracts (archive only)
+
+[hatter]
+kind = icons
+fetch = git
+url = https://github.com/Mibea/Hatter
+ref = V3.6
+commit = d44473b1c11a10c4383290f9c15f7a80d4d54fd3
+licence = GPL-3.0-only
+base = Hatter
+map = default:Hatter purple:Hatter-Purple pink:Hatter-Pink red:Hatter-Red orange:Hatter-Orange yellow:Hatter-Yellow green:Hatter-Green teal:Hatter-Teal grey:Hatter-Slate
+
+[tela]
+kind = icons
+fetch = git
+url = https://github.com/vinceliuice/Tela-icon-theme
+ref = 2026-07-07
+commit = 4f560eccd0acc9c192f31077c2b3202422cb24fb
+licence = GPL-3.0-only
+# Tela has no teal, so teal takes the green folders.
+install = ./install.sh -d DEST COLOUR
+map = default:standard:Tela purple:purple:Tela-purple pink:pink:Tela-pink red:red:Tela-red orange:orange:Tela-orange yellow:yellow:Tela-yellow green:green:Tela-green teal:green:Tela-green grey:grey:Tela-grey nord:nord:Tela-nord dracula:dracula:Tela-dracula
+
+[bibata-ice]
+kind = cursor
+fetch = archive
+url = https://github.com/ful1e5/Bibata_Cursor/releases/download/v2.0.7/Bibata-Modern-Ice.tar.xz
+ref = v2.0.7
+sha256 = a68cae60c4dc706350e194ebc91c5fe48bc7bc9d59e119555834a2a7ee5078ef
+licence = GPL-3.0-only
+dirs = Bibata-Modern-Ice
+
+[bibata-classic]
+kind = cursor
+fetch = archive
+url = https://github.com/ful1e5/Bibata_Cursor/releases/download/v2.0.7/Bibata-Modern-Classic.tar.xz
+ref = v2.0.7
+sha256 = 7d3495864e5bbef02f5e77de760b2905903b63c71495a78ef6306d19a3b556d8
+licence = GPL-3.0-only
+dirs = Bibata-Modern-Classic

@@ -27,6 +27,11 @@ OPTIONS:
                           (same variant as -l; '--remove --flatpak' undoes the override)
   --firefox               Paint the Lubuto window buttons in Firefox's own title bar through a userChrome.css
                           in the default profile ('--remove --firefox' undoes it)
+  --icons [hatter|tela]   Fetch the icon theme pinned in presets/icons.manifest, in the variant that matches
+                          the theme colour, into ~/.icons (Default: hatter); then offers to set icon-theme
+  --cursor [ice|classic]  Fetch Bibata-Modern-Ice or Bibata-Modern-Classic into ~/.icons (Default: ice);
+                          then offers to set cursor-theme
+  --full                  -l -e --fonts --icons hatter --cursor ice
   -f, --fixed             Fixed accent (blue) colour instead of following the GNOME accent colour
 
   --tweaks                Specify versions for tweaks [solid|compact|black|primary|macos|submenu|(nord/dracula)] (Options can mix)
@@ -95,6 +100,34 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     --firefox)
       firefox="true"
+      shift
+      ;;
+    --icons)
+      icons="hatter"
+      shift
+      case "${1:-}" in
+        hatter|tela)
+          icons="$1"
+          shift
+          ;;
+      esac
+      ;;
+    --cursor)
+      cursor="ice"
+      shift
+      case "${1:-}" in
+        ice|classic)
+          cursor="$1"
+          shift
+          ;;
+      esac
+      ;;
+    --full)
+      libadwaita="true"
+      extension="true"
+      fonts="true"
+      icons="hatter"
+      cursor="ice"
       shift
       ;;
     -f|--fixed)
@@ -452,6 +485,14 @@ else
 
   if [[ "$firefox" == 'true' ]]; then
     install_firefox
+  fi
+
+  if [[ -n "${icons:-}" ]]; then
+    install_icons
+  fi
+
+  if [[ -n "${cursor:-}" ]]; then
+    install_cursor
   fi
 fi
 

@@ -362,6 +362,68 @@ link_theme() {
   done
 }
 
+# Icons and cursor come from upstream releases pinned in presets/icons.manifest.
+# The gsettings keys change only after a confirmation, so an existing choice
+# is never replaced silently.
+
+# The Lubuto colour of the first selected theme, as the manifest maps name it.
+icons_colour() {
+  if [[ "${nord:-}" == "true" ]]; then echo nord; return; fi
+  if [[ "${dracula:-}" == "true" ]]; then echo dracula; return; fi
+  local theme="${themes[0]:-}"
+  theme="${theme#-}"
+  [[ -z "$theme" ]] && theme=default
+  echo "${theme,,}"
+}
+
+# gsettings inside a snap terminal reads the snap's schemas; see presets/gsettings.sh.
+clean_gsettings() {
+  env -u GSETTINGS_SCHEMA_DIR -u GIO_MODULE_DIR -u GIO_EXTRA_MODULES \
+    XDG_DATA_DIRS="/usr/local/share:/usr/share:${XDG_DATA_DIRS:-}" gsettings "$@" 2> /dev/null
+}
+
+confirm_gsetting() {
+  local key="$1"
+  local value="$2"
+  local current
+  current="$(clean_gsettings get org.gnome.desktop.interface "$key")"
+  if [[ "$current" == "'$value'" ]]; then
+    echo "$key is already '$value'."
+    return 0
+  fi
+  if [[ -t 0 ]]; then
+    read -r -p "Set $key from $current to '$value'? [y/N] " answer
+    if [[ "$answer" =~ ^[Yy]$ ]]; then
+      clean_gsettings set org.gnome.desktop.interface "$key" "$value"
+      echo "Set $key to '$value'."
+      return 0
+    fi
+  fi
+  echo "Left $key at $current. To apply: gsettings set org.gnome.desktop.interface $key '$value'"
+}
+
+install_icons() {
+  if [[ "$UID" == "$ROOT_UID" ]]; then
+    echo "Do not run --icons with sudo. Icon themes install per user."
+    exit 1
+  fi
+  local result
+  echo -e "\nIcons: $icons for $(icons_colour)..."
+  result="$("$REPO_DIR/tools/fetch-icons.sh" "$icons" --colour "$(icons_colour)")" || exit 1
+  confirm_gsetting icon-theme "$result"
+}
+
+install_cursor() {
+  if [[ "$UID" == "$ROOT_UID" ]]; then
+    echo "Do not run --cursor with sudo. Cursor themes install per user."
+    exit 1
+  fi
+  local result
+  echo -e "\nCursor: bibata-$cursor..."
+  result="$("$REPO_DIR/tools/fetch-icons.sh" "bibata-$cursor")" || exit 1
+  confirm_gsetting cursor-theme "$result"
+}
+
 # Crisp preset: fontconfig snippet plus the gsettings font and rendering keys.
 # Per user, like the libadwaita link.
 install_fonts() {

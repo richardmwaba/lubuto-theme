@@ -359,13 +359,15 @@ and, for icon themes, the map from Lubuto colour to icon variant. The installer 
 | Icons | Hatter, variant picked from the theme colour (Teal, Blue, Green, Orange, Pink, Purple, Red, Yellow direct; Grey maps to Slate) | Tela, same colour mapping |
 | Cursor | Bibata-Modern-Ice | Bibata-Modern-Classic |
 
-- [ ] Confirm the Hatter licence upstream. If it does not permit redistribution, the installer still fetches
-      from upstream, and the README says the icons are not part of Lubuto.
-- [ ] `presets/icons.manifest` and `tools/fetch-icons.sh` that clones a pinned tag, verifies the directory
-      has `index.theme`, and never overwrites an existing directory without `--force`.
-- [ ] `install.sh --icons [hatter|tela]` and `--cursor [ice|classic]`. Both off unless given or `--full`.
-      Applying the gsettings keys is a separate confirmation so an existing icon choice is never replaced
-      silently.
+- [x] Licences: Hatter (Mibea/Hatter), Tela (vinceliuice/Tela-icon-theme) and Bibata (ful1e5/Bibata_Cursor)
+      are all GPL-3.0. Lubuto still fetches rather than vendors: Hatter alone is 100 MB.
+- [x] `presets/icons.manifest` pins Hatter V3.6 and Tela 2026-07-07 by tag and commit, and Bibata v2.0.7
+      release archives by sha256. `tools/fetch-icons.sh <name> --colour <colour>` clones or downloads,
+      verifies, checks for `index.theme`, keeps an existing directory unless `--force`, and prints the
+      theme name to set. Hatter copies the base theme plus the colour variant; Tela runs its upstream
+      installer for the mapped colour (teal takes green, Tela has no teal).
+- [x] `install.sh --icons [hatter|tela]` and `--cursor [ice|classic]`, off unless given or `--full`. The
+      gsettings keys change only after a y/N prompt; without a terminal the command is printed instead.
 - [ ] Screenshots for each default per colour.
 
 Exit: a fresh install with `--full` reproduces the reference machine's icons and cursor for any colour.
