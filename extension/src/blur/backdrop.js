@@ -2,22 +2,22 @@
 //
 // A blurred copy of what lies behind a surface, framed to a rectangle.
 //
-// Two sources. 'desktop' is a live clone of the window group, so windows under
-// the surface blur too and the result follows them; it costs a second paint of
-// those windows while the surface shows. 'wallpaper' is the monitor background
-// alone, painted once and cached; the overview uses it because the window
-// group is hidden there.
+// Two sources. 'desktop' is a live copy of the wallpaper and window actors
+// (see desktop.js), so windows under the surface blur too and the result
+// follows them; it costs a second paint of those windows while the surface
+// shows. 'wallpaper' is the monitor background alone, painted once and cached;
+// the overview uses it because the window group is hidden there.
 //
 // Static by design: the wallpaper rarely changes, so the blurred result is
 // painted once and cached by Clutter until the background or the clip changes.
 
-import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import * as Background from 'resource:///org/gnome/shell/ui/background.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
+import {DesktopClone} from './desktop.js';
 import {RoundedClipEffect, StaticBlurEffect} from './effects.js';
 
 export class Backdrop {
@@ -62,8 +62,8 @@ export class Backdrop {
         });
 
         if (source === 'desktop') {
-            this._clone = new Clutter.Clone({source: global.window_group});
-            this._blurred.add_child(this._clone);
+            this._clone = new DesktopClone();
+            this._blurred.add_child(this._clone.actor);
         }
 
         this._blur = new StaticBlurEffect({brightness});
@@ -139,11 +139,9 @@ export class Backdrop {
             if (child instanceof Meta.BackgroundActor)
                 child.set_position(-(f.x - left), -(f.y - top));
         }
-        // The window group is in stage coordinates; the frame is monitor relative.
-        if (this._clone) {
-            this._clone.set_size(global.stage.width, global.stage.height);
-            this._clone.set_position(-(monitor.x + f.x - left), -(monitor.y + f.y - top));
-        }
+        // The desktop copy is in stage coordinates; the frame is monitor relative.
+        if (this._clone)
+            this._clone.actor.set_position(-(monitor.x + f.x - left), -(monitor.y + f.y - top));
 
         this.actor.show();
 
@@ -162,6 +160,7 @@ export class Backdrop {
     destroy() {
         this._bgManager?.destroy();
         this._bgManager = null;
+        this._clone?.destroy();
         this._clone = null;
         this.actor?.destroy();
         this.actor = null;
