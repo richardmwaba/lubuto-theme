@@ -384,6 +384,86 @@ uninstall_fonts() {
   "$REPO_DIR/presets/gsettings.sh" undo
 }
 
+# Firefox draws its own window buttons when its title bar is off, so the GTK
+# theme never reaches them. A userChrome.css in the profile paints the Lubuto
+# buttons instead. Firefox only reads that file with a pref set in user.js.
+FIREFOX_PREF='user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);'
+FIREFOX_MARK='// Lubuto: userChrome.css needs this.'
+
+# Every Firefox profile root on this machine: package, Flatpak and snap.
+firefox_roots() {
+  local root
+  for root in "$HOME/.mozilla/firefox" "$HOME/.var/app/org.mozilla.firefox/.mozilla/firefox" "$HOME/snap/firefox/common/.mozilla/firefox"; do
+    [[ -f "$root/profiles.ini" ]] && echo "$root"
+  done
+}
+
+# The default profile of a root: the [Install*] section's Default, else the
+# profile marked Default=1.
+firefox_profile() {
+  local root="$1"
+  local path
+  path="$(awk -F= '/^\[Install/{s=1;next} /^\[/{s=0} s&&$1=="Default"{print $2;exit}' "$root/profiles.ini")"
+  if [[ -z "$path" ]]; then
+    path="$(awk -F= '/^\[/{p="";d=""} $1=="Path"{p=$2} $1=="Default"&&$2=="1"{print p;exit}' "$root/profiles.ini")"
+  fi
+  [[ -n "$path" && -d "$root/$path" ]] && echo "$root/$path"
+}
+
+install_firefox() {
+  if [[ "$UID" == "$ROOT_UID" ]]; then
+    echo "Do not run --firefox with sudo. The preset installs per user."
+    exit 1
+  fi
+
+  local found=false root profile
+  for root in $(firefox_roots); do
+    profile="$(firefox_profile "$root")" || true
+    [[ -z "$profile" ]] && continue
+    found=true
+
+    mkdir -p "$profile/chrome"
+    if [[ -f "$profile/chrome/userChrome.css" ]] && ! grep -q "Lubuto" "$profile/chrome/userChrome.css"; then
+      mv "$profile/chrome/userChrome.css" "$profile/chrome/userChrome.css.lubuto-backup"
+      echo "Kept the existing userChrome.css as userChrome.css.lubuto-backup."
+    fi
+    cp -f "$REPO_DIR/presets/firefox/userChrome.css" "$profile/chrome/userChrome.css"
+    if [[ "${nord:-}" == "true" ]]; then
+      sed -i 's/#fd5f51/#bf616a/; s/#38c76a/#a3be8c/; s/#fdbe04/#ebcb8b/' "$profile/chrome/userChrome.css"
+    elif [[ "${dracula:-}" == "true" ]]; then
+      sed -i 's/#fd5f51/#f44d4d/; s/#38c76a/#4be772/; s/#fdbe04/#e8f467/' "$profile/chrome/userChrome.css"
+    fi
+
+    if ! grep -qF "$FIREFOX_PREF" "$profile/user.js" 2> /dev/null; then
+      printf '%s\n%s\n' "$FIREFOX_MARK" "$FIREFOX_PREF" >> "$profile/user.js"
+    fi
+    echo -e "\nInstalled the Lubuto window buttons into '$profile'. Restart Firefox, with 'Title Bar' unticked in Customize Toolbar."
+  done
+
+  if [[ "$found" == false ]]; then
+    echo -e "\nNo Firefox profile found, skipping the Firefox preset."
+    return 0
+  fi
+  echo "Undo with: $0 --remove --firefox"
+}
+
+uninstall_firefox() {
+  local root profile
+  for root in $(firefox_roots); do
+    profile="$(firefox_profile "$root")" || true
+    [[ -z "$profile" ]] && continue
+    if grep -q "Lubuto" "$profile/chrome/userChrome.css" 2> /dev/null; then
+      rm -f "$profile/chrome/userChrome.css"
+      [[ -f "$profile/chrome/userChrome.css.lubuto-backup" ]] && mv "$profile/chrome/userChrome.css.lubuto-backup" "$profile/chrome/userChrome.css"
+    fi
+    if [[ -f "$profile/user.js" ]] && grep -qF "$FIREFOX_MARK" "$profile/user.js"; then
+      sed -i "/^\/\/ Lubuto: userChrome.css needs this.$/d; /legacyUserProfileCustomizations.stylesheets/d" "$profile/user.js"
+      [[ -s "$profile/user.js" ]] || rm -f "$profile/user.js"
+    fi
+    echo "Removed the Lubuto window buttons from '$profile'."
+  done
+}
+
 # Flatpak apps run in a sandbox with their own GTK and no view of ~/.themes,
 # so they draw their bundled theme. A user override grants read access to the
 # themes directory and names the variant through GTK_THEME, which both GTK 3

@@ -337,6 +337,12 @@ like one family.
 - [ ] Try `rgba` antialiasing on the reference displays and record which one reads sharper. Ship that.
       Grayscale ships until the test is done.
 - [x] `install.sh --fonts` applies the preset and prints how to undo it; `--remove --fonts` undoes both.
+- [x] Apps that draw their own window buttons. Mutter never offers server-side decorations on Wayland, so
+      each app is its own case. Firefox with "Title Bar" off paints its buttons from its own CSS and only
+      takes icons from the icon theme: `presets/firefox/userChrome.css` paints the Lubuto buttons there,
+      installed by `install.sh --firefox` with `--remove --firefox` to undo. Chrome draws its frame
+      buttons through the GTK theme only in its "Use GTK" appearance mode, so that is a setting, not a
+      preset. Electron apps follow their own `titleBarStyle`; "native" hands the frame to GTK.
 - [x] `install.sh --flatpak`: `flatpak override --user` grants read access to the themes directory and sets
       `GTK_THEME` to the same variant `-l` links; `--remove --flatpak` undoes it. The snap App Center is
       out of reach: snaps read themes through the gtk-common-themes snap only.

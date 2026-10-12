@@ -25,6 +25,8 @@ OPTIONS:
                           (fontconfig snippet plus gsettings keys; '--remove --fonts' restores the previous values)
   --flatpak               Let Flatpak apps read the installed theme and set GTK_THEME to the linked variant
                           (same variant as -l; '--remove --flatpak' undoes the override)
+  --firefox               Paint the Lubuto window buttons in Firefox's own title bar through a userChrome.css
+                          in the default profile ('--remove --firefox' undoes it)
   -f, --fixed             Fixed accent (blue) colour instead of following the GNOME accent colour
 
   --tweaks                Specify versions for tweaks [solid|compact|black|primary|macos|submenu|(nord/dracula)] (Options can mix)
@@ -89,6 +91,10 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     --flatpak)
       flatpak="true"
+      shift
+      ;;
+    --firefox)
+      firefox="true"
       shift
       ;;
     -f|--fixed)
@@ -414,6 +420,8 @@ if [[ ${remove} == 'true' ]]; then
     uninstall_fonts
   elif [[ "$flatpak" == 'true' ]]; then
     flatpak_unoverride
+  elif [[ "$firefox" == 'true' ]]; then
+    uninstall_firefox
   else
     uninstall_theme
   fi
@@ -440,6 +448,10 @@ else
 
   if [[ "$fonts" == 'true' ]]; then
     install_fonts
+  fi
+
+  if [[ "$firefox" == 'true' ]]; then
+    install_firefox
   fi
 fi
 
