@@ -8,10 +8,17 @@
 // shows. 'wallpaper' is the monitor background alone, painted once and cached;
 // the overview uses it because the window group is hidden there.
 //
+// The wallpaper is painted through a clone of its background actor, never
+// directly. A background actor whose box coincides with its stage position
+// (a monitor at the stage origin) paints only the current redraw clip, and
+// the blur caches whatever that frame painted: on the overview's second
+// opening that is nothing, and the monitor shows the group's flat colour.
+// A clone source paints its whole box.
+//
 // Static by design: the wallpaper rarely changes, so the blurred result is
 // painted once and cached by Clutter until the background or the clip changes.
 
-import Meta from 'gi://Meta';
+import Clutter from 'gi://Clutter';
 import St from 'gi://St';
 
 import * as Background from 'resource:///org/gnome/shell/ui/background.js';
@@ -28,6 +35,8 @@ export class Backdrop {
         this._source = source;
         this._bgManager = null;
         this._clone = null;
+        this._wallpaper = null;
+        this._wallpaperHolder = null;
         this._radius = radius;
         this._frame = null;
 
@@ -54,16 +63,23 @@ export class Backdrop {
         });
         this.actor.add_child(this._blurred);
 
-        this._blurred.connect('child-added', (container, child) => {
-            if (child instanceof Meta.BackgroundActor) {
-                container.set_child_below_sibling(child, null);
-                this._layout();
-            }
-        });
-
         if (source === 'desktop') {
             this._clone = new DesktopClone();
             this._blurred.add_child(this._clone.actor);
+        } else {
+            // The holder keeps the background actor mapped and allocated but
+            // never painted; the clone above it is what the blur sees.
+            this._wallpaperHolder = new Clutter.Actor({
+                name: 'lubuto-backdrop-wallpaper',
+                opacity: 0,
+            });
+            this._wallpaper = new Clutter.Clone({
+                name: 'lubuto-backdrop-wallpaper-clone',
+                width: monitor.width,
+                height: monitor.height,
+            });
+            this._blurred.add_child(this._wallpaper);
+            this._blurred.add_child(this._wallpaperHolder);
         }
 
         this._blur = new StaticBlurEffect({brightness});
@@ -81,11 +97,19 @@ export class Backdrop {
 
         if (this._source === 'wallpaper') {
             this._bgManager = new Background.BackgroundManager({
-                container: this._blurred,
+                container: this._wallpaperHolder,
                 monitorIndex: this._monitorIndex,
                 controlPosition: false,
             });
+            // The manager swaps in a new actor when the wallpaper changes.
+            this._bgManager.connect('changed', () => this._syncWallpaper());
+            this._syncWallpaper();
         }
+    }
+
+    _syncWallpaper() {
+        if (this._wallpaper)
+            this._wallpaper.source = this._bgManager?.backgroundActor ?? null;
     }
 
     setBlur({radius, brightness}) {
@@ -135,10 +159,8 @@ export class Backdrop {
         this._blurred.set_position(-left, -top);
         this._blurred.set_size(f.width + left + right, f.height + top + bottom);
 
-        for (const child of this._blurred.get_children()) {
-            if (child instanceof Meta.BackgroundActor)
-                child.set_position(-(f.x - left), -(f.y - top));
-        }
+        if (this._wallpaper)
+            this._wallpaper.set_position(-(f.x - left), -(f.y - top));
         // The desktop copy is in stage coordinates; the frame is monitor relative.
         if (this._clone)
             this._clone.actor.set_position(-(monitor.x + f.x - left), -(monitor.y + f.y - top));
@@ -165,5 +187,7 @@ export class Backdrop {
         this.actor?.destroy();
         this.actor = null;
         this._blurred = null;
+        this._wallpaper = null;
+        this._wallpaperHolder = null;
     }
 }
