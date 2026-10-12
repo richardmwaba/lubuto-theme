@@ -113,8 +113,13 @@ export class PopupBlur {
         const pointer = menu._boxPointer ?? menu.actor;
         const parent = pointer.get_parent();
         const monitor = state.backdrop.monitor;
-        if (!box.has_allocation() || !parent)
+        if (!parent)
             return;
+
+        // Reopening queues a relayout of the box, so its allocation is stale
+        // here, and Clutter only notifies an allocation that changes. A menu
+        // that reopens at the same size never notifies, so lay it out now.
+        box.get_allocation_box();
 
         // Positions without the open animation's translation, which the
         // backdrop mirrors through its own bound translation.
