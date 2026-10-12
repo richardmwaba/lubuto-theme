@@ -242,11 +242,9 @@ Result: done 2026-10-11. The only remaining Sass deprecation is `@import`.
 - [x] `corners` module: ported from Rounded Window Corners Reborn, shaders inlined, per-app overrides
       dropped. Default 16 px, off when maximised or fullscreen, soft shadow under rounded windows.
 - [x] Shell stylesheet: panel and popover contents use the glass tint tokens and a rim.
-- [ ] Popovers over windows: the static backdrop blurs the wallpaper only, so window content shows through
-      the tint. The strong tint is 0.84 dark and 0.88 light for that reason. Blurring the windows behind
-      needs Shell.BlurEffect in background mode, which paints a square region every frame and cannot be
-      rounded. Phase 6 measures a cross-shaped pair of background-blur actors inset by the radius as a
-      possible answer.
+- [x] Popovers over windows: backdrops now blur a live clone of the window group, so windows behind a
+      surface blur too. Costs a second paint of the covered windows while the surface shows; Phase 6
+      measures it. The strong tint can come back down once the look is judged.
 - [ ] Notification banners, OSD, the Alt-Tab switcher and app folders have no backdrop yet. Add them as
       blur targets with the Phase 6 budget in hand, then give them the glass tint.
 - [ ] Light and dark screenshots per surface in `images/`. Dark done on the reference machine, light pending.
