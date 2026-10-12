@@ -21,6 +21,10 @@ OPTIONS:
 
   -l, --libadwaita        Link the installed gtk-4.0 theme into ~/.config/gtk-4.0 so libadwaita apps use it
   -e, --extension         Install and enable the Lubuto shell extension (loads the shell theme, replaces user-theme)
+  --fonts                 Apply the crisp preset: Inter and JetBrains Mono, slight hinting, grayscale antialiasing
+                          (fontconfig snippet plus gsettings keys; '--remove --fonts' restores the previous values)
+  --flatpak               Let Flatpak apps read the installed theme and set GTK_THEME to the linked variant
+                          (same variant as -l; '--remove --flatpak' undoes the override)
   -f, --fixed             Fixed accent (blue) colour instead of following the GNOME accent colour
 
   --tweaks                Specify versions for tweaks [solid|compact|black|primary|macos|submenu|(nord/dracula)] (Options can mix)
@@ -77,6 +81,14 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     -e|--extension)
       extension="true"
+      shift
+      ;;
+    --fonts)
+      fonts="true"
+      shift
+      ;;
+    --flatpak)
+      flatpak="true"
       shift
       ;;
     -f|--fixed)
@@ -398,6 +410,10 @@ if [[ ${remove} == 'true' ]]; then
     uninstall_link
   elif [[ "$extension" == 'true' ]]; then
     uninstall_extension
+  elif [[ "$fonts" == 'true' ]]; then
+    uninstall_fonts
+  elif [[ "$flatpak" == 'true' ]]; then
+    flatpak_unoverride
   else
     uninstall_theme
   fi
@@ -416,6 +432,14 @@ else
 
   if [[ "$extension" == 'true' ]]; then
     install_extension
+  fi
+
+  if [[ "$flatpak" == 'true' ]]; then
+    flatpak_theme
+  fi
+
+  if [[ "$fonts" == 'true' ]]; then
+    install_fonts
   fi
 fi
 

@@ -64,8 +64,10 @@ $menu-radius: $radius-surface;
 $menuitem-radius: $radius-control - 2px;
 
 // font families
-$font-family: "M+ 1c", Roboto, Cantarell, Sans-Serif;
-$large-font-family: Roboto, "M+ 1c", Cantarell, Sans-Serif;
+// The crisp preset's families. SF Pro only resolves when the user installed
+// it; the fontconfig snippet maps it to Inter otherwise.
+$font-family: "SF Pro Text", Inter, Cantarell, sans-serif;
+$large-font-family: "SF Pro Display", Inter, Cantarell, sans-serif;
 
 // font sizes
 $root-font-size: if(sass($compact == 'false'): 14px; else: 13px);

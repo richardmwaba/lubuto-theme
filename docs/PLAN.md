@@ -325,15 +325,21 @@ like one family.
 
 ### Phase 8: crisp rendering preset
 
-- [ ] `presets/fontconfig/50-lubuto.conf`: Inter as the sans default, slight hinting, grayscale
-      antialiasing, subpixel positioning on. Alias SF Pro to Inter when SF Pro is absent.
-- [ ] `presets/gsettings.sh`: interface, document and monospace fonts, `font-hinting slight`,
-      `font-antialiasing grayscale`, shell font sizes that match the stylesheet.
+- [x] `presets/fontconfig/50-lubuto.conf`: Inter as the sans default, JetBrains Mono as monospace, slight
+      hinting, grayscale antialiasing. SF Pro and SF Mono resolve to Inter and JetBrains Mono when absent.
+      Fractional glyph positioning has no fontconfig key; GTK 4 does it unless `gtk-hint-font-metrics` is
+      set, which `gsettings.sh` warns about.
+- [x] `presets/gsettings.sh apply|undo|show`: interface `Inter 10.5` (14 px, the shell root size), document
+      `Inter 11`, monospace `JetBrains Mono 10`, `font-hinting slight`, `font-antialiasing grayscale`. The
+      previous values go to `~/.config/lubuto/fonts-undo.sh`.
+- [x] Shell stylesheet families are `SF Pro Text, Inter, Cantarell` and `SF Pro Display, Inter, Cantarell`,
+      so the shell and GTK share a family.
 - [ ] Try `rgba` antialiasing on the reference displays and record which one reads sharper. Ship that.
-- [ ] `install.sh --fonts` applies the preset and prints how to undo it.
-- [ ] `install.sh --flatpak`: grant Flatpak apps read access to `~/.themes` and set `GTK_THEME` for the
-      selected variant through `flatpak override --user`, with a printed undo. Sandboxed apps (GIMP, the
-      snap App Center) otherwise draw their own title bars with their bundled theme.
+      Grayscale ships until the test is done.
+- [x] `install.sh --fonts` applies the preset and prints how to undo it; `--remove --fonts` undoes both.
+- [x] `install.sh --flatpak`: `flatpak override --user` grants read access to the themes directory and sets
+      `GTK_THEME` to the same variant `-l` links; `--remove --flatpak` undoes it. The snap App Center is
+      out of reach: snaps read themes through the gtk-common-themes snap only.
 
 Exit: text in shell, GTK 4 and GTK 3 renders at the same weight and sharpness side by side.
 

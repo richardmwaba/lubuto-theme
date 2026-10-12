@@ -362,6 +362,83 @@ link_theme() {
   done
 }
 
+# Crisp preset: fontconfig snippet plus the gsettings font and rendering keys.
+# Per user, like the libadwaita link.
+install_fonts() {
+  if [[ "$UID" == "$ROOT_UID" ]]; then
+    echo "Do not run --fonts with sudo. The preset installs per user."
+    exit 1
+  fi
+
+  local conf_dir="${XDG_CONFIG_HOME:-$HOME/.config}/fontconfig/conf.d"
+  mkdir -p "$conf_dir"
+  cp -f "$REPO_DIR/presets/fontconfig/50-lubuto.conf" "$conf_dir/50-lubuto.conf"
+  echo -e "\nInstalled $conf_dir/50-lubuto.conf. Apps pick it up when they start."
+  "$REPO_DIR/presets/gsettings.sh" apply
+  echo "Undo both with: $0 --remove --fonts"
+}
+
+uninstall_fonts() {
+  rm -f "${XDG_CONFIG_HOME:-$HOME/.config}/fontconfig/conf.d/50-lubuto.conf"
+  echo -e "\nRemoved the fontconfig snippet."
+  "$REPO_DIR/presets/gsettings.sh" undo
+}
+
+# Flatpak apps run in a sandbox with their own GTK and no view of ~/.themes,
+# so they draw their bundled theme. A user override grants read access to the
+# themes directory and names the variant through GTK_THEME, which both GTK 3
+# and GTK 4 honour inside the sandbox.
+flatpak_override() {
+  local dest="$1"
+  local name="$2"
+  local theme="$3"
+  local color="$4"
+  local size="$5"
+  local ctype="$6"
+
+  local THEME_DIR="${1}/${2}${3}${4}${5}${6}"
+  local variant="${2}${3}${4}${5}${6}"
+
+  if ! has_command flatpak; then
+    echo "'flatpak' not found, skipping the Flatpak override."
+    return 0
+  fi
+  if [[ "$UID" == "$ROOT_UID" ]]; then
+    echo "Do not run --flatpak with sudo. The override is per user."
+    exit 1
+  fi
+  if [[ ! -d "$THEME_DIR" ]]; then
+    echo "'$THEME_DIR' is not installed, skipping the Flatpak override."
+    return 0
+  fi
+
+  # Flatpak stores a path under the home directory as ~/..., so pass it that
+  # way or the same directory is listed twice.
+  local themes_dir="${dest/#$HOME/\~}"
+  echo -e "\nFlatpak: granting read access to '$themes_dir' and setting GTK_THEME=$variant for all apps..."
+  flatpak override --user --filesystem="$themes_dir:ro" --env=GTK_THEME="$variant"
+  echo "Undo with: $0 --remove --flatpak"
+}
+
+flatpak_unoverride() {
+  if ! has_command flatpak; then
+    return 0
+  fi
+  echo -e "\nFlatpak: removing the themes access and GTK_THEME override..."
+  local themes_dir="${dest:-$DEST_DIR}"
+  flatpak override --user --nofilesystem="${themes_dir/#$HOME/\~}" --unset-env=GTK_THEME
+}
+
+flatpak_theme() {
+  for theme in "${themes[@]}"; do
+    for color in "${lcolors[@]}"; do
+      for size in "${sizes[0]}"; do
+        flatpak_override "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype"
+      done
+    done
+  done
+}
+
 EXTENSION_UUID="lubuto@richardmwaba.github.io"
 USER_THEME_UUID="user-theme@gnome-shell-extensions.gcampax.github.com"
 
