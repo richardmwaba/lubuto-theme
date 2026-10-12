@@ -37,13 +37,19 @@ export function createShadow(actor) {
     return {shadow, bindings};
 }
 
+// GJS keeps the wrapper of a GObject that C code disposed, and every access
+// through it logs a critical instead of throwing. The wrapper's string form
+// is the one tell that costs nothing.
+export function isDisposed(object) {
+    const tag = object.toString();
+    return tag.includes('(DISPOSED)') || tag.includes('(FINALIZED)');
+}
+
 export function destroyShadow({shadow, bindings}) {
     for (const binding of bindings) {
-        try {
+        // A binding whose source actor was disposed died with it.
+        if (!isDisposed(binding))
             binding.unbind();
-        } catch {
-            // The source actor was disposed; the binding died with it.
-        }
     }
     for (const constraint of shadow.get_constraints())
         shadow.remove_constraint(constraint);

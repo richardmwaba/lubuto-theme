@@ -11,7 +11,7 @@ import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import {WindowCornersEffect} from './effects.js';
-import {createShadow, destroyShadow, updateShadow} from './shadow.js';
+import {createShadow, destroyShadow, isDisposed, updateShadow} from './shadow.js';
 
 const EFFECT_NAME = 'lubuto-window-corners';
 
@@ -150,24 +150,21 @@ export class WindowCorners {
         return true;
     }
 
-    // A window actor disposed from C keeps its JS wrapper; touching any
-    // property throws. Such an actor is dropped on first contact.
+    // A window actor disposed from C keeps its JS wrapper. Such an actor is
+    // dropped on first contact.
     _alive(actor) {
-        try {
-            actor.get_stage();
+        if (!isDisposed(actor))
             return true;
-        } catch {
-            this._unwatch(actor, {disposed: true});
-            return false;
-        }
+        this._unwatch(actor, {disposed: true});
+        return false;
     }
 
     _refresh(actor) {
-        if (!this._alive(actor))
-            return;
         const state = this._state.get(actor);
+        if (!state || !this._alive(actor))
+            return;
         const win = actor.metaWindow;
-        if (!state || !win)
+        if (!win)
             return;
 
         const want = this._shouldRound(win);
