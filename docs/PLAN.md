@@ -379,18 +379,20 @@ and, for icon themes, the map from Lubuto colour to icon variant. The installer 
       installer for the mapped colour (teal takes green, Tela has no teal).
 - [x] `install.sh --icons [hatter|tela]` and `--cursor [ice|classic]`, off unless given or `--full`. The
       gsettings keys change only after a y/N prompt; without a terminal the command is printed instead.
-- [ ] Screenshots for each default per colour.
+- [x] Screenshots: `images/colours-dark.png` shows the nine colours from the GTK 4 sample render with the
+      fixed accent. Shell screenshots per colour dropped by decision on 2026-10-12; the repo is private for
+      now.
 
 Exit: a fresh install with `--full` reproduces the reference machine's icons and cursor for any colour.
 
 ### Phase 9: docs and release
 
 - [x] README: scope, requirements, one-command install, every flag, extension settings, the per-app
-      window button notes. Screenshots per colour still pending: they need the reference displays.
+      window button notes, and the colour strip.
 - [x] `extension/THIRD_PARTY.md` covers the theme side too; `CHANGELOG.md` and `CONTRIBUTING.md` added.
 - [x] `.github/workflows/release.yml`: a `v*` tag builds the full theme matrix and the extension and
       publishes both zips with the changelog as notes. Tagging is a manual step.
-- [ ] Tag `v1.0.0` after the measure, the rgba test and the screenshots.
+- [ ] Tag `v1.0.0`. Everything before it is done; the tag is a manual `git tag v1.0.0 && git push --tags`.
 
 ## Decisions
 
