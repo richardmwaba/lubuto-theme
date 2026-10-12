@@ -1,6 +1,6 @@
 # Lubuto plan
 
-Status: Phase 4 in review on 2026-10-11. Backdrop edge artefacts being fixed. Phase 5 next; dock option A or B to decide.
+Status: Phase 4 done, Phase 5 in progress on 2026-10-11: dock done, move, wobble and panel modules next.
 
 Lubuto (Bemba: light) is a fork of [Orchis](https://github.com/vinceliuice/Orchis-theme) aimed at one target:
 GNOME 50 on Wayland, styled after macOS 27 Liquid Glass. It ships as two parts that install together: GTK
@@ -254,7 +254,7 @@ Result: done 2026-10-11. The only remaining Sass deprecation is `@import`.
 Exit: panel, popovers, overview and windows look like glass with Blur my Shell and Rounded Window Corners
 disabled.
 
-Result: in review 2026-10-11 for panel, popovers, overview and windows. Rounded Window Corners Reborn is
+Result: done 2026-10-11 for panel, popovers, overview and windows. Rounded Window Corners Reborn is
 disabled. Blur my Shell stays enabled only for its Dash to Dock blur until the `dock` module ships; its
 panel, overview, popup and application blur are off. Two mistakes worth remembering: an offscreen effect
 renders the whole actor, not its clip, so a backdrop must be the size of its frame; and Blur my Shell's
@@ -262,9 +262,11 @@ application blur paints a square behind rounded windows.
 
 ### Phase 5: dock and window effects
 
-- [ ] Decide dock option A or B after living with Phase 4 for a few days. Record the decision here.
-- [ ] `dock` module and its stylesheet: glass pill, dots for running apps, hover lift, bottom placement,
-      per-monitor choice.
+- [x] Dock option A chosen on 2026-10-11, built on the shell's own Dash: favourites, running apps, drag
+      reorder, app menus and tooltips come from it. Lubuto adds fixed icon size, hover magnify, placement,
+      glass backdrop, autohide with an edge pressure barrier, and keeps the dock above the overview.
+- [x] `dock` module and its stylesheet: glass pill, dots for running apps, hover lift, bottom placement,
+      per-monitor choice, autohide.
 - [ ] `move` module: copy, port per Porting rules, attribute, opacity and duration in the schema.
 - [ ] `wobble` module: copy, port per Porting rules, attribute, ship a restrained preset. Phase 6 decides whether it stays on by default.
 - [ ] `panel` module: the toggles the theme assumes.
@@ -356,8 +358,8 @@ Exit: a fresh install with `--full` reproduces the reference machine's icons and
 | 2026-10-10 | Coverflow Alt-Tab dropped. Tiling Assistant stays external. |
 | 2026-10-10 | Icons and cursor: Hatter per colour and Bibata-Modern-Ice as defaults, Tela and Bibata-Modern-Classic as alternatives, fetched from upstream by manifest, never vendored. |
 | 2026-10-10 | Ported code is modernised to GNOME 50 conventions before commit, see Porting rules. Build moves from libsass to Dart Sass. |
+| 2026-10-11 | Dock: option A, a Dash subclass in a glass pill. Blur my Shell is no longer needed on the reference machine. |
 | 2026-10-10 | Name: Lubuto (Bemba, light). Theme dirs `Lubuto-<Colour>[-Light/-Dark][-Compact]`, extension UUID `lubuto@richardmwaba.github.io`, schema `org.gnome.shell.extensions.lubuto`. |
 
 ## Open questions
 
-- Dock option A or B. Decided in Phase 5.
