@@ -12,6 +12,7 @@ import {BlurModule} from './src/blur/index.js';
 import {CornersModule} from './src/corners/index.js';
 import {DockModule} from './src/dock/index.js';
 import {MoveModule} from './src/move/index.js';
+import {ShieldModule} from './src/shield.js';
 import {WobbleModule} from './src/wobble/index.js';
 import {ThemeModule} from './src/theme.js';
 
@@ -63,6 +64,7 @@ export default class LubutoExtension extends Extension {
             new DockModule(this._settings),
             new MoveModule(this._settings),
             new WobbleModule(this._settings),
+            new ShieldModule(),
         ];
         for (const module of this._effects)
             module.enable();
