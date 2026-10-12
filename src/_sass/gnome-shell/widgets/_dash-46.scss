@@ -114,7 +114,9 @@ $dash_border_radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables
     background-color: colors.$glass-tint;
     border: 1px solid colors.$glass-rim;
     border-radius: variables.$radius-window + variables.$space-size;
-    box-shadow: variables.$shell-shadow-z4;
+    // A tall drop shadow gets cut by the screen edge into a flat dark strip
+    // with square ends under the pill, so the shadow stays within the margin.
+    box-shadow: variables.$shell-shadow-z1;
     margin-bottom: variables.$space-size * 1.5;
   }
 
