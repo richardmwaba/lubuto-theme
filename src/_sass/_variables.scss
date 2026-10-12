@@ -42,7 +42,9 @@ $large-scalable-icon-size: $scalable-icon-size * 2;
 // Radiuses
 //
 
-$window-radius: $default_corner + $space-size;
+// Equal to the rounded corners the extension clips windows to, so CSD corners,
+// the clip and the shadow under it agree.
+$window-radius: $default_corner;
 $corner-radius: if(sass($compact == 'false'): $default_corner; else: max(0, $default_corner - 2px));
 $material-radius: $default_corner * 0.5 + 4px;
 $menu-radius: $default_corner * 0.25 + $space-size + 2px;

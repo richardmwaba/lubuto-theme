@@ -63,9 +63,11 @@ export function updateShadow(win, shadow, radius, contentsOffset, {hidden}) {
 
     shadow.style = `padding: ${SHADOW_PADDING}px;`;
 
+    // The 1px margin keeps the rectangle's anti-aliased edge under the window,
+    // where the clip effect cannot see it, so no light arc shows at the corners.
     const style = hidden
         ? 'opacity: 0;'
-        : `background: white; border-radius: ${radius}px; ${win.appears_focused ? FOCUSED_SHADOW : UNFOCUSED_SHADOW}`;
+        : `background: white; border-radius: ${radius}px; margin: 1px; ${win.appears_focused ? FOCUSED_SHADOW : UNFOCUSED_SHADOW}`;
     const child = shadow.firstChild;
     if (child.style !== style) {
         child.style = style;
