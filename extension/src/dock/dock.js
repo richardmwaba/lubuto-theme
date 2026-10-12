@@ -312,13 +312,19 @@ export class Dock {
         if (!background.has_allocation() || !this._container.has_allocation())
             return;
 
+        // Transformed positions include the autohide slide's translation,
+        // which is where the pill is right now, not where it settles. The
+        // frame samples the desktop at the settled position; the origin is
+        // relative to the container and slides with it.
         const [bgX, bgY] = background.get_transformed_position();
         const [bgWidth, bgHeight] = background.get_transformed_size();
         const [containerX, containerY] = this._container.get_transformed_position();
+        const settledX = bgX - this._container.translation_x;
+        const settledY = bgY - this._container.translation_y;
         const radius = background.get_theme_node().get_border_radius(St.Corner.TOPLEFT);
 
         this._backdrop.frame(
-            bgX - this._monitor.x, bgY - this._monitor.y, bgWidth, bgHeight, radius,
+            settledX - this._monitor.x, settledY - this._monitor.y, bgWidth, bgHeight, radius,
             bgX - containerX, bgY - containerY);
     }
 

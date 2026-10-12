@@ -37,15 +37,16 @@ export class Backdrop {
         this._clone = null;
         this._wallpaper = null;
         this._wallpaperHolder = null;
+        this._mirrors = {};
         this._radius = radius;
         this._frame = null;
 
         // Two actors. The outer one is exactly the framed rectangle and is
         // what gets rounded corners. The inner one is the frame plus a margin
-        // of blur radius on each side and carries the blur, so the blur never
-        // samples past the edge of its texture, which would darken the rim.
-        // The monitor-sized wallpaper sits inside the inner actor, offset so
-        // the right part shows through.
+        // of twice the blur radius on each side and carries the blur, so the
+        // blur never samples past the edge of its texture. The monitor-sized
+        // content sits inside the inner actor, offset so the right part shows
+        // through, with mirrored strips where a margin leaves the monitor.
         // Both start empty and hidden. A backdrop that has not been framed yet
         // must paint nothing: the panel layer sits above every window, and a
         // monitor-sized blurred wallpaper there hides the whole desktop.
@@ -147,23 +148,27 @@ export class Backdrop {
         const margin = Math.ceil(this._radius * scale * 2);
         const monitor = this.monitor;
 
-        // Margin per side, no further than the wallpaper extends.
-        const left = Math.min(margin, f.x);
-        const top = Math.min(margin, f.y);
-        const right = Math.min(margin, monitor.width - (f.x + f.width));
-        const bottom = Math.min(margin, monitor.height - (f.y + f.height));
-
         this.actor.set_position(f.originX, f.originY);
         this.actor.set_size(f.width, f.height);
 
-        this._blurred.set_position(-left, -top);
-        this._blurred.set_size(f.width + left + right, f.height + top + bottom);
+        // The blurred actor carries the full margin on every side, so the
+        // blur samples its own texture only. Where the monitor ends inside
+        // a margin, the part past the edge is filled with the content
+        // mirrored across that edge, the usual padding for a blur: left
+        // transparent, it pulls the edge of the surface towards black.
+        this._blurred.set_position(-margin, -margin);
+        this._blurred.set_size(f.width + 2 * margin, f.height + 2 * margin);
 
+        // Monitor origin in the blurred actor's coordinates.
+        const monitorX = margin - f.x;
+        const monitorY = margin - f.y;
         if (this._wallpaper)
-            this._wallpaper.set_position(-(f.x - left), -(f.y - top));
+            this._wallpaper.set_position(monitorX, monitorY);
         // The desktop copy is in stage coordinates; the frame is monitor relative.
         if (this._clone)
-            this._clone.actor.set_position(-(monitor.x + f.x - left), -(monitor.y + f.y - top));
+            this._clone.actor.set_position(monitorX - monitor.x, monitorY - monitor.y);
+
+        this._layoutMirrors(f, margin, monitorX, monitorY);
 
         this.actor.show();
 
@@ -179,6 +184,77 @@ export class Backdrop {
         }
     }
 
+    // One strip per side whose margin runs past the monitor, holding a
+    // clone of the content flipped across that edge, clipped to the strip.
+    _layoutMirrors(f, margin, monitorX, monitorY) {
+        const monitor = this.monitor;
+        const content = this._clone?.actor ?? this._wallpaper;
+        const contentX = content.x;
+        const contentY = content.y;
+        const width = f.width + 2 * margin;
+        const height = f.height + 2 * margin;
+        const edges = {
+            top: {
+                short: margin - Math.min(margin, f.y),
+                place: strip => {
+                    const edge = monitorY;
+                    strip.set_position(0, edge - strip.short);
+                    strip.set_size(width, strip.short);
+                    strip.clone.set_scale(1, -1);
+                    strip.clone.set_position(contentX, edge - contentY + strip.short);
+                },
+            },
+            bottom: {
+                short: margin - Math.min(margin, monitor.height - (f.y + f.height)),
+                place: strip => {
+                    const edge = monitorY + monitor.height;
+                    strip.set_position(0, edge);
+                    strip.set_size(width, strip.short);
+                    strip.clone.set_scale(1, -1);
+                    strip.clone.set_position(contentX, edge - contentY);
+                },
+            },
+            left: {
+                short: margin - Math.min(margin, f.x),
+                place: strip => {
+                    const edge = monitorX;
+                    strip.set_position(edge - strip.short, 0);
+                    strip.set_size(strip.short, height);
+                    strip.clone.set_scale(-1, 1);
+                    strip.clone.set_position(edge - contentX + strip.short, contentY);
+                },
+            },
+            right: {
+                short: margin - Math.min(margin, monitor.width - (f.x + f.width)),
+                place: strip => {
+                    const edge = monitorX + monitor.width;
+                    strip.set_position(edge, 0);
+                    strip.set_size(strip.short, height);
+                    strip.clone.set_scale(-1, 1);
+                    strip.clone.set_position(edge - contentX, contentY);
+                },
+            },
+        };
+
+        for (const [side, {short, place}] of Object.entries(edges)) {
+            let strip = this._mirrors[side];
+            if (short <= 0) {
+                strip?.destroy();
+                delete this._mirrors[side];
+                continue;
+            }
+            if (!strip) {
+                strip = new St.Widget({name: `lubuto-backdrop-mirror-${side}`, clip_to_allocation: true});
+                strip.clone = new Clutter.Clone({source: content});
+                strip.add_child(strip.clone);
+                this._blurred.add_child(strip);
+                this._mirrors[side] = strip;
+            }
+            strip.short = short;
+            place(strip);
+        }
+    }
+
     destroy() {
         this._bgManager?.destroy();
         this._bgManager = null;
@@ -189,5 +265,6 @@ export class Backdrop {
         this._blurred = null;
         this._wallpaper = null;
         this._wallpaperHolder = null;
+        this._mirrors = {};
     }
 }
