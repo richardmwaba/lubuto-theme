@@ -5,7 +5,6 @@
 // order and disable in reverse so each one can rely on the ones before it.
 
 import Gio from 'gi://Gio';
-import Meta from 'gi://Meta';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
@@ -41,34 +40,11 @@ export default class LubutoExtension extends Extension {
                 if (signal.startsWith('Confirmed')) {
                     console.log(`Lubuto: ${signal}, dropping the effects`);
                     this._disableEffects();
-                    this._keepFocusOffX11();
                 } else if (signal === 'Canceled') {
                     console.log('Lubuto: end of session cancelled, restoring the effects');
-                    this._releaseFocusGuard();
                     this._enableEffects();
                 }
             });
-    }
-
-    // mutter 50.5 hangs at the end of the session when an X11 window still
-    // has the focus as Xwayland dies: unmanaging it focuses the next window
-    // with an X11 round trip on the dead connection, and systemd aborts the
-    // shell five seconds later with whatever frame was last on screen.
-    // Unmanaging an unfocused window asks for no focus, so once the end of
-    // the session is confirmed the focus stays off X11 windows.
-    _keepFocusOffX11() {
-        const display = global.display;
-        const release = () => {
-            const window = display.focus_window;
-            if (window?.get_client_type() === Meta.WindowClientType.X11)
-                display.unset_input_focus(global.get_current_time());
-        };
-        display.connectObject('notify::focus-window', release, this);
-        release();
-    }
-
-    _releaseFocusGuard() {
-        global.display.disconnectObject(this);
     }
 
     disable() {
@@ -76,7 +52,6 @@ export default class LubutoExtension extends Extension {
             Gio.DBus.session.signal_unsubscribe(this._endSessionId);
             this._endSessionId = 0;
         }
-        this._releaseFocusGuard();
         this._disableEffects();
         this._theme?.disable();
         this._theme = null;
