@@ -37,10 +37,13 @@ export default class LubutoExtension extends Extension {
             null, END_SESSION_IFACE, null, END_SESSION_PATH, null,
             Gio.DBusSignalFlags.NONE,
             (connection, sender, path, iface, signal) => {
-                if (signal.startsWith('Confirmed'))
+                if (signal.startsWith('Confirmed')) {
+                    console.log(`Lubuto: ${signal}, dropping the effects`);
                     this._disableEffects();
-                else if (signal === 'Canceled')
+                } else if (signal === 'Canceled') {
+                    console.log('Lubuto: end of session cancelled, restoring the effects');
                     this._enableEffects();
+                }
             });
     }
 
