@@ -145,7 +145,7 @@ label {
   }
 
   &.osd {
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
     background-color: $tooltip;
     color: on($tooltip);
   }
@@ -191,7 +191,7 @@ window.assistant {
   color: on($base);
   background-color: $base;
   background-clip: padding-box;
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
   border: none;
 }
 
@@ -992,8 +992,8 @@ button.combo:only-child {
 %toolbar_osd {
   transition: $transition-shadow;
   padding: $space-size;
-  border-radius: $corner-radius;
-  box-shadow: $shadow-z4, inset 0 1px highlight($surface);
+  border-radius: $radius-surface;
+  box-shadow: 0 0 0 1px $glass-rim, inset 0 1px $glass-highlight, $glass-shadow-raised;
   background-color: $surface;
   color: $text;
 
@@ -1211,7 +1211,7 @@ searchbar > revealer > box {
 
 headerbar {
   transition: background-color $duration $ease-out, color $duration $ease-out;
-  box-shadow: inset 0 -1px $divider, inset 0 1px highlight($titlebar);
+  box-shadow: inset 0 1px $glass-highlight;
   color: $titlebar-text;
   min-height: $large-size;
   padding: 0;
@@ -1241,7 +1241,7 @@ headerbar {
 
     &, &:backdrop {
       background-color: transparent;
-      box-shadow: inset 0 1px highlight($titlebar);
+      box-shadow: inset 0 1px $glass-highlight;
     }
 
     .subtitle,
@@ -1473,7 +1473,7 @@ headerbar {
   .maximized &,
   .fullscreen & {
     border-radius: 0;
-    box-shadow: inset 0 -1px $divider;
+    box-shadow: inset 0 1px $glass-highlight;
   }
 
   &.default-decoration {
@@ -1948,7 +1948,7 @@ popover.background {
   > contents {
     transition: $transition-shadow;
     padding: $space-size;
-    box-shadow: $shadow-z6; // TODO: this should really have a highlight
+    box-shadow: 0 0 0 1px $glass-rim, inset 0 1px $glass-highlight, $glass-shadow-raised;
     background-color: $surface;
     border: none;
     border-radius: $menu-radius;
@@ -1958,7 +1958,7 @@ popover.background {
   &:backdrop {
     > arrow,
     > contents {
-      box-shadow: $shadow-z2;
+      box-shadow: 0 0 0 1px $glass-rim, inset 0 1px $glass-highlight, $glass-shadow;
     }
   }
 
@@ -2123,13 +2123,13 @@ notebook {
   &.frame > header { background-color: $base-alt; }
 
   &.frame {
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
   }
 
   &.frame frame {
     > border {
       border: none;
-      border-radius: $corner-radius;
+      border-radius: $radius-surface;
     }
 
     > list {
@@ -2143,19 +2143,19 @@ notebook {
 
   &.frame > header {
     &.top {
-      border-radius: $corner-radius $corner-radius 0 0;
+      border-radius: $radius-surface $radius-surface 0 0;
     }
 
     &.bottom {
-      border-radius: 0 0 $corner-radius $corner-radius;
+      border-radius: 0 0 $radius-surface $radius-surface;
     }
 
     &.left {
-      border-radius: $corner-radius 0 0 $corner-radius;
+      border-radius: $radius-surface 0 0 $radius-surface;
     }
 
     &.right {
-      border-radius: 0 $corner-radius $corner-radius 0;
+      border-radius: 0 $radius-surface $radius-surface 0;
     }
   }
 
@@ -3134,13 +3134,13 @@ frame,
 
   > list { border: none; }
 
-  &.view { border-radius: $corner-radius; }
+  &.view { border-radius: $radius-surface; }
 
   &.flat { border-style: none; }
 }
 
 frame {
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
 
   > label {
     margin: 4px;
@@ -3278,7 +3278,7 @@ list {
   }
 }
 
-list.frame { border-radius: $corner-radius; }
+list.frame { border-radius: $radius-surface; }
 
 listview > header {
   @extend .heading;
@@ -3683,7 +3683,7 @@ row.combo {
   }
 }
 
-$boxed-radius: $corner-radius - 1px;
+$boxed-radius: $radius-surface - 1px;
 
 %boxed_list_row {
   transition: 200ms $ease-out;
@@ -3869,15 +3869,15 @@ list.boxed-list-separate {
     &.expander {
       row.header {
         @extend %boxed_list_row;
-        border-top-left-radius: $corner-radius;
-        border-top-right-radius: $corner-radius;
+        border-top-left-radius: $radius-surface;
+        border-top-right-radius: $radius-surface;
       }
 
       &:not(:checked) row.header,
       &.expander:checked list.nested,
       &.expander:checked list.nested > row:last-child {
-        border-bottom-left-radius: $corner-radius;
-        border-bottom-right-radius: $corner-radius;
+        border-bottom-left-radius: $radius-surface;
+        border-bottom-right-radius: $radius-surface;
         border-bottom: none;
       }
     }
@@ -3952,7 +3952,7 @@ expander-widget {
 calendar {
   padding: 0;
   border: 1px solid $divider;
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
   color: $text;
 
   &:disabled { color: $text-disabled; }
@@ -4185,14 +4185,14 @@ window.about {
     &:dir(ltr),
     &.left,
     &.left:dir(rtl) {
-      border-right: 1px solid $divider;
+      border-right: 1px solid $glass-rim;
       border-left-style: none;
     }
 
     @at-root %sidebar_right,
     &:dir(rtl),
     &.right {
-      border-left: 1px solid $divider;
+      border-left: 1px solid $glass-rim;
       border-right-style: none;
     }
   }
@@ -4472,7 +4472,7 @@ video {
   }
 
   background: black;
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
 }
 
 /**************
@@ -4670,7 +4670,7 @@ colorswatch {
 // colorscale popup
 colorchooser .popover.osd {
   transition: $transition-shadow;
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
   box-shadow: $shadow-z4, inset 0 1px highlight($surface);
   background-color: $surface;
 

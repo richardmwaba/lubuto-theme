@@ -870,7 +870,7 @@ window.background.csd {
         > list {
           border-top-width: 1px;
 
-          &, > row { border-radius: $corner-radius $corner-radius 0 0; }
+          &, > row { border-radius: $radius-surface $radius-surface 0 0; }
         }
       }
 
@@ -878,7 +878,7 @@ window.background.csd {
         > list {
           border-bottom-width: 1px;
 
-          &, > row { border-radius:  0 0 $corner-radius $corner-radius; }
+          &, > row { border-radius:  0 0 $radius-surface $radius-surface; }
         }
       }
     }
@@ -2157,17 +2157,17 @@ dialog.background.csd {
       }
 
       .inline-toolbar {
-        border-radius: 0 0 $corner-radius $corner-radius;
+        border-radius: 0 0 $radius-surface $radius-surface;
       }
     }
   }
 
   stack scrolledwindow {
     &.frame {
-      border-radius: $corner-radius;
+      border-radius: $radius-surface;
 
       textview.view {
-        border-radius: $corner-radius;
+        border-radius: $radius-surface;
 
         > text {
           background: none;
@@ -2178,7 +2178,7 @@ dialog.background.csd {
     }
 
     viewport.frame {
-      &.view { border-radius: $corner-radius; }
+      &.view { border-radius: $radius-surface; }
     }
   }
 }

@@ -263,13 +263,8 @@
   }
 
   #{$_selector} undershoot.#{$p} {
-    @if $style == 'compact' {
-      box-shadow: none;
-    } @else {
-      box-shadow: inset $_border_pos $border;
-    }
-
-    background: linear-gradient(to $_direction, gtkalpha($c, .75), transparent 4px);
+    box-shadow: inset $_border_pos $glass-rim;
+    background: linear-gradient(to $_direction, gtkalpha($c, .75), transparent 6px);
   }
 }
   

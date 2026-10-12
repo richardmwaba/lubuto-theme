@@ -941,13 +941,13 @@ popover.events {
   padding: 0;
 
   box {
-    border-top-left-radius: $corner-radius;
-    border-top-right-radius: $corner-radius;
+    border-top-left-radius: $radius-surface;
+    border-top-right-radius: $radius-surface;
   }
 
   list {
     background-color: $base;
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
   }
 
   scrolledwindow {
@@ -1273,7 +1273,7 @@ monthpopover > box {
 }
 
 .notes-section box > textview {
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
   padding: $space-size;
 
   > text {
@@ -1367,7 +1367,7 @@ flowboxchild {
   &.category-tile {
     padding: $space-size * 3.5;
     border: none;
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
     box-shadow: 0 2px 6px rgba(black, 0.1);
   }
 
@@ -1579,7 +1579,7 @@ $weather_forecast_color: darker($warning, 10%);
 
 .forecast-card {
   transition: border-radius 100ms ease-out;
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
 }
 
 .forecast-card separator {
@@ -1799,7 +1799,7 @@ panelstatusbar {
     }
 
     > stylevariantpreview > .wallpaper {
-      border-radius: $corner-radius;
+      border-radius: $radius-surface;
       outline-color: transparent;
       outline-width: 3px;
       outline-offset: $space-size * 0.5;

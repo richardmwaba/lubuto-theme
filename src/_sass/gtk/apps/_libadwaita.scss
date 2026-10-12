@@ -428,9 +428,9 @@ statuspage {
 
 // Cards
 .card, %card {
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
   box-shadow: none;
-  border: 1px solid $divider;
+  border: 1px solid $glass-rim;
   background-clip: padding-box;
   background-color: $base;
   color: $text-secondary;
@@ -484,11 +484,11 @@ preferencesgroup > box {
   flowbox.background-flowbox > flowboxchild {
     outline: 2px solid transparent;
     outline-offset: 0;
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
     padding: $space-size * 0.5;
 
     .background-thumbnail {
-      border-radius: $corner-radius - $space-size * 0.5;
+      border-radius: $radius-surface - $space-size * 0.5;
     }
 
     &:hover {
@@ -867,14 +867,19 @@ navigation-view navigation-view-page .medium stack > button { // Nautilus proper
 // Sidebar
 .unfolded stacksidebar.sidebar { border: none; }
 
-$sidebar: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar; else: $base-alt);
+// A dark top bar on a light variant keeps the sidebar dark. Otherwise the
+// sidebar is a glass tint over the window background, which is translucent so
+// it reads the same over any content behind it; its text colour comes from the
+// solid surface it approximates.
+$sidebar-solid: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar; else: $base-alt);
+$sidebar: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar; else: $glass-sidebar);
 $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar-backdrop; else: $background);
 
 .sidebar-pane,
 .content-pane .sidebar-pane,
 .sidebar-pane .content-pane {
   background-color: $sidebar;
-  color: on($sidebar);
+  color: on($sidebar-solid);
 
   &:backdrop {
     background-color: $sidebar-backdrop;
@@ -889,25 +894,25 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
   }
 
   banner > revealer > widget {
-    background-color: gtkmix($primary, $sidebar, 30%);
-    color: on($sidebar);
+    background-color: gtkmix($primary, $sidebar-solid, 30%);
+    color: on($sidebar-solid);
 
     &:backdrop {
-      background-color: gtkmix($primary, $sidebar, 30%);
+      background-color: gtkmix($primary, $sidebar-solid, 30%);
     }
   }
 
   &:dir(ltr), &.end:dir(rtl) {
     &, banner > revealer > widget {
       box-shadow: none;
-      border-right: 1px solid $border;
+      border-right: 1px solid $glass-rim;
     }
   }
 
   &:dir(rtl), &.end:dir(ltr) {
     &, banner > revealer > widget {
       box-shadow: none;
-      border-left: 1px solid $border;
+      border-left: 1px solid $glass-rim;
     }
   }
 }
@@ -1331,7 +1336,7 @@ floating-sheet {
   }
 
   > sheet.background {
-    box-shadow: $shadow-z16;
+    box-shadow: 0 0 0 1px $glass-rim, $glass-shadow-raised;
     border-radius: $window-radius;
     outline: none;
   }
@@ -1392,7 +1397,7 @@ bottom-sheet {
   }
 
   > sheet {
-    box-shadow: $shadow-z16;
+    box-shadow: 0 0 0 1px $glass-rim, $glass-shadow-raised;
 
     &, > outline, > stack > widget, > stack > button, > stack > button > widget {
       border-top-left-radius: $window-radius;
@@ -1478,7 +1483,7 @@ tabthumbnail {
   border-radius: $window-radius;
 
   .card picture {
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
     outline: 1px solid $border;
   }
 

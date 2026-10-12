@@ -220,7 +220,7 @@ label {
   }
 
   &.osd {
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
     background-color: $tooltip;
     color: on($tooltip);
   }
@@ -1003,11 +1003,11 @@ toolbar {
   @at-root %toolbar_osd, &.osd {
     transition: $transition-shadow;
     padding: $space-size;
-    border-radius: $corner-radius;
-    box-shadow: $shadow-z4, inset 0 1px highlight($surface);
+    border-radius: $radius-surface;
+    box-shadow: 0 0 0 1px $glass-rim, inset 0 1px $glass-highlight, $glass-shadow-raised;
     background-color: $surface;
 
-    &:backdrop { box-shadow: $shadow-z2, inset 0 1px highlight($surface); }
+    &:backdrop { box-shadow: 0 0 0 1px $glass-rim, inset 0 1px $glass-highlight, $glass-shadow; }
 
     &.left,
     &.right,
@@ -1063,7 +1063,7 @@ toolbar {
   background-color: $base-alt;
 
   frame.view + & {
-    border-radius: 0 0 $corner-radius $corner-radius;
+    border-radius: 0 0 $radius-surface $radius-surface;
   }
 }
 
@@ -1142,7 +1142,7 @@ searchbar > revealer > box {
 .titlebar {
   transition: background-color $duration $ease-out, color $duration $ease-out;
   border-radius: $window-radius $window-radius 0 0;
-  box-shadow: inset 0 -1px $divider, inset 0 1px highlight($titlebar);
+  box-shadow: inset 0 1px $glass-highlight;
   background-color: $titlebar;
   color: $titlebar-text;
   padding: 0 $space-size;
@@ -1810,7 +1810,7 @@ menu {
 
   .background > & {
     border-radius: $menu-radius;
-    box-shadow: inset 0 1px highlight($surface);
+    box-shadow: inset 0 1px $glass-highlight;
   }
 
   .background:not(.popup) > & {
@@ -1822,7 +1822,7 @@ menu {
   .background.csd > & {
     border: none; // axes borders in a composited env
     border-radius: $menu-radius;
-    box-shadow: inset 0 1px highlight($surface);
+    box-shadow: inset 0 1px $glass-highlight;
   }
 
   menuitem {
@@ -1919,10 +1919,10 @@ menuitem {
 popover.background {
   transition: $transition-shadow;
   padding: 0;
-  box-shadow: $shadow-z4; // TODO: this should really have a highlight
+  box-shadow: 0 0 0 1px $glass-rim, inset 0 1px $glass-highlight, $glass-shadow-raised;
   background-color: $surface;
 
-  &:backdrop { box-shadow: $shadow-z2; }
+  &:backdrop { box-shadow: 0 0 0 1px $glass-rim, inset 0 1px $glass-highlight, $glass-shadow; }
 
   &, .csd & {
     border-style: solid;
@@ -2060,16 +2060,16 @@ notebook {
 
   .background.csd &.frame {
     &, > stack {
-      border-radius: $corner-radius;
+      border-radius: $radius-surface;
     }
 
     > stack {
       scrolledwindow.frame {
-        border-radius: $corner-radius $corner-radius 0 0;
+        border-radius: $radius-surface $radius-surface 0 0;
       }
 
       .inline-toolbar {
-        border-radius: 0 0 $corner-radius $corner-radius;
+        border-radius: 0 0 $radius-surface $radius-surface;
       }
     }
   }
@@ -2081,7 +2081,7 @@ notebook {
   &.frame frame {
     > border {
       border: none;
-      border-radius: $corner-radius;
+      border-radius: $radius-surface;
     }
 
     > list {
@@ -3065,7 +3065,7 @@ printdialog {
 .frame {
   @extend %frame;
 
-  &.view { border-radius: $corner-radius; }
+  &.view { border-radius: $radius-surface; }
 
   &.flat { border-style: none; }
 }
@@ -3160,24 +3160,24 @@ separator {
  *********/
 
 %circular_list {
-  border-radius: $corner-radius + 1px;
+  border-radius: $radius-surface + 1px;
   box-shadow: none;
   border: 1px solid $divider;
 }
 
 %circular_row {
   &:first-child {
-    border-top-left-radius: $corner-radius;
-    border-top-right-radius: $corner-radius;
+    border-top-left-radius: $radius-surface;
+    border-top-right-radius: $radius-surface;
   }
 
   &:last-child { // Not use ?
-    border-bottom-left-radius: $corner-radius;
-    border-bottom-right-radius: $corner-radius;
+    border-bottom-left-radius: $radius-surface;
+    border-bottom-right-radius: $radius-surface;
   }
 
   &:only-child {
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
   }
 }
 
@@ -3473,14 +3473,14 @@ filechooser {
     &:dir(ltr),
     &.left,
     &.left:dir(rtl) {
-      border-right: 1px solid $divider;
+      border-right: 1px solid $glass-rim;
       border-left-style: none;
     }
 
     @at-root %sidebar_right,
     &:dir(rtl),
     &.right {
-      border-left: 1px solid $divider;
+      border-left: 1px solid $glass-rim;
       border-right-style: none;
     }
   }
@@ -3876,7 +3876,7 @@ colorswatch {
 // colorscale popup
 colorchooser .popover.osd {
   transition: $transition-shadow;
-  border-radius: $corner-radius;
+  border-radius: $radius-surface;
   box-shadow: $shadow-z4, inset 0 1px highlight($surface);
   background-color: $surface;
 
@@ -3954,11 +3954,11 @@ decoration {
 
   .csd.popup & {
     border-radius: $menu-radius;
-    box-shadow: $shadow-z4;
+    box-shadow: 0 0 0 1px $glass-rim, $glass-shadow-raised;
   }
 
   tooltip.csd & {
-    border-radius: $corner-radius;
+    border-radius: $radius-surface;
     box-shadow: none;
   }
 

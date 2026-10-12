@@ -123,6 +123,8 @@ presets/
   icons.manifest      icon and cursor themes: name, upstream URL, pinned tag, licence, colour map
 tools/
   build-extension.sh  compiles schemas, zips the extension
+  check-gtk-css.py    parses compiled stylesheets with the real GTK 3 and GTK 4 parsers
+  render-gtk.py       renders a sample window of common widgets to PNG, GTK 3 or GTK 4
 docs/
   PLAN.md             this file
   MEASURING.md        frame-time protocol
@@ -303,13 +305,20 @@ Exit: every shipped effect has a before and after line in `MEASURING.md`.
 
 ### Phase 7: GTK and libadwaita crisp pass
 
-- [ ] Hairline borders: 1 px, token-driven contrast, on headerbars, sidebars, popovers and list rows.
-- [ ] Shadows: shorter blur radius, lower offset, matching `$glass-shadow`.
-- [ ] Headerbar: flat tint, no gradient, rim at the bottom edge only when content scrolls under it.
-- [ ] Sidebars: translucent tint in dark, rim between sidebar and content.
-- [ ] Controls: buttons, switches, sliders, checks and radios aligned to `$radius-control`.
-- [ ] GTK 3 parity: apply the same tokens so Electron and legacy apps match.
-- [ ] Pixel audit at scale 1 on all three displays: no half-pixel borders, no blurry radii.
+- [x] Hairline borders: `$glass-rim` on sidebars, popovers, cards, OSD toolbars and sheets; `$divider`
+      between list rows.
+- [x] Shadows: popovers, menus, OSD toolbars and sheets use `$glass-shadow-raised`, backdrop
+      `$glass-shadow`. Window decorations keep their large shadow because the corners module clips
+      it anyway and GTK sizes the resize border from it.
+- [x] Headerbar: flat tint, `$glass-highlight` top edge, no bottom line. The `undershoot` mixin draws a
+      `$glass-rim` hairline and a short shade where content scrolls under a bar.
+- [x] Sidebars: `$glass-sidebar` is a translucent tint over the window background, rim between sidebar
+      and content. A dark top bar on a light variant keeps the solid dark sidebar.
+- [x] Controls: `$corner-radius` is `$radius-control` (8 px); cards, frames, notebooks, menus and
+      OSD surfaces step up to `$radius-surface` (12 px).
+- [x] GTK 3 parity: same tokens in `_common-3.20.scss` and `_gnome-3.22.scss`.
+- [x] Pixel audit with `tools/render-gtk.py` at scale 1 and 2: 1 px rims and radii stay crisp. Still to
+      check on the real displays: side-by-side apps on the reference machine.
 
 Exit: Nautilus, Settings, Text Editor, Console, Software, a GTK 3 app and an Electron app side by side look
 like one family.
