@@ -28,10 +28,15 @@ export class DockModule {
             'changed::glass-dock-opacity', () => this._dock?.updateBlur(),
             this);
 
-        if (Main.layoutManager._startingUp)
+        if (Main.layoutManager._startingUp) {
+            // The overview opens at login with the stock dash before the dock
+            // exists. Hide that dash now so it never flashes.
+            if (this._settings.get_boolean('dock-enabled'))
+                Main.overview.dash.opacity = 0;
             Main.layoutManager.connectObject('startup-complete', () => this._sync(), this);
-        else
+        } else {
             this._sync();
+        }
     }
 
     disable() {
@@ -84,5 +89,6 @@ export class DockModule {
     _stop() {
         this._dock?.disable();
         this._dock = null;
+        Main.overview.dash.opacity = 255;
     }
 }

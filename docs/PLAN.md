@@ -277,6 +277,12 @@ Result: done 2026-10-11. Dash to Dock, Transparent Window Moving, Compiz Windows
 Corners Reborn and Blur my Shell are all disabled on the reference machine. Just Perfection stays, by
 choice. `extension/THIRD_PARTY.md` lists the ported code.
 
+### Known issues outside Lubuto
+
+- Logout shows a brief screen distortion. The journal has gnome-shell crashing in mutter's X11 display
+  teardown (`meta_x11_display_dispose` → `meta_window_focus` → `XIfEvent`), with no Lubuto frames on the
+  stack. A mutter 50.5 bug on this machine; retest after the next mutter update.
+
 ### Phase 6: fluidity and performance
 
 Target: no dropped frames at 60 Hz on the 3440x1440 display during panel menu open, overview enter and exit,
