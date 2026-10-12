@@ -77,7 +77,9 @@ export class PopupBlur {
             return;
 
         const box = menu.box;
-        const pointer = menu.actor;
+        // The box pointer is what the open animation fades and slides. For
+        // quick settings, menu.actor is a static overlay around it.
+        const pointer = menu._boxPointer ?? menu.actor;
         const parent = pointer.get_parent();
         const monitor = Main.layoutManager.findMonitorForActor(box) ?? Main.layoutManager.primaryMonitor;
         if (!parent || !monitor)
@@ -103,7 +105,7 @@ export class PopupBlur {
             return;
 
         const box = menu.box;
-        const pointer = menu.actor;
+        const pointer = menu._boxPointer ?? menu.actor;
         const parent = pointer.get_parent();
         const monitor = state.backdrop.monitor;
         if (!box.has_allocation() || !parent)
@@ -129,7 +131,7 @@ export class PopupBlur {
             return;
 
         menu.box.disconnectObject(this);
-        menu.actor.disconnectObject(this);
+        (menu._boxPointer ?? menu.actor).disconnectObject(this);
         for (const binding of state.bindings)
             binding.unbind();
         state.bindings = [];
