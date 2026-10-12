@@ -216,12 +216,12 @@ install_submenu() {
 }
 
 install_nord() {
-  sed -i "/\@import/s/color-palette-default/color-palette-nord/" "$SRC_DIR/_sass/_tweaks-temp.scss"
+  sed -i "s/color-palette-default/color-palette-nord/" "$SRC_DIR/_sass/_tweaks-temp.scss"
   sed -i "/\$colorscheme:/s/default/nord/" "$SRC_DIR/_sass/_tweaks-temp.scss"
 }
 
 install_dracula() {
-  sed -i "/\@import/s/color-palette-default/color-palette-dracula/" "$SRC_DIR/_sass/_tweaks-temp.scss"
+  sed -i "s/color-palette-default/color-palette-dracula/" "$SRC_DIR/_sass/_tweaks-temp.scss"
   sed -i "/\$colorscheme:/s/default/dracula/" "$SRC_DIR/_sass/_tweaks-temp.scss"
 }
 

@@ -1,15 +1,18 @@
+@use "../../colors";
+@use "../../variables";
+
 // Links
 .shell-link {
-  border-radius: $material-radius;
-  color: $link;
+  border-radius: variables.$material-radius;
+  color: colors.$link;
   background-color: transparent;
   &:hover {
-    color: $link;
-    background-color: rgba($link, 0.3 * 0.5);
+    color: colors.$link;
+    background-color: rgba(colors.$link, 0.3 * 0.5);
   }
   &:active {
-    color: $link;
-    background-color: rgba($link, 0.3);
+    color: colors.$link;
+    background-color: rgba(colors.$link, 0.3);
   }
 }
 

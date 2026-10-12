@@ -1,8 +1,15 @@
+@use "../../colors";
+@use "../common-4.0";
+@use "../../config";
+@use "../../tweaks-temp";
+@use "../../variables";
+@use "../drawing-4.0";
+
 @use "sass:list";
 @use "sass:color";
 
 avatar {
-  border-radius: $circular-radius;
+  border-radius: variables.$circular-radius;
   font-weight: bold;
 
   // The list of colors to generate avatars.
@@ -40,20 +47,20 @@ avatar {
   &.image { background: none; }
 }
 
-$opaque_button_default_bg: color.mix($base, $text, 85%);
+$opaque_button_default_bg: color.mix(colors.$base, colors.$text, 85%);
 
 button {
   @at-root %opaque-button {
     box-shadow: none;
-    transition: $transition,
-                box-shadow $ripple-fade-in-duration $ease-out;
+    transition: variables.$transition,
+                box-shadow variables.$ripple-fade-in-duration variables.$ease-out;
 
     .osd &:focus:focus-visible {
       outline: none;
     }
 
     &:hover {
-      background-image: image(gtkalpha(currentColor, .1));
+      background-image: image(colors.gtkalpha(currentColor, .1));
     }
 
     &.keyboard-activating,
@@ -79,64 +86,64 @@ button {
     @extend %opaque-button;
 
     background-color: $opaque_button_default_bg;
-    color: $text;
+    color: colors.$text;
   }
 
   &.destructive-action {
     @extend %opaque-button;
 
-    color: on($destructive);
+    color: colors.on(colors.$destructive);
 
     &, &:checked {
-      background-color: $destructive;
+      background-color: colors.$destructive;
     }
   }
 
   &.suggested-action {
     @extend %opaque-button;
 
-    color: on($suggested);
+    color: colors.on(colors.$suggested);
 
     &, &:checked {
-      background-color: $suggested;
+      background-color: colors.$suggested;
     }
   }
 
   // hide separators
   &.font {
     separator { background-color: transparent; }
-    > box { border-spacing: $space-size; }
+    > box { border-spacing: variables.$space-size; }
     > box > box > label { font-weight: bold; }
   }
 
   @at-root %pill-button,
   &.pill {
     padding: 10px 32px;
-    border-radius: $circular-radius;
+    border-radius: variables.$circular-radius;
   }
 
   &.card {
     background-clip: padding-box;
     font-weight: inherit;
     box-shadow: none;
-    transition: $transition;
+    transition: variables.$transition;
 
     &:hover {
-      @include button(hover);
+      @include drawing-4.button(hover);
     }
 
     &.keyboard-activating,
     &:active {
-      @include button(active);
+      @include drawing-4.button(active);
     }
 
     &:checked {
-      @include button(active);
+      @include drawing-4.button(active);
     }
 
     &:drop(active) {
-      color: $drop_target_color;
-      box-shadow: inset 0 0 0 1px $drop_target_color;
+      color: colors.$drop_target_color;
+      box-shadow: inset 0 0 0 1px colors.$drop_target_color;
     }
   }
 }
@@ -152,27 +159,27 @@ menubutton {
   &.pill > button { @extend %pill-button; }
 
   &.suggested-action {
-    background-color: $suggested;
-    color: on($suggested);
+    background-color: colors.$suggested;
+    color: colors.on(colors.$suggested);
   }
 
   &.destructive-action {
-    background-color: $destructive;
-    color: on($destructive);
+    background-color: colors.$destructive;
+    color: colors.on(colors.$destructive);
   }
 
   &.opaque {
     background-color: $opaque_button_default_bg;
-    color: $text;
+    color: colors.$text;
   }
 
   &.suggested-action,
   &.destructive-action,
   &.opaque {
-    border-radius: $corner-radius;
+    border-radius: variables.$corner-radius;
 
     &.circular, &.pill {
-      border-radius: $circular-radius;
+      border-radius: variables.$circular-radius;
     }
 
     > button {
@@ -187,8 +194,8 @@ menubutton {
 
   &.image-button > button {
     min-width: 24px;
-    padding-left: $space-size;
-    padding-right: $space-size;
+    padding-left: variables.$space-size;
+    padding-right: variables.$space-size;
   }
 
   arrow {
@@ -213,7 +220,7 @@ menubutton {
 }
 
 splitbutton {
-  border-radius: $corner-radius;
+  border-radius: variables.$corner-radius;
 
   &:disabled {
     filter: none;
@@ -221,19 +228,19 @@ splitbutton {
   }
 
   &, & > separator {
-    transition: $transition;
+    transition: variables.$transition;
     transition-property: background;
   }
 
   > separator {
-    margin-top: $space-size;
-    margin-bottom: $space-size;
+    margin-top: variables.$space-size;
+    margin-bottom: variables.$space-size;
     background: none;
   }
 
   > menubutton > button {
-    padding-left: $space-size;
-    padding-right: $space-size;
+    padding-left: variables.$space-size;
+    padding-right: variables.$space-size;
   }
 
   // Since the inner button doesn't have any style classes on it,
@@ -241,16 +248,16 @@ splitbutton {
   &.image-button > button {
     min-height: 24px;
     min-width: 24px;
-    padding: ($medium-size - 24px) * 0.5;
+    padding: (variables.$medium-size - 24px) * 0.5;
   }
 
   &.text-button.image-button > button,
   &.image-text-button > button {
-    padding-left: $space-size * 1.5;
-    padding-right: $space-size * 1.5;
+    padding-left: variables.$space-size * 1.5;
+    padding-right: variables.$space-size * 1.5;
 
     > box {
-      border-spacing: $space-size;
+      border-spacing: variables.$space-size;
     }
   }
 
@@ -272,14 +279,14 @@ splitbutton {
   @at-root %flat_split_button,
   &.flat {
     > separator {
-      background: $divider;
+      background: colors.$divider;
     }
 
     &:hover,
     &:active,
     &:checked {
-      background: gtkalpha(currentColor, 0.1);
-      color: $text;
+      background: colors.gtkalpha(currentColor, 0.1);
+      color: colors.$text;
 
       > separator {
         background: none;
@@ -294,23 +301,23 @@ splitbutton {
     > menubutton > button {
       @extend %button-flat;
 
-      border-radius: $corner-radius;
+      border-radius: variables.$corner-radius;
     }
   }
 
   &.suggested-action {
-    background-color: $suggested;
-    color: on($suggested);
+    background-color: colors.$suggested;
+    color: colors.on(colors.$suggested);
   }
 
   &.destructive-action {
-    background-color: $destructive;
-    color: on($destructive);
+    background-color: colors.$destructive;
+    color: colors.on(colors.$destructive);
   }
 
   &.opaque {
     background-color: $opaque_button_default_bg;
-    color: $text;
+    color: colors.$text;
   }
 
   &.suggested-action,
@@ -326,8 +333,8 @@ splitbutton {
     }
 
     > menubutton > button {
-      &:dir(ltr) { box-shadow: inset 1px 0 $divider; }
-      &:dir(rtl) { box-shadow: inset -1px 0 $divider; }
+      &:dir(ltr) { box-shadow: inset 1px 0 colors.$divider; }
+      &:dir(rtl) { box-shadow: inset -1px 0 colors.$divider; }
     }
   }
 
@@ -337,7 +344,7 @@ splitbutton {
 }
 
 buttoncontent {
-  border-spacing: $space-size;
+  border-spacing: variables.$space-size;
 
   > label {
     font-weight: bold;
@@ -361,20 +368,20 @@ buttoncontent {
 
 toast {
   @extend %osd;
-  margin: $space-size * 2;
+  margin: variables.$space-size * 2;
   margin-bottom: 24px;
-  border-radius: $circular-radius;
-  border-spacing: $space-size;
-  padding: $space-size;
-  box-shadow: $shadow-z6, inset 0 1px highlight($base);
-  color: $text-secondary;
+  border-radius: variables.$circular-radius;
+  border-spacing: variables.$space-size;
+  padding: variables.$space-size;
+  box-shadow: variables.$shadow-z6, inset 0 1px colors.highlight(colors.$base);
+  color: colors.$text-secondary;
   font-weight: normal;
 
-  &:dir(ltr) { padding-left: $space-size * 2; }
-  &:dir(rtl) { padding-right: $space-size * 2; }
+  &:dir(ltr) { padding-left: variables.$space-size * 2; }
+  &:dir(rtl) { padding-right: variables.$space-size * 2; }
 
   > widget {
-    margin: 0 $space-size;
+    margin: 0 variables.$space-size;
   }
 }
 
@@ -384,38 +391,38 @@ toast {
 
 statuspage {
   > scrolledwindow > viewport > box {
-    margin: $space-size * 6 $space-size * 2;
+    margin: variables.$space-size * 6 variables.$space-size * 2;
     border-spacing: 36px;
 
     > clamp > box {
-      border-spacing: $space-size * 2;
+      border-spacing: variables.$space-size * 2;
 
       > .icon {
         -gtk-icon-size: 128px;
 
-        color: gtkalpha(currentColor, 0.45);
+        color: colors.gtkalpha(currentColor, 0.45);
 
         &:disabled {
           opacity: 0.45;
         }
 
         &:not(:last-child) {
-          margin-bottom: $space-size * 4;
+          margin-bottom: variables.$space-size * 4;
         }
       }
     }
   }
 
   &.compact > scrolledwindow > viewport > box {
-    margin: $space-size * 4 $space-size * 2;
-    border-spacing: $space-size * 4;
+    margin: variables.$space-size * 4 variables.$space-size * 2;
+    border-spacing: variables.$space-size * 4;
 
     > clamp > box {
       > .icon {
         -gtk-icon-size: 96px;
 
         &:not(:last-child) {
-          margin-bottom: $space-size * 2;
+          margin-bottom: variables.$space-size * 2;
         }
       }
 
@@ -427,32 +434,27 @@ statuspage {
 }
 
 // Cards
-.card, %card {
-  border-radius: $radius-surface;
-  box-shadow: none;
-  border: 1px solid $glass-rim;
-  background-clip: padding-box;
-  background-color: $base;
-  color: $text-secondary;
+.card {
+  @extend %card;
 }
 
 // preferences
 preferencespage > scrolledwindow > viewport > clamp > box {
-  margin: $space-size * 4 $space-size * 2;
-  border-spacing: $space-size * 4;
+  margin: variables.$space-size * 4 variables.$space-size * 2;
+  border-spacing: variables.$space-size * 4;
 }
 
 preferencesgroup > box {
   &, .labels {
-    border-spacing: $space-size;
+    border-spacing: variables.$space-size;
   }
 
   > box.header:not(.single-line) {
-    margin-bottom: $space-size;
+    margin-bottom: variables.$space-size;
   }
 
   > box.single-line {
-    min-height: $medium-size;
+    min-height: variables.$medium-size;
   }
 
   button.background-preview-button.toggle {
@@ -461,7 +463,7 @@ preferencesgroup > box {
     box-shadow: none;
     outline-color: transparent;
     outline-width: 3px;
-    outline-offset: $space-size * 0.5;
+    outline-offset: variables.$space-size * 0.5;
     outline-style: solid;
 
     &, > background-preview {
@@ -469,59 +471,59 @@ preferencesgroup > box {
     }
 
     &:hover {
-      outline-color: $fill;
+      outline-color: colors.$fill;
     }
 
     &:active {
-      outline-color: $track;
+      outline-color: colors.$track;
     }
 
     &:checked {
-      outline-color: $primary;
+      outline-color: colors.$primary;
     }
   }
 
   flowbox.background-flowbox > flowboxchild {
     outline: 2px solid transparent;
     outline-offset: 0;
-    border-radius: $radius-surface;
-    padding: $space-size * 0.5;
+    border-radius: variables.$radius-surface;
+    padding: variables.$space-size * 0.5;
 
     .background-thumbnail {
-      border-radius: $radius-surface - $space-size * 0.5;
+      border-radius: variables.$radius-surface - variables.$space-size * 0.5;
     }
 
     &:hover {
-      outline-color: $divider;
+      outline-color: colors.$divider;
     }
 
     &:active {
-      outline-color: $track;
+      outline-color: colors.$track;
     }
 
     &:selected {
-      outline-color: $primary;
+      outline-color: colors.$primary;
       background-color: transparent;
     }
   }
 
-  .cutout-button { background-color: $surface; }
+  .cutout-button { background-color: colors.$surface; }
 
-  @if $gnome_version == 'new' {
+  @if tweaks-temp.$gnome_version == 'new' {
     button.accent-button {
       min-height: 24px;
       min-width: 24px;
-      padding: $space-size * 0.5;
-      border-radius: $circular-radius;
-      background: $primary;
+      padding: variables.$space-size * 0.5;
+      border-radius: variables.$circular-radius;
+      background: colors.$primary;
       outline: none;
       background-clip: content-box;
       box-shadow: none;
       border: none;
 
-      &:hover { box-shadow: 0 0 0 3px $divider; }
+      &:hover { box-shadow: 0 0 0 3px colors.$divider; }
 
-      &:checked { box-shadow: 0 0 0 3px $primary; }
+      &:checked { box-shadow: 0 0 0 3px colors.$primary; }
 
       &.blue, &.teal, &.green, &.yellow, &.orange, &.red, &.pink, &.purple, &.slate {
         --accent-color: oklab(from var(--accent-bg-color) var(--standalone-color-oklab));
@@ -572,12 +574,12 @@ preferencesgroup > box {
 
 banner > revealer > widget {
   /* There are 2 more instances in _sidebars.css, keep in sync with that */
-  background-color: gtkmix($primary, $base, 30%);
-  color: $text;
-  padding: $space-size;
+  background-color: colors.gtkmix(colors.$primary, colors.$base, 30%);
+  color: colors.$text;
+  padding: variables.$space-size;
 
   &:backdrop {
-    background-color: gtkmix($primary, $base, 15%);
+    background-color: colors.gtkmix(colors.$primary, colors.$base, 15%);
 
     > label, > button {
       filter: opacity(.5);
@@ -590,7 +592,7 @@ banner > revealer > widget {
 //
 
 viewswitcher {
-  border-spacing: $space-size * 0.5;
+  border-spacing: variables.$space-size * 0.5;
   min-height: 24px;
 
   &.narrow {
@@ -600,24 +602,24 @@ viewswitcher {
   }
 
   headerbar &.narrow {
-    margin-top: -$space-size;
-    margin-bottom: -$space-size;
+    margin-top: -(variables.$space-size);
+    margin-bottom: -(variables.$space-size);
   }
 
   &.wide {
     border-spacing: 0;
-    border-radius: $circular-radius;
-    background-color: $titlebar-fill;
+    border-radius: variables.$circular-radius;
+    background-color: colors.$titlebar-fill;
 
     button.toggle:checked, button.toggle.flat:checked {
-      background-color: $primary;
-      color: $primary-text;
+      background-color: colors.$primary;
+      color: colors.$primary-text;
 
-      &:backdrop { color: $primary-text-disabled; }
+      &:backdrop { color: colors.$primary-text-disabled; }
 
       indicatorbin.needs-attention > indicator {
-        > label { color: $primary; }
-        background-color: $primary-text;
+        > label { color: colors.$primary; }
+        background-color: colors.$primary-text;
       }
     }
   }
@@ -635,13 +637,13 @@ viewswitcher {
     > stack > box {
       &.narrow {
         font-size: 0.75rem;
-        padding-top: $space-size;
-        padding-bottom: $space-size;
-        border-spacing: $space-size * 0.5;
+        padding-top: variables.$space-size;
+        padding-bottom: variables.$space-size;
+        border-spacing: variables.$space-size * 0.5;
 
         > stack > label {
-          padding-left: $space-size + 2px;
-          padding-right: $space-size + 2px;
+          padding-left: variables.$space-size + 2px;
+          padding-right: variables.$space-size + 2px;
         }
 
         > label {
@@ -653,8 +655,8 @@ viewswitcher {
       }
 
       &.wide {
-        padding: 0 $space-size * 2;
-        border-spacing: $space-size;
+        padding: 0 variables.$space-size * 2;
+        border-spacing: variables.$space-size;
       }
     }
   }
@@ -667,12 +669,12 @@ viewswitcherbar actionbar > revealer > box {
 
 // AdwViewSwitcherTitle
 headerbar viewswitchertitle {
-  margin-top: -$space-size;
-  margin-bottom: -$space-size;
+  margin-top: -(variables.$space-size);
+  margin-bottom: -(variables.$space-size);
 
   viewswitcher {
-    margin-left: $space-size * 2;
-    margin-right: $space-size * 2;
+    margin-left: variables.$space-size * 2;
+    margin-right: variables.$space-size * 2;
 
     &.narrow {
       margin-top: 0;
@@ -680,8 +682,8 @@ headerbar viewswitchertitle {
     }
 
     &.wide {
-      margin-top: $space-size;
-      margin-bottom: $space-size;
+      margin-top: variables.$space-size;
+      margin-bottom: variables.$space-size;
     }
   }
 
@@ -694,15 +696,15 @@ headerbar viewswitchertitle {
 // AdwIndicatorBin
 indicatorbin {
   > indicator, > mask {
-    min-width: $space-size;
-    min-height: $space-size;
-    border-radius: $circular-radius;
+    min-width: variables.$space-size;
+    min-height: variables.$space-size;
+    border-radius: variables.$circular-radius;
   }
 
   > indicator {
     margin: 1px;
     padding: 0;
-    background: gtkalpha(currentColor, .4);
+    background: colors.gtkalpha(currentColor, .4);
 
     > label {
       font-size: 0.6rem;
@@ -718,9 +720,9 @@ indicatorbin {
   }
 
   &.needs-attention > indicator {
-    background-color: $primary;
+    background-color: colors.$primary;
 
-    > label { color: $primary-text; }
+    > label { color: colors.$primary-text; }
   }
 }
 
@@ -730,17 +732,17 @@ indicatorbin {
 
 tabbar {
   .box {
-    min-height: $menuitem-size;
-    background-color: $background;
-    color: $text-secondary;
+    min-height: variables.$menuitem-size;
+    background-color: colors.$background;
+    color: colors.$text-secondary;
     padding: 0;
-    box-shadow: inset 0 -1px $solid-border;
+    box-shadow: inset 0 -1px colors.$solid-border;
     border-bottom: none;
   }
 
   tabbox {
     padding: 0;
-    min-height: $menuitem-size;
+    min-height: variables.$menuitem-size;
 
     > tabboxchild {
       border-radius: 0;
@@ -749,8 +751,8 @@ tabbar {
     }
 
     > separator {
-      margin-top: $space-size * 1.5;
-      margin-bottom: $space-size * 1.5;
+      margin-top: variables.$space-size * 1.5;
+      margin-bottom: variables.$space-size * 1.5;
       transition: opacity 150ms ease-in-out;
 
       &.hidden {
@@ -761,35 +763,35 @@ tabbar {
     > revealer > indicator {
       min-width: 2px;
       border-radius: 2px;
-      margin: $space-size * 1.5 $space-size;
-      background: gtkalpha($primary, 0.5);
+      margin: variables.$space-size * 1.5 variables.$space-size;
+      background: colors.gtkalpha(colors.$primary, 0.5);
     }
   }
 
   tab {
     transition: none;
-    border-radius: $corner-radius $corner-radius 0 0;
+    border-radius: variables.$corner-radius variables.$corner-radius 0 0;
     border: 1px solid transparent;
     border-bottom-width: 0;
-    color: $text-secondary;
-    padding: $space-size $space-size * 2;
+    color: colors.$text-secondary;
+    padding: variables.$space-size variables.$space-size * 2;
 
     &:hover:not(:selected):not(:active):not(:checked) {
       transition: none;
-      background-color: $solid-border;
+      background-color: colors.$solid-border;
       box-shadow: none;
-      color: $text;
-      border-color: $solid-border;
-      border-radius: $corner-radius $corner-radius 0 0;
+      color: colors.$text;
+      border-color: colors.$solid-border;
+      border-radius: variables.$corner-radius variables.$corner-radius 0 0;
     }
 
     &:selected, &:checked, &:active {
       transition: background-color 150ms ease-in-out;
-      background-color: $base;
+      background-color: colors.$base;
       box-shadow: none;
-      color: $text;
-      border-color: $solid-border;
-      border-radius: $corner-radius $corner-radius 0 0;
+      color: colors.$text;
+      border-color: colors.$solid-border;
+      border-radius: variables.$corner-radius variables.$corner-radius 0 0;
     }
   }
 
@@ -809,13 +811,13 @@ tabbar {
   }
 }
 
-tabview > stack { background-color: $base; }
+tabview > stack { background-color: colors.$base; }
 
 dnd tab {
-  background-color: $background;
-  color: $text-secondary;
+  background-color: colors.$background;
+  color: colors.$text-secondary;
   box-shadow: none;
-  margin: $space-size * 4;
+  margin: variables.$space-size * 4;
 }
 
 tabbar,
@@ -826,7 +828,7 @@ dnd {
       margin: 0;
       min-width: 20px;
       min-height: 20px;
-      border-radius: $circular-radius;
+      border-radius: variables.$circular-radius;
       border: none;
       @extend %button-flat;
     }
@@ -834,7 +836,7 @@ dnd {
     indicator {
       min-height: 2px;
       border-radius: 2px;
-      background: gtkalpha($primary, 0.5);
+      background: colors.gtkalpha(colors.$primary, 0.5);
     }
   }
 }
@@ -849,19 +851,19 @@ flap,
 leaflet,
 navigation-view,
 overlay-split-view {
-  @include transition-shadows($frame);
+  @include drawing-4.transition-shadows(colors.$frame);
 }
 
 toolbarview.undershoot-top scrolledwindow {
-  @include undershoot(top);
+  @include drawing-4.undershoot(top);
 }
 
 toolbarview.undershoot-bottom scrolledwindow {
-  @include undershoot(bottom);
+  @include drawing-4.undershoot(bottom);
 }
 
 navigation-view navigation-view-page .medium stack > button { // Nautilus properties
-  margin-top: $space-size * 2;
+  margin-top: variables.$space-size * 2;
 }
 
 // Sidebar
@@ -871,48 +873,48 @@ navigation-view navigation-view-page .medium stack > button { // Nautilus proper
 // sidebar is a glass tint over the window background, which is translucent so
 // it reads the same over any content behind it; its text colour comes from the
 // solid surface it approximates.
-$sidebar-solid: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar; else: $base-alt);
-$sidebar: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar; else: $glass-sidebar);
-$sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar-backdrop; else: $background);
+$sidebar-solid: if(sass(config.$variant == 'light' and config.$topbar == 'dark'): colors.$titlebar; else: colors.$base-alt);
+$sidebar: if(sass(config.$variant == 'light' and config.$topbar == 'dark'): colors.$titlebar; else: colors.$glass-sidebar);
+$sidebar-backdrop: if(sass(config.$variant == 'light' and config.$topbar == 'dark'): colors.$titlebar-backdrop; else: colors.$background);
 
 .sidebar-pane,
 .content-pane .sidebar-pane,
 .sidebar-pane .content-pane {
   background-color: $sidebar;
-  color: on($sidebar-solid);
+  color: colors.on($sidebar-solid);
 
   &:backdrop {
     background-color: $sidebar-backdrop;
-    transition: background-color $duration $ease-out;
+    transition: background-color variables.$duration variables.$ease-out;
   }
 
   flap,
   leaflet,
   navigation-view,
   overlay-split-view {
-    @include transition-shadows($frame);
+    @include drawing-4.transition-shadows(colors.$frame);
   }
 
   banner > revealer > widget {
-    background-color: gtkmix($primary, $sidebar-solid, 30%);
-    color: on($sidebar-solid);
+    background-color: colors.gtkmix(colors.$primary, $sidebar-solid, 30%);
+    color: colors.on($sidebar-solid);
 
     &:backdrop {
-      background-color: gtkmix($primary, $sidebar-solid, 30%);
+      background-color: colors.gtkmix(colors.$primary, $sidebar-solid, 30%);
     }
   }
 
   &:dir(ltr), &.end:dir(rtl) {
     &, banner > revealer > widget {
       box-shadow: none;
-      border-right: 1px solid $glass-rim;
+      border-right: 1px solid colors.$glass-rim;
     }
   }
 
   &:dir(rtl), &.end:dir(ltr) {
     &, banner > revealer > widget {
       box-shadow: none;
-      border-left: 1px solid $glass-rim;
+      border-left: 1px solid colors.$glass-rim;
     }
   }
 }
@@ -938,7 +940,7 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
 
     &, &:backdrop {
       background-color: transparent;
-      box-shadow: inset 0 1px highlight($titlebar);
+      box-shadow: inset 0 1px colors.highlight(colors.$titlebar);
     }
   }
 
@@ -947,7 +949,7 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
     box-shadow: none;
   }
 
-  @if $variant == 'light' and $topbar == 'dark' {
+  @if config.$variant == 'light' and config.$topbar == 'dark' {
     entry { @extend %titlebar-entry; }
 
     button:not(.suggested-action):not(.destructive-action) {
@@ -955,73 +957,77 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
     }
 
     separator {
-      background-color: $titlebar-divider;
+      background-color: colors.$titlebar-divider;
     }
   
-    .dim-label { color: $titlebar-text-disabled; }
+    // Placeholder text is dim text; common extends it into .dim-label, which
+    // only reaches rules in modules it loads, so it is named here as well.
+    .dim-label,
+    entry > text > placeholder { color: colors.$titlebar-text-disabled; }
 
     .navigation-sidebar {
-      color: $titlebar-text-secondary;
+      color: colors.$titlebar-text-secondary;
     
       > row {
-        color: $titlebar-text-secondary;
+        color: colors.$titlebar-text-secondary;
     
         &:hover, &:active,
         &:focus-visible:focus-within {
-          color: $titlebar-text;
+          color: colors.$titlebar-text;
         }
 
         &:selected {
-          color: $primary;
+          color: colors.$primary;
         }
     
-        &:disabled { color: $titlebar-text-secondary-disabled; }
+        &:disabled { color: colors.$titlebar-text-secondary-disabled; }
       }
     }
 
     list.content,
     list.boxed-list {
-      background-color: $titlebar-fill;
-      color: $titlebar-text;
-      border-color: $titlebar-divider;
+      background-color: colors.$titlebar-fill;
+      color: colors.$titlebar-text;
+      border-color: colors.$titlebar-divider;
 
       > row {
         // Regular rows and expander header rows background
         &, &.expander row.header {
-          color: $titlebar-text-secondary;
-          border-color: $titlebar-divider;
+          color: colors.$titlebar-text-secondary;
+          border-color: colors.$titlebar-divider;
         }
 
         &:hover, &:active,
         &:focus-visible:focus-within {
-          color: $titlebar-text;
+          color: colors.$titlebar-text;
         }
       }
     }
 
     check, radio {
-      color: $titlebar-text-secondary;
+      color: colors.$titlebar-text-secondary;
 
-      &:hover, &:active { color: $titlebar-text; }
+      &:hover, &:active { color: colors.$titlebar-text; }
 
-      &:disabled { color: $titlebar-text-secondary-disabled; }
+      &:disabled { color: colors.$titlebar-text-secondary-disabled; }
 
-      &:checked, &:indeterminate { color: $check_radio_primary; }
+      &:checked, &:indeterminate { color: colors.$check_radio_primary; }
 
-      &:checked:disabled, &:indeterminate:disabled { color: $titlebar-text-secondary-disabled; }
+      &:checked:disabled, &:indeterminate:disabled { color: colors.$titlebar-text-secondary-disabled; }
     }
 
     popover {
-      color: $text;
+      color: colors.$text;
 
       > contents {
-        color: $text;
+        color: colors.$text;
 
         separator {
-          background-color: $divider;
+          background-color: colors.$divider;
         }
 
-        .dim-label { color: $text-disabled; }
+        .dim-label,
+        entry > text > placeholder { color: colors.$text-disabled; }
 
         entry {
           @extend %titlebar-entry-reset;
@@ -1043,13 +1049,13 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
   
       > range > trough {
         > slider {
-          background-color: $titlebar-text-secondary-disabled;
+          background-color: colors.$titlebar-text-secondary-disabled;
     
-          &:hover { background-color: $titlebar-text-disabled; }
+          &:hover { background-color: colors.$titlebar-text-disabled; }
       
-          &:active { background-color: $titlebar-text-secondary; }
+          &:active { background-color: colors.$titlebar-text-secondary; }
       
-          &:disabled { background-color: $titlebar-text-secondary-disabled; }
+          &:disabled { background-color: colors.$titlebar-text-secondary-disabled; }
         }
       }
   
@@ -1063,9 +1069,9 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
   
           button {
             border: none;
-            background-color: $titlebar-text-disabled;
+            background-color: colors.$titlebar-text-disabled;
   
-            &:disabled { background-color: $titlebar-text-secondary-disabled; }
+            &:disabled { background-color: colors.$titlebar-text-secondary-disabled; }
           }
         }
   
@@ -1078,23 +1084,24 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
 
 .content-pane {
   &, &:backdrop {
-    background-color: $background;
+    background-color: colors.$background;
   }
 
   headerbar {
-    color: $text;
+    color: colors.$text;
     border-top-left-radius: 0;
 
     &, &:backdrop {
       background-color: transparent;
-      box-shadow: inset 0 1px highlight($background);
+      box-shadow: inset 0 1px colors.highlight(colors.$background);
     }
 
     .subtitle,
-    .dim-label {
-      color: $text-secondary;
+    .dim-label,
+    entry > text > placeholder {
+      color: colors.$text-secondary;
   
-      &:backdrop { color: $text-disabled; }
+      &:backdrop { color: colors.$text-disabled; }
     }
 
     button:not(.suggested-action):not(.destructive-action) {
@@ -1107,7 +1114,7 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
 
     viewswitcher {
       &.wide {
-        background-color: $fill;
+        background-color: colors.$fill;
       }
     }
   }
@@ -1121,30 +1128,30 @@ $sidebar-backdrop: if(sass($variant == 'light' and $topbar == 'dark'): $titlebar
 .sidebar-pane,
 .content-pane {
   toolbarview.undershoot-top:not(.view) scrolledwindow {
-    @include undershoot(top, $style: solid);
+    @include drawing-4.undershoot(top, $style: solid);
   }
 
   toolbarview.undershoot-bottom:not(.view) scrolledwindow {
-    @include undershoot(bottom, $style: solid);
+    @include drawing-4.undershoot(bottom, $style: solid);
   }
 
   scrolledwindow {
     &.undershoot-top {
-      @include undershoot(top, $style: solid);
+      @include drawing-4.undershoot(top, $style: solid);
     }
 
     &.undershoot-bottom {
-      @include undershoot(bottom, $style: solid);
+      @include drawing-4.undershoot(bottom, $style: solid);
     }
 
     &.undershoot-start {
-      &:dir(ltr) { @include undershoot(left, $style: solid); }
-      &:dir(rtl) { @include undershoot(right, $style: solid); }
+      &:dir(ltr) { @include drawing-4.undershoot(left, $style: solid); }
+      &:dir(rtl) { @include drawing-4.undershoot(right, $style: solid); }
     }
 
     &.undershoot-end {
-      &:dir(ltr) { @include undershoot(right, $style: solid); }
-      &:dir(rtl) { @include undershoot(left, $style: solid); }
+      &:dir(ltr) { @include drawing-4.undershoot(right, $style: solid); }
+      &:dir(rtl) { @include drawing-4.undershoot(left, $style: solid); }
     }
   }
 }
@@ -1174,7 +1181,7 @@ toolbarview {
 
     .toolbar {
       background-color: transparent;
-      padding: $space-size;
+      padding: variables.$space-size;
       border-spacing: 0;
     }
 
@@ -1183,19 +1190,19 @@ toolbarview {
       padding-bottom: 0;
 
       headerbar {
-        min-height: $large-size;
+        min-height: variables.$large-size;
 
         > windowhandle > box {
-          padding-top: $space-size;
-          padding-bottom: $space-size;
+          padding-top: variables.$space-size;
+          padding-bottom: variables.$space-size;
         }
 
         &.default-decoration {
-          min-height: $small-size;
+          min-height: variables.$small-size;
 
           > windowhandle > box {
-            padding-top: $space-size;
-            padding-bottom: $space-size;
+            padding-top: variables.$space-size;
+            padding-bottom: variables.$space-size;
           }
         }
       }
@@ -1203,14 +1210,14 @@ toolbarview {
       searchbar,
       actionbar {
         > revealer > box {
-          padding-top: $space-size;
-          padding-bottom: $space-size;
+          padding-top: variables.$space-size;
+          padding-bottom: variables.$space-size;
         }
       }
 
       .toolbar  {
-        padding-top: $space-size;
-        padding-bottom: $space-size;
+        padding-top: variables.$space-size;
+        padding-bottom: variables.$space-size;
       }
 
       tabbar {
@@ -1221,7 +1228,7 @@ toolbarview {
 
     &.raised {
       background-color: transparent;
-      color: $titlebar-text;
+      color: colors.$titlebar-text;
 
       &:backdrop {
         background-color: transparent;
@@ -1235,10 +1242,10 @@ toolbarview {
 
   .top-bar {
     box-shadow: none;
-    background-color: $titlebar;
+    background-color: colors.$titlebar;
   
     &:backdrop {
-      background-color: $titlebar-backdrop;
+      background-color: colors.$titlebar-backdrop;
     }
   
     .info &,
@@ -1248,16 +1255,16 @@ toolbarview {
       }
     }
 
-    @if $variant == 'light' and $topbar == 'dark' {
+    @if config.$variant == 'light' and config.$topbar == 'dark' {
       searchbar > revealer > box {
-        color: $titlebar-text;
+        color: colors.$titlebar-text;
 
         entry { @extend %titlebar-entry; }
       }
     }
 
     tabview &, tabview &:backdrop {
-      background-color: $base;
+      background-color: colors.$base;
     }
 
     .collapse-spacing {
@@ -1272,13 +1279,13 @@ toolbarview {
   > .bottom-bar {
     padding: 0;
     border-spacing: 0;
-    box-shadow: inset 0 1px $border;
-    background-color: $base-alt;
-    color: $text;
+    box-shadow: inset 0 1px colors.$border;
+    background-color: colors.$base-alt;
+    color: colors.$text;
 
     &:backdrop {
-      background-color: $background;
-      color: $text-disabled;
+      background-color: colors.$background;
+      color: colors.$text-disabled;
     }
 
     actionbar > revealer > box {
@@ -1336,8 +1343,8 @@ floating-sheet {
   }
 
   > sheet.background {
-    box-shadow: 0 0 0 1px $glass-rim, $glass-shadow-raised;
-    border-radius: $window-radius;
+    box-shadow: 0 0 0 1px colors.$glass-rim, colors.$glass-shadow-raised;
+    border-radius: variables.$window-radius;
     outline: none;
   }
 }
@@ -1348,11 +1355,11 @@ floating-sheet {
 
 // Alert dialogs are AdwDialog sheets since libadwaita 1.5. They mirror the message dialog.
 dialog-host > dialog.alert sheet {
-  border-radius: $window-radius;
+  border-radius: variables.$window-radius;
 
   .body-scrolled-window > viewport {
-    border-top-left-radius: $window-radius;
-    border-top-right-radius: $window-radius;
+    border-top-left-radius: variables.$window-radius;
+    border-top-right-radius: variables.$window-radius;
   }
 }
 
@@ -1363,7 +1370,7 @@ dialog.alert {
   }
 
   .response-area {
-    padding: $space-size;
+    padding: variables.$space-size;
     box-shadow: none;
     border: none;
 
@@ -1371,13 +1378,13 @@ dialog.alert {
       @extend %button-flat;
       border: none;
       box-shadow: none;
-      border-radius: $circular-radius;
+      border-radius: variables.$circular-radius;
 
-      &:not(:last-child) { margin-right: $space-size; }
+      &:not(:last-child) { margin-right: variables.$space-size; }
 
-      &.suggested:not(:disabled) { color: $suggested; }
+      &.suggested:not(:disabled) { color: colors.$suggested; }
 
-      &.destructive:not(:disabled) { color: $destructive; }
+      &.destructive:not(:disabled) { color: colors.$destructive; }
     }
 
     separator {
@@ -1397,19 +1404,19 @@ bottom-sheet {
   }
 
   > sheet {
-    box-shadow: 0 0 0 1px $glass-rim, $glass-shadow-raised;
+    box-shadow: 0 0 0 1px colors.$glass-rim, colors.$glass-shadow-raised;
 
     &, > outline, > stack > widget, > stack > button, > stack > button > widget {
-      border-top-left-radius: $window-radius;
-      border-top-right-radius: $window-radius;
+      border-top-left-radius: variables.$window-radius;
+      border-top-right-radius: variables.$window-radius;
     }
 
     > outline {
-      box-shadow: inset 0 1px highlight($surface);
+      box-shadow: inset 0 1px colors.highlight(colors.$surface);
     }
 
     > stack > widget > drag-handle {
-      background-color: $track;
+      background-color: colors.$track;
     }
 
     &.bottom-bar > outline {
@@ -1423,55 +1430,55 @@ bottom-sheet {
 //
 
 toggle-group {
-  background-color: $fill;
-  border-radius: $corner-radius;
+  background-color: colors.$fill;
+  border-radius: variables.$corner-radius;
 
   > toggle {
-    border-radius: $corner-radius - 3px;
+    border-radius: variables.$corner-radius - 3px;
     font-weight: bold;
 
     &:hover {
-      background-color: $overlay-hover;
+      background-color: colors.$overlay-hover;
       box-shadow: none;
     }
 
     &:active {
-      background-color: $overlay-active;
+      background-color: colors.$overlay-active;
       box-shadow: none;
     }
 
     &:checked {
-      background-color: $base;
-      color: $text;
-      box-shadow: $shadow-z1;
+      background-color: colors.$base;
+      color: colors.$text;
+      box-shadow: variables.$shadow-z1;
 
       &:disabled {
-        background-color: $divider;
+        background-color: colors.$divider;
         box-shadow: none;
       }
     }
   }
 
   &.round {
-    border-radius: $circular-radius;
+    border-radius: variables.$circular-radius;
 
-    > toggle { border-radius: $circular-radius; }
+    > toggle { border-radius: variables.$circular-radius; }
   }
 
   &.flat {
     background: none;
 
     > toggle:checked {
-      background-color: $overlay-checked;
+      background-color: colors.$overlay-checked;
       box-shadow: none;
 
-      &:hover { background-color: $overlay-hover; }
-      &:active { background-color: $overlay-active; }
+      &:hover { background-color: colors.$overlay-hover; }
+      &:active { background-color: colors.$overlay-active; }
     }
   }
 
   > separator {
-    background-color: $divider;
+    background-color: colors.$divider;
   }
 }
 
@@ -1480,21 +1487,21 @@ toggle-group {
 //
 
 tabthumbnail {
-  border-radius: $window-radius;
+  border-radius: variables.$window-radius;
 
   .card picture {
-    border-radius: $radius-surface;
-    outline: 1px solid $border;
+    border-radius: variables.$radius-surface;
+    outline: 1px solid colors.$border;
   }
 
   button > image {
-    background-color: rgba($surface, 0.8);
+    background-color: rgba(colors.$surface, 0.8);
   }
 }
 
 // Keyboard shortcut labels, used in the shortcuts dialog and preference rows
 shortcut-label .keycap {
-  background-color: $fill;
-  box-shadow: inset 0 -2px $divider;
-  border-radius: $corner-radius - 2px;
+  background-color: colors.$fill;
+  box-shadow: inset 0 -2px colors.$divider;
+  border-radius: variables.$corner-radius - 2px;
 }

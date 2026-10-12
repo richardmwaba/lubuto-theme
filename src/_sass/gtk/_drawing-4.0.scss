@@ -1,38 +1,41 @@
+@use "../colors";
+@use "../variables";
+
 // generic drawing of more complex things
 
 // ripple effect animations
 
 @keyframes ripple {
   from {
-    background-image: radial-gradient(circle farthest-corner at center, $overlay-checked 30%, transparent 0%);
+    background-image: radial-gradient(circle farthest-corner at center, colors.$overlay-checked 30%, transparent 0%);
   }
 
   to {
-    background-image: radial-gradient(circle farthest-corner at center, $overlay-checked 100%, transparent 0%);
+    background-image: radial-gradient(circle farthest-corner at center, colors.$overlay-checked 100%, transparent 0%);
   }
 }
 
 @keyframes ripple-on-slider {
   from {
-    background-image: radial-gradient(circle farthest-corner at center, $overlay-active 0%, transparent 0%);
+    background-image: radial-gradient(circle farthest-corner at center, colors.$overlay-active 0%, transparent 0%);
   }
 
   to {
-    background-image: radial-gradient(circle farthest-corner at center, $overlay-active 100%, transparent 0%);
+    background-image: radial-gradient(circle farthest-corner at center, colors.$overlay-active 100%, transparent 0%);
   }
 }
 
 @keyframes ripple-on-headerbar {
   from {
-    background-image: radial-gradient(circle farthest-corner at center, $primary 30%, transparent 0%);
+    background-image: radial-gradient(circle farthest-corner at center, colors.$primary 30%, transparent 0%);
   }
 
   to {
-    background-image: radial-gradient(circle farthest-corner at center, $primary 100%, transparent 0%);
+    background-image: radial-gradient(circle farthest-corner at center, colors.$primary 100%, transparent 0%);
   }
 }
 
-@mixin entry($t, $fc: $primary) {
+@mixin entry($t, $fc: colors.$primary) {
 //
 // entry
 //
@@ -41,40 +44,40 @@
 //
 
   @if $t == normal {
-    transition: outline-color $ripple-fade-out-duration $ease-out,
-                outline-width $ripple-fade-out-duration $ease-out,
-                outline-offset $ripple-fade-out-duration $ease-out;
+    transition: outline-color variables.$ripple-fade-out-duration variables.$ease-out,
+                outline-width variables.$ripple-fade-out-duration variables.$ease-out,
+                outline-offset variables.$ripple-fade-out-duration variables.$ease-out;
     outline: 0 solid transparent;
     outline-offset: 4px;
-    background-color: $entry;
-    color: if(sass($fc == $primary): $text; else: $fc);
+    background-color: colors.$entry;
+    color: if(sass($fc == colors.$primary): colors.$text; else: $fc);
   }
 
   @if $t == hover {
-    background-color: $overlay-hover;
-    color: if(sass($fc == $primary): $text; else: $fc);
-    outline: 2px solid $overlay-hover;
+    background-color: colors.$overlay-hover;
+    color: if(sass($fc == colors.$primary): colors.$text; else: $fc);
+    outline: 2px solid colors.$overlay-hover;
     outline-offset: -2px;
   }
 
   @if $t == focus {
-    background-color: $overlay-focus;
-    color: if(sass($fc == $primary): $text; else: $fc);
-    outline: 2px solid if(sass($fc == $primary): $track; else: $fc);
+    background-color: colors.$overlay-focus;
+    color: if(sass($fc == colors.$primary): colors.$text; else: $fc);
+    outline: 2px solid if(sass($fc == colors.$primary): colors.$track; else: $fc);
     outline-offset: -2px;
   }
 
   @if $t == checked {
-    background-color: $entry;
-    color: if(sass($fc == $primary): $text; else: $fc);
-    outline-color: if(sass($fc == $primary): $primary; else: $fc);
+    background-color: colors.$entry;
+    color: if(sass($fc == colors.$primary): colors.$text; else: $fc);
+    outline-color: if(sass($fc == colors.$primary): colors.$primary; else: $fc);
     outline-width: 2px;
     outline-offset: -2px;
   }
 
   @if $t == disabled {
-    background-color: $entry;
-    color: if(sass($fc == $primary): $text-disabled; else: rgba($fc, 0.35));
+    background-color: colors.$entry;
+    color: if(sass($fc == colors.$primary): colors.$text-disabled; else: rgba($fc, 0.35));
     outline: none;
     filter: none;
     opacity: 1;
@@ -90,50 +93,50 @@
 //
 
   @if $t == normal {
-    transition: $transition,
+    transition: variables.$transition,
                 background-size 0,
                 background-image 0;
     outline: none;
     box-shadow: inset 0 0 0 2px transparent;
-    background-color: $button;
+    background-color: colors.$button;
     background-image: radial-gradient(circle, transparent 0%, transparent 0%);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 1000% 1000%;
-    color: $text;
+    color: colors.$text;
   }
 
   @if $t == hover {
-    background-color: $overlay-hover;
+    background-color: colors.$overlay-hover;
   }
 
   @if $t == focus {
-    box-shadow: inset 0 0 0 2px $overlay-focus;
+    box-shadow: inset 0 0 0 2px colors.$overlay-focus;
   }
 
   @if $t == active {
-    transition: $transition,
+    transition: variables.$transition,
                 background-size 0ms,
                 background-image 0ms,
                 border 0ms;
-    animation: ripple $ripple-fade-in-duration $ease-out forwards;
-    background-color: $overlay-hover;
-    background-image: radial-gradient(circle, $overlay-active 10%, transparent 0%);
+    animation: ripple variables.$ripple-fade-in-duration variables.$ease-out forwards;
+    background-color: colors.$overlay-hover;
+    background-image: radial-gradient(circle, colors.$overlay-active 10%, transparent 0%);
     background-size: 100% 100%;
   }
 
   @if $t == disabled {
     box-shadow: none;
-    background-color: $button;
-    color: $text-disabled;
+    background-color: colors.$button;
+    color: colors.$text-disabled;
     filter: none;
     opacity: 1;
   }
 
   @if $t == checked {
     box-shadow: none;
-    background-color: $primary;
-    color: $primary-text;
+    background-color: colors.$primary;
+    color: colors.$primary-text;
   }
 
   @if $t == checked-hover {
@@ -141,12 +144,12 @@
   }
 
   @if $t == checked-disabled {
-    background-color: $overlay-checked;
-    color: $text-disabled;
+    background-color: colors.$overlay-checked;
+    color: colors.$text-disabled;
   }
 
   @if $t == flat-normal {
-    transition: $transition,
+    transition: variables.$transition,
                 background-size 0,
                 background-image 0;
     outline: none;
@@ -156,44 +159,44 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 1000% 1000%;
-    color: $text-secondary;
+    color: colors.$text-secondary;
   }
 
   @if $t == flat-hover {
-    background-color: $overlay-hover;
-    color: $text;
+    background-color: colors.$overlay-hover;
+    color: colors.$text;
   }
 
   @if $t == flat-focus {
-    box-shadow: inset 0 0 0 2px $overlay-focus;
-    color: $text;
+    box-shadow: inset 0 0 0 2px colors.$overlay-focus;
+    color: colors.$text;
   }
 
   @if $t == flat-active {
-    transition: $transition,
+    transition: variables.$transition,
                 background-size 0ms,
                 background-image 0ms;
-    animation: ripple $ripple-fade-in-duration $ease-out forwards;
-    background-color: $overlay-hover;
-    background-image: radial-gradient(circle, $overlay-active 10%, transparent 0%);
+    animation: ripple variables.$ripple-fade-in-duration variables.$ease-out forwards;
+    background-color: colors.$overlay-hover;
+    background-image: radial-gradient(circle, colors.$overlay-active 10%, transparent 0%);
     background-size: 100% 100%;
-    color: $text;
+    color: colors.$text;
   }
 
   @if $t == flat-disabled {
     box-shadow: none;
     background-color: transparent;
-    color: $text-secondary-disabled;
+    color: colors.$text-secondary-disabled;
   }
 
   @if $t == flat-checked {
-    background-color: $overlay-checked;
-    color: $text;
+    background-color: colors.$overlay-checked;
+    color: colors.$text;
   }
 
   @if $t == flat-checked-disabled {
-    background-color: $overlay-checked;
-    color: $text-disabled;
+    background-color: colors.$overlay-checked;
+    color: colors.$text-disabled;
   }
 }
 
@@ -220,7 +223,7 @@
   }
 
   background-size: 200% 70%;
-  background-image: radial-gradient( farthest-side at $p, $fill 99%, transparent 100%);
+  background-image: radial-gradient( farthest-side at $p, colors.$fill 99%, transparent 100%);
   background-repeat: no-repeat;
   background-position: $_position;
 
@@ -230,7 +233,7 @@
 }
 
 
-@mixin undershoot($p, $c: $frame, $neighbor: false, $style: compact) {
+@mixin undershoot($p, $c: colors.$frame, $neighbor: false, $style: compact) {
 //
 // undershoot
 //
@@ -263,21 +266,21 @@
   }
 
   #{$_selector} undershoot.#{$p} {
-    box-shadow: inset $_border_pos $glass-rim;
-    background: linear-gradient(to $_direction, gtkalpha($c, .75), transparent 6px);
+    box-shadow: inset $_border_pos colors.$glass-rim;
+    background: linear-gradient(to $_direction, colors.gtkalpha($c, .75), transparent 6px);
   }
 }
   
 @mixin background-shadow($direction, $color) {
   background-image:
     linear-gradient($direction,
-                    gtkalpha($color, 0.7),
-                    gtkalpha($color, 0.14) 40px,
-                    gtkalpha($color, 0) 56px),
+                    colors.gtkalpha($color, 0.7),
+                    colors.gtkalpha($color, 0.14) 40px,
+                    colors.gtkalpha($color, 0) 56px),
     linear-gradient($direction,
-                    gtkalpha($color, 0.4),
-                    gtkalpha($color, 0.14) 7px,
-                    gtkalpha($color, 0) 24px);
+                    colors.gtkalpha($color, 0.4),
+                    colors.gtkalpha($color, 0.14) 7px,
+                    colors.gtkalpha($color, 0) 24px);
 }
 
 @mixin transition-shadows($color) {

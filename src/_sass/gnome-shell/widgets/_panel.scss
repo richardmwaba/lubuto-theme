@@ -1,11 +1,15 @@
+@use "../../colors";
+@use "../../tweaks-temp";
+@use "../../variables";
+
 @use "sass:color";
 
 /* Top Bar */
 // a.k.a. the panel
 
 $panel_transition_duration: 250ms; // same as the overview transition duration
-$panel_height: if(sass($panel_style == 'compact'): $medium-size - 2px; else: $medium-size + 2px);
-$panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
+$panel_height: if(sass(tweaks-temp.$panel_style == 'compact'): variables.$medium-size - 2px; else: variables.$medium-size + 2px);
+$panel_button_hpadding: ($panel_height - variables.$base-icon-size) * 0.5;
 
 #panel {
   font-weight: bold;
@@ -17,20 +21,20 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
   box-shadow: none;
 
   // Glass: a tint over the blurred wallpaper the extension paints below the panel.
-  @if $opacity == 'solid' {
-    background-color: $panel-solid;
-  } @else if $glass == 'true' {
-    background-color: $glass-tint;
+  @if tweaks-temp.$opacity == 'solid' {
+    background-color: colors.$panel-solid;
+  } @else if tweaks-temp.$glass == 'true' {
+    background-color: colors.$glass-tint;
   } @else {
-    background-color: $shell;
+    background-color: colors.$shell;
   }
 
-  @if $panel_style == 'compact' {
+  @if tweaks-temp.$panel_style == 'compact' {
     margin: 0;
     border-radius: 0;
   } @else {
-    margin: $space-size * 0.5;
-    border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius + $space-size * 0.5);
+    margin: variables.$space-size * 0.5;
+    border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius + variables.$space-size * 0.5);
   }
 
   // transparent panel on lock & login screens
@@ -46,8 +50,8 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
 
   // the rounded outset corners
   .panel-corner {
-    -panel-corner-radius: $panel-corner-radius;
-    -panel-corner-background-color: $panel;
+    -panel-corner-radius: variables.$panel-corner-radius;
+    -panel-corner-background-color: colors.$panel;
     -panel-corner-border-width: 0;
     -panel-corner-border-color: transparent;
     -panel-corner-opacity: 1;
@@ -64,11 +68,11 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
     color: transparent !important;
     background-color: transparent !important;
     font-size: 0;
-    -natural-hpadding: $space-size * 0.5 !important;
-    -minimum-hpadding: $space-size * 0.5 !important;
+    -natural-hpadding: variables.$space-size * 0.5 !important;
+    -minimum-hpadding: variables.$space-size * 0.5 !important;
 
     > * {
-      width: $panel_height - $space-size;
+      width: $panel_height - variables.$space-size;
       // background-color: on($panel-solid, divider) !important;
       // border-radius: $circular-radius;
     }
@@ -79,29 +83,29 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
   }
 
   %normal_activities {
-    -natural-hpadding: $space-size * 2.5;
+    -natural-hpadding: variables.$space-size * 2.5;
 
     StBoxLayout {
-      spacing: $space-size;
+      spacing: variables.$space-size;
     }
 
     .workspace-dot {
-      border-radius: $circular-radius;
+      border-radius: variables.$circular-radius;
       min-width: 8px;
       min-height: 8px;
-      background-color: on($panel-solid);
+      background-color: colors.on(colors.$panel-solid);
     }
   }
 
   // panel menus
   .panel-button {
     font-weight: bold;
-    color: on($panel-solid);
+    color: colors.on(colors.$panel-solid);
     -natural-hpadding: $panel_button_hpadding;
     -minimum-hpadding: $panel_button_hpadding;
     transition-duration: 150ms;
-    border: $space-size * 0.5 solid transparent;
-    border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius + $space-size * 0.5);
+    border: variables.$space-size * 0.5 solid transparent;
+    border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius + variables.$space-size * 0.5);
     margin: 0;
 
     &.clock-display {
@@ -115,14 +119,14 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
       }
 
       .clock {
-        border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius + $space-size * 0.5);
-        padding: 0 $space-size * 2 !important;
+        border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius + variables.$space-size * 0.5);
+        padding: 0 variables.$space-size * 2 !important;
       }
     }
 
     &:hover {
       background-color: transparent;
-      box-shadow: inset 0 0 0 1000px on($panel-solid, divider);
+      box-shadow: inset 0 0 0 1000px colors.on(colors.$panel-solid, divider);
 
       // The clock display needs to have the background on .clock because
       // we want to exclude the do-not-disturb indicator from the background
@@ -131,14 +135,14 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
         background-color: transparent;
 
         .clock {
-          box-shadow: inset 0 0 0 1000px on($panel-solid, divider);
+          box-shadow: inset 0 0 0 1000px colors.on(colors.$panel-solid, divider);
         }
       }
     }
 
     &:active, &:overview, &:focus, &:checked {
       background-color: transparent;
-      box-shadow: inset 0 0 0 1000px on($panel-solid, track);
+      box-shadow: inset 0 0 0 1000px colors.on(colors.$panel-solid, track);
 
       // The clock display needs to have the background on .clock because
       // we want to exclude the do-not-disturb indicator from the background
@@ -147,20 +151,20 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
         background-color: transparent;
 
         .clock {
-          box-shadow: inset 0 0 0 1000px on($panel-solid, track);
+          box-shadow: inset 0 0 0 1000px colors.on(colors.$panel-solid, track);
         }
       }
     }
 
     // status area icons
     .system-status-icon {
-      icon-size: $base-icon-size;
-      padding: $space-size;
+      icon-size: variables.$base-icon-size;
+      padding: variables.$space-size;
       margin: 0;
     }
 
     .appindicator-trayicons-box {
-      margin: 0 $space-size;
+      margin: 0 variables.$space-size;
     }
 
     // .appindicator-box {
@@ -172,7 +176,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
     // }
 
     .panel-status-indicators-box {
-      spacing: $margin-size * 2;
+      spacing: variables.$margin-size * 2;
 
       > .system-status-icon {
         padding: 0;
@@ -185,16 +189,16 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
     }
 
     .privacy-indicator {
-      color: $warning;
+      color: colors.$warning;
     }
 
     &.clock-display .messages-indicator {
-      icon-size: $scalable-icon-size;
+      icon-size: variables.$scalable-icon-size;
     }
 
     .panel-status-menu-box { // indicators and menubutton icons
-      spacing: $space-size;
-      padding: $space-size;
+      spacing: variables.$space-size;
+      padding: variables.$space-size;
       margin: 0;
 
       .system-status-icon {
@@ -210,7 +214,7 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
     // }
 
     &#panelActivities {
-      @if $activities == 'icon' {
+      @if tweaks-temp.$activities == 'icon' {
         @extend %icon_activities;
       } @else {
         @extend %normal_activities;
@@ -225,8 +229,8 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
     border: 0 none transparent !important;
     margin: 0 !important;
     padding: 0 !important;
-    -natural-hpadding: $space-size * 0.5 !important;
-    -minimum-hpadding: $space-size * 0.5 !important;
+    -natural-hpadding: variables.$space-size * 0.5 !important;
+    -minimum-hpadding: variables.$space-size * 0.5 !important;
 
     .panel-status-menu-box {
       spacing: 0;
@@ -238,17 +242,17 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
   Gjs_arcmenu_arcmenu_com_menuButton_Arc_Menu_MenuButton.panel-button,
   Gjs_arcmenu_arcmenu_com_menuButton_ArcMenu_MenuButton.panel-button {
     .arc-menu-icon {
-      border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
-      width: $panel_height - $space-size + 1px;
-      margin: $space-size * 0.5 0;
+      border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius);
+      width: $panel_height - variables.$space-size + 1px;
+      margin: variables.$space-size * 0.5 0;
 
       &:hover {
-        background-color: on(dark, divider);
+        background-color: colors.on(dark, divider);
         box-shadow: none;
       }
 
       &:active, &:overview, &:focus, &:checked {
-        background-color: on(dark, track);
+        background-color: colors.on(dark, track);
         box-shadow: none;
       }
     }
@@ -256,18 +260,18 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
 
   Gjs_arcmenu_arcmenu_com_menuButton_ArcMenuMenuButton.panel-button {
     .arcmenu-menu-button {
-      border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
+      border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius);
       // width: $panel_height - $space-size + 1px;
-      margin: $space-size * 0.5 0;
-      padding: 0 ($panel_height - 16px - $space-size) * 0.5;
+      margin: variables.$space-size * 0.5 0;
+      padding: 0 ($panel_height - 16px - variables.$space-size) * 0.5;
 
       &:hover {
-        background-color: on(dark, divider);
+        background-color: colors.on(dark, divider);
         box-shadow: none;
       }
 
       &:active, &:overview, &:focus, &:checked {
-        background-color: on(dark, track);
+        background-color: colors.on(dark, track);
         box-shadow: none;
       }
     }
@@ -291,25 +295,25 @@ $panel_button_hpadding: ($panel_height - $base-icon-size) * 0.5;
   // screen recording and screen sharing pills
   .panel-button.screen-recording-indicator,
   .panel-button.screen-sharing-indicator {
-    border-radius: $circular-radius;
+    border-radius: variables.$circular-radius;
     font-weight: bold;
-    color: on(dark);
+    color: colors.on(dark);
 
-    StBoxLayout { spacing: $margin-size * 2; }
-    StIcon { icon-size: $scalable-icon-size; }
+    StBoxLayout { spacing: variables.$margin-size * 2; }
+    StIcon { icon-size: variables.$scalable-icon-size; }
   }
 
   .panel-button.screen-recording-indicator {
-    background-color: $destructive;
+    background-color: colors.$destructive;
 
-    &:hover, &:focus { background-color: lighter($destructive, 5%); }
-    &:active, &:checked { background-color: lighter($destructive, 10%); }
+    &:hover, &:focus { background-color: colors.lighter(colors.$destructive, 5%); }
+    &:active, &:checked { background-color: colors.lighter(colors.$destructive, 10%); }
   }
 
   .panel-button.screen-sharing-indicator {
-    background-color: $warning;
+    background-color: colors.$warning;
 
-    &:hover, &:focus { background-color: lighter($warning, 5%); }
-    &:active, &:checked { background-color: lighter($warning, 10%); }
+    &:hover, &:focus { background-color: colors.lighter(colors.$warning, 5%); }
+    &:active, &:checked { background-color: colors.lighter(colors.$warning, 10%); }
   }
 }

@@ -1,10 +1,15 @@
+@use "../../colors";
+@use "../../config";
+@use "../../variables";
+@use "../drawing";
+
 @use "sass:color";
 
 /* Date/Time Menu */
 
 // overall menu
 #calendarArea {
-  padding: $space-size 0 !important;
+  padding: variables.$space-size 0 !important;
 }
 
 .calendar {
@@ -14,117 +19,117 @@
   box-shadow: none;
   background: none;
   text-shadow: none;
-  color: $text-secondary;
+  color: colors.$text-secondary;
 }
 
 .datemenu-popover {
-  border-radius: $material-radius + $space-size * 3 !important;
+  border-radius: variables.$material-radius + variables.$space-size * 3 !important;
 }
 
 // Calendar menu side column
 .datemenu-calendar-column {
-  spacing: $space-size;
+  spacing: variables.$space-size;
   border: none;
   padding: 0 !important;
   margin: 0 !important;
-  color: $text-secondary;
+  color: colors.$text-secondary;
 
-  &:hover, &:focus { color: $text; background-color: $secondary-fill; }
+  &:hover, &:focus { color: colors.$text; background-color: colors.$secondary-fill; }
 
-  &:active { color: $text; background-color: $track; }
+  &:active { color: colors.$text; background-color: colors.$track; }
 
   &:ltr {
-    margin-right: $space-size !important;
-    margin-left: $space-size + 6px !important;
+    margin-right: variables.$space-size !important;
+    margin-left: variables.$space-size + 6px !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     border-left-width: 0;
   }
 
   &:rtl {
-    margin-left: $space-size !important;
-    margin-right: $space-size + 6px !important;
+    margin-left: variables.$space-size !important;
+    margin-right: variables.$space-size + 6px !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     border-right-width: 0;
   }
 
   .datemenu-displays-box {
-    spacing: $space-size;
+    spacing: variables.$space-size;
   }
 }
 
 .datemenu-today-button {
-  min-height: $menuitem-size * 2 - 4px * 2;
-  padding: $space-size;
-  border-radius: $material-radius;
+  min-height: variables.$menuitem-size * 2 - 4px * 2;
+  padding: variables.$space-size;
+  border-radius: variables.$material-radius;
   border: none;
   box-shadow: none;
   text-shadow: none;
   background: none;
-  color: $text-secondary;
+  color: colors.$text-secondary;
 
   // weekday label
   .day-label {
-    @include font(title);
+    @include drawing.font(title);
     font-weight: bold;
   }
 
   // date label
   .date-label {
-    @include font(headline);
+    @include drawing.font(headline);
   }
 
   &:hover, &:focus {
-    color: $text;
-    background-color: $secondary-fill;
+    color: colors.$text;
+    background-color: colors.$secondary-fill;
   }
 
   &:active {
-    color: $text;
-    background-color: $track;
+    color: colors.$text;
+    background-color: colors.$track;
   }
 }
 
 .calendar-month-label {
-  height: $menuitem-size - 4px * 2;
+  height: variables.$menuitem-size - 4px * 2;
   margin: 2px;
   padding: 6px 16px;
-  border-radius: $material-radius;
-  color: $text-secondary !important;
+  border-radius: variables.$material-radius;
+  color: colors.$text-secondary !important;
   background-color: transparent !important;
   font-weight: bold;
   text-align: center;
   text-shadow: none;
 
   &:focus {
-    color: $text !important;
-    background-color: $secondary-fill !important;
+    color: colors.$text !important;
+    background-color: colors.$secondary-fill !important;
   }
 }
 
 .pager-button {
-  width: $menuitem-size !important;
-  height: $menuitem-size !important;
+  width: variables.$menuitem-size !important;
+  height: variables.$menuitem-size !important;
   margin: 2px !important;
   padding: 2px !important;
-  border-radius: $circular-radius;
+  border-radius: variables.$circular-radius;
   background-color: transparent;
-  color: $text-secondary;
+  color: colors.$text-secondary;
 
   &:hover, &:focus {
-    color: $text;
-    background-color: $secondary-fill;
+    color: colors.$text;
+    background-color: colors.$secondary-fill;
     box-shadow: none !important;
   }
 
-  &:active { color: $text; background-color: $track; }
+  &:active { color: colors.$text; background-color: colors.$track; }
 }
 
 // prev/next month icons
 .calendar-change-month-back StIcon,
 .calendar-change-month-forward StIcon {
-  icon-size: $base-icon-size;
+  icon-size: variables.$base-icon-size;
 }
 
 .calendar-change-month-back { //arrow back
@@ -142,34 +147,34 @@
 }
 
 .calendar-day {
-  @include font(caption);
+  @include drawing.font(caption);
   text-align: center;
-  width: if(sass($compact == 'false'): 3em; else: 2.5em) !important;
-  height: if(sass($compact == 'false'): 3em; else: 2.5em) !important;
+  width: if(sass(config.$compact == 'false'): 3em; else: 2.5em) !important;
+  height: if(sass(config.$compact == 'false'): 3em; else: 2.5em) !important;
   padding: 0 !important;
   margin: 2px !important;
-  border-radius: $circular-radius;
-  color: $text-secondary !important;
+  border-radius: variables.$circular-radius;
+  color: colors.$text-secondary !important;
   border: none !important;
   font-feature-settings: "tnum";
   text-shadow: none;
   background-color: transparent !important;
 
   &:hover, &:focus {
-    color: $text !important;
-    background-color: $secondary-fill !important;
+    color: colors.$text !important;
+    background-color: colors.$secondary-fill !important;
     box-shadow: none;
   }
 
   &:active {
-    color: $text !important;
-    background-color: $track !important;
+    color: colors.$text !important;
+    background-color: colors.$track !important;
     border: none !important; //avoid jumparound due to today
   }
 
   &:selected {
-    color: $text !important;
-    background-color: $track !important;
+    color: colors.$text !important;
+    background-color: colors.$track !important;
     border: none !important; //avoid jumparound due to today
     box-shadow: none !important;
     outline: none !important;
@@ -178,19 +183,19 @@
   &.calendar-weekday {}
 
   &.calendar-weekend {
-    color: $text-disabled;
+    color: colors.$text-disabled;
   }
 }
 
 .calendar-day-heading {  //day of week heading
   width: 24px !important;
-  height: 24px - $space-size !important;
+  height: 24px - variables.$space-size !important;
   margin-top: 2px !important;
-  padding: $space-size 0 0 !important;
-  border-radius: $circular-radius;
+  padding: variables.$space-size 0 0 !important;
+  border-radius: variables.$circular-radius;
   background-color: transparent !important;
-  color: $text-disabled !important;
-  @include font(caption);
+  color: colors.$text-disabled !important;
+  @include drawing.font(caption);
   font-weight: bold;
   text-align: center;
 }
@@ -201,49 +206,49 @@
 
 .calendar-today {
   font-weight: bold !important;
-  color: on($primary) !important;
-  background-color: $primary !important;
+  color: colors.on(colors.$primary) !important;
+  background-color: colors.$primary !important;
   border: none;
 
   &:hover, &:focus {
-    background-color: lighter($primary, 3%) !important;
-    color: on($primary) !important;
+    background-color: colors.lighter(colors.$primary, 3%) !important;
+    color: colors.on(colors.$primary) !important;
   }
 
   &:active, &:selected {
-    background-color: $primary !important;
-    color: on($primary) !important;
+    background-color: colors.$primary !important;
+    color: colors.on(colors.$primary) !important;
 
     &:hover, &:focus {
-      background-color: lighter($primary, 3%) !important;
-      color: on($primary) !important;
+      background-color: colors.lighter(colors.$primary, 3%) !important;
+      color: colors.on(colors.$primary) !important;
     }
   }
 }
 
 .calendar-day-with-events {
-  color: $text-disabled;
+  color: colors.$text-disabled;
   background-image: url("assets/calendar-today.svg");
   background-size: contain;
 
 }
 
 .calendar-other-month {
-  color: $text-secondary-disabled !important;
+  color: colors.$text-secondary-disabled !important;
   font-weight: normal;
 
   &.calendar-weekend {
-    color: $text-secondary-disabled !important;
+    color: colors.$text-secondary-disabled !important;
   }
 }
 
 .calendar-week-number {
   margin: 6px !important;
-  padding: 0 $margin-size * 0.5 + $space-size !important;
-  border-radius: $circular-radius;
-  background-color: if(sass($variant == 'light'): rgba(black, 0.04); else: rgba(white, 0.03));
-  color: $text-disabled;
-  font-size: pt(11px);
+  padding: 0 variables.$margin-size * 0.5 + variables.$space-size !important;
+  border-radius: variables.$circular-radius;
+  background-color: if(sass(config.$variant == 'light'): rgba(black, 0.04); else: rgba(white, 0.03));
+  color: colors.$text-disabled;
+  font-size: drawing.pt(11px);
   font-weight: bold;
   text-align: center;
   text-shadow: none;
@@ -254,22 +259,22 @@
 .world-clocks-button,
 .weather-button,
 .events-button {
-  padding: $space-size $space-size * 2;
-  border-radius: $material-radius;
+  padding: variables.$space-size variables.$space-size * 2;
+  border-radius: variables.$material-radius;
   border: none;
   box-shadow: none;
   text-shadow: none;
-  color: $text-secondary;
-  background-color: $fill;
+  color: colors.$text-secondary;
+  background-color: colors.$fill;
 
   &:hover, &:focus {
-    color: $text;
-    background-color: $secondary-fill;
+    color: colors.$text;
+    background-color: colors.$secondary-fill;
   }
 
   &:active {
-    color: $text;
-    background-color: $track;
+    color: colors.$text;
+    background-color: colors.$track;
   }
 }
 
@@ -278,9 +283,9 @@
 .message-list-section-title,
 .events-section-title,
 .events-title {
-  color: $text-disabled;
+  color: colors.$text-disabled;
   font-weight: bold;
-  margin-bottom: $space-size * 0.5;
+  margin-bottom: variables.$space-size * 0.5;
   text-shadow: none;
 }
 
@@ -293,9 +298,9 @@
 .world-clocks-header,
 .weather-header,
 .events-section-title {
-  color: $text-disabled;
+  color: colors.$text-disabled;
   font-weight: bold;
-  font-size: if(sass($compact == 'true'): 0.9em; else: 1em);
+  font-size: if(sass(config.$compact == 'true'): 0.9em; else: 1em);
 }
 
 // Events button
@@ -305,14 +310,14 @@
   }
 
   .events-list {
-    color: $text-secondary;
-    spacing: $space-size;
+    color: colors.$text-secondary;
+    spacing: variables.$space-size;
     text-shadow: none;
   }
 
   .event-box {
-    spacing: $space-size;
-    border-radius: $material-radius;
+    spacing: variables.$space-size;
+    border-radius: variables.$material-radius;
   }
 
   .event-summary {
@@ -320,12 +325,12 @@
   }
 
   .event-time {
-    color: $text-secondary-disabled;
+    color: colors.$text-secondary-disabled;
     font-feature-settings: "tnum";
   }
 
   .event-placeholder {
-    color: $text-secondary-disabled;
+    color: colors.$text-secondary-disabled;
     font-style: italic;
   }
 }
@@ -333,31 +338,31 @@
 // Empty-state headers
 .weather-header.no-location,
 .world-clocks-header.no-world-clocks {
-  color: $text-secondary;
+  color: colors.$text-secondary;
 }
 
 // World clocks button
 .world-clocks-button {
   .world-clocks-city {
-    color: $text-disabled;
+    color: colors.$text-disabled;
     font-weight: normal;
-    font-size: if(sass($compact == 'true'): 0.9em; else: 1em);
+    font-size: if(sass(config.$compact == 'true'): 0.9em; else: 1em);
   }
 
   .world-clocks-time {
-    color: $text-disabled;
+    color: colors.$text-disabled;
     font-feature-settings: "tnum";
     font-weight: bold;
-    font-size: if(sass($compact == 'true'): 0.9em; else: 1em);
+    font-size: if(sass(config.$compact == 'true'): 0.9em; else: 1em);
 
     &:ltr { text-align: right; }
     &:rtl { text-align: left; }
   }
 
   .world-clocks-timezone {
-    color: $text-disabled;
+    color: colors.$text-disabled;
     font-feature-settings: "tnum";
-    font-size: if(sass($compact == 'true'): 0.9em; else: 1em);
+    font-size: if(sass(config.$compact == 'true'): 0.9em; else: 1em);
   }
 }
 
@@ -373,18 +378,18 @@
 
   .weather-header.location {
     font-weight: normal;
-    color: $text-disabled;
-    font-size: if(sass($compact == 'true'): 0.8em; else: 0.9em);
+    color: colors.$text-disabled;
+    font-size: if(sass(config.$compact == 'true'): 0.8em; else: 0.9em);
   }
 
   .weather-forecast-icon {
-    icon-size: if(sass($compact == 'true'): 24px; else: 32px);
-    color: $text-disabled;
+    icon-size: if(sass(config.$compact == 'true'): 24px; else: 32px);
+    color: colors.$text-disabled;
   }
 
   .weather-forecast-time {
-    color: $text-disabled;
-    font-size: if(sass($compact == 'true'): 0.7em; else: 0.8em);
+    color: colors.$text-disabled;
+    font-size: if(sass(config.$compact == 'true'): 0.7em; else: 0.8em);
     font-feature-settings: "tnum";
     font-weight: normal;
     padding-top: 0.2em;
@@ -393,7 +398,7 @@
 
   .weather-forecast-temp {
     font-weight: bold;
-    color: color.adjust($text, $alpha: -0.35);
+    color: color.adjust(colors.$text, $alpha: -0.35);
     text-shadow: none;
   }
 }

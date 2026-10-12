@@ -1,16 +1,20 @@
+@use "../../colors";
+@use "../../tweaks-temp";
+@use "../../variables";
+
 /* Dash */
 
-$dash_background_color: rgba(on($system), 0.2);
+$dash_background_color: rgba(colors.on(colors.$system), 0.2);
 $dash_placeholder_size: 32px;
 $dash_padding: 12px;
 $dash_spacing: 2px;
 $dash_edge_offset: 12px;
-$dash_border_radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius + $dash_padding + $dash_spacing);
+$dash_border_radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius + $dash_padding + $dash_spacing);
 
 #dash {
   // a bit of spacing so that dash doesn't touch the screen edges
-  padding-left: $space-size;
-  padding-right: $space-size;
+  padding-left: variables.$space-size;
+  padding-right: variables.$space-size;
 
   // background behind item container
   .dash-background {
@@ -49,19 +53,19 @@ $dash_border_radius: if(sass($corner_style == 'circular'): $circular-radius; els
       padding-bottom: $dash_edge_offset; // align with other items
 
       .overview-icon {
-        border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
-        padding: $space-size;
-        spacing: $space-size;
+        border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius);
+        padding: variables.$space-size;
+        spacing: variables.$space-size;
         text-align: center;
         transition-duration: 100ms;
         background-color: transparent;
-        color: on($system);
+        color: colors.on(colors.$system);
       }
 
-      &:focus .overview-icon { background-color: on($system, divider); }
-      &:hover .overview-icon { background-color: on($system, divider); }
-      &:active .overview-icon { background-color: on($system, track); }
-      &:checked .overview-icon { background-color: on($system, divider); }
+      &:focus .overview-icon { background-color: colors.on(colors.$system, divider); }
+      &:hover .overview-icon { background-color: colors.on(colors.$system, divider); }
+      &:active .overview-icon { background-color: colors.on(colors.$system, track); }
+      &:checked .overview-icon { background-color: colors.on(colors.$system, divider); }
     }
 
     // running app dot
@@ -74,9 +78,9 @@ $dash_border_radius: if(sass($corner_style == 'circular'): $circular-radius; els
   // separator between pinned and running apps
   .dash-separator {
     width: 1px;
-    margin-left: $margin-size;
-    margin-right: $margin-size;
-    background-color: rgba(on($system), 0.15);
+    margin-left: variables.$margin-size;
+    margin-right: variables.$margin-size;
+    background-color: rgba(colors.on(colors.$system), 0.15);
   }
 
   // make sure all dash components have same margin from screen edge
@@ -88,13 +92,13 @@ $dash_border_radius: if(sass($corner_style == 'circular'): $circular-radius; els
 
 // OSD Tooltip
 .dash-label {
-  border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
-  padding: $space-size $space-size * 2;
-  margin: $space-size * 1.5;
-  color: on(dark);
+  border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius);
+  padding: variables.$space-size variables.$space-size * 2;
+  margin: variables.$space-size * 1.5;
+  color: colors.on(dark);
   background-color: rgba(black, 0.75);
   border: none;
-  box-shadow: $shell-shadow-z2;
+  box-shadow: variables.$shell-shadow-z2;
   text-align: center;
   -y-offset: 0; // distance from the dash edge
   -x-offset: 0;
@@ -104,24 +108,24 @@ $dash_border_radius: if(sass($corner_style == 'circular'): $circular-radius; els
 // paints a blurred backdrop under .dash-background; the tint, rim and shadow
 // are here. Icons grow under the pointer, so the pill gets room above.
 .lubuto-dock #dash {
-  padding: $space-size * 2 $space-size 0;
+  padding: variables.$space-size * 2 variables.$space-size 0;
 
   .dash-background {
-    background-color: $glass-tint;
-    border: 1px solid $glass-rim;
-    border-radius: $radius-window + $space-size;
-    box-shadow: $shell-shadow-z4;
-    margin-bottom: $space-size * 1.5;
+    background-color: colors.$glass-tint;
+    border: 1px solid colors.$glass-rim;
+    border-radius: variables.$radius-window + variables.$space-size;
+    box-shadow: variables.$shell-shadow-z4;
+    margin-bottom: variables.$space-size * 1.5;
   }
 
   .dash-separator {
-    margin-bottom: $space-size * 1.5;
+    margin-bottom: variables.$space-size * 1.5;
   }
 
   .dash-item-container {
     .show-apps,
     .overview-tile {
-      padding-bottom: $space-size * 1.5;
+      padding-bottom: variables.$space-size * 1.5;
 
       .overview-icon {
         background-color: transparent;
@@ -134,13 +138,13 @@ $dash_border_radius: if(sass($corner_style == 'circular'): $circular-radius; els
 
       &:active .overview-icon,
       &:checked .overview-icon {
-        background-color: on($system, divider);
+        background-color: colors.on(colors.$system, divider);
       }
     }
 
     .app-grid-running-dot {
-      offset-y: -$space-size * 1.5 + 2px;
-      background-color: $primary;
+      offset-y: -(variables.$space-size) * 1.5 + 2px;
+      background-color: colors.$primary;
     }
   }
 }

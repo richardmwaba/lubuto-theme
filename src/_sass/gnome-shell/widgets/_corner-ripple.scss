@@ -1,9 +1,11 @@
+@use "../../colors";
+
 /* Activities Ripple */
 
 $ripple_size: 50px;
 
 .ripple-box {
-  background-color: rgba($primary, 0.35);
+  background-color: rgba(colors.$primary, 0.35);
   width: $ripple_size + 2px;
   height: $ripple_size + 2px;
   border-radius: 0 0 $ripple_size + 2px 0; // radius equals the size of the box to give us the curve

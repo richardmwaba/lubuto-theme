@@ -1,3 +1,6 @@
+@use "../../colors";
+@use "../../variables";
+
 @use "sass:color";
 
 /* Screen Shield */
@@ -40,11 +43,11 @@
   .unlock-dialog-notification-source {
     padding: 12px 6px;
     border: none;
-    background-color: $tooltip;
-    color: on(dark);
-    border-radius: $material-radius;
+    background-color: colors.$tooltip;
+    color: colors.on(dark);
+    border-radius: variables.$material-radius;
 
-    &.critical { background-color: color.adjust($system, $alpha: -0.1) }
+    &.critical { background-color: color.adjust(colors.$system, $alpha: -0.1) }
   }
 }
 
@@ -55,8 +58,8 @@
 .unlock-dialog-notification-count-text {
   weight: bold;
   padding: 0 6px;
-  color: $tooltip;
-  background-color: on(dark, secondary);
+  color: colors.$tooltip;
+  background-color: colors.on(dark, secondary);
   border-radius: 99px;
   margin-right: 12px;
 
@@ -68,13 +71,13 @@
 }
 
 #lockDialogGroup {
-  background-color: $system;
+  background-color: colors.$system;
 }
 
 #unlockDialogNotifications {
   > .vhandle, > .hhandle {
-    background-color: color.adjust($tooltip, $alpha: -0.7);
-    &:hover, &:focus { background-color: color.adjust($tooltip,$alpha: -0.5); }
-    &:active { background-color: color.adjust($primary,$alpha: -0.5); }
+    background-color: color.adjust(colors.$tooltip, $alpha: -0.7);
+    &:hover, &:focus { background-color: color.adjust(colors.$tooltip,$alpha: -0.5); }
+    &:active { background-color: color.adjust(colors.$primary,$alpha: -0.5); }
   }
 }

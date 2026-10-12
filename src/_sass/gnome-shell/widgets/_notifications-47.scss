@@ -1,3 +1,6 @@
+@use "../../colors";
+@use "../../variables";
+
 /* Notifications & Message Tray */
 
 $notification_banner_height: 64px;
@@ -7,53 +10,53 @@ $notification_banner_width: 34em;
 .notification-banner {
   min-height: $notification_banner_height;
   width: $notification_banner_width;
-  margin: $space-size;
-  padding: $space-size;
-  border-radius: $popup-radius;
+  margin: variables.$space-size;
+  padding: variables.$space-size;
+  border-radius: variables.$popup-radius;
   border-left: none;
   border-bottom: none;
-  box-shadow: $shell-shadow-z2;
-  color: $text;
-  background-color: rgba($base, 0.96);
+  box-shadow: variables.$shell-shadow-z2;
+  color: colors.$text;
+  background-color: rgba(colors.$base, 0.96);
 
-  &:hover, &:focus, &:active { background-color: $base; }
+  &:hover, &:focus, &:active { background-color: colors.$base; }
 }
 
 .notification-buttons-bin {
-  spacing: $space-size;
+  spacing: variables.$space-size;
   padding: 0;
 }
 
 .notification-button {
-  min-height: $medium-size;
+  min-height: variables.$medium-size;
   padding: 0 16px;
   margin: 0 !important;
-  background-color: $fill;
-  color: $text-secondary;
+  background-color: colors.$fill;
+  color: colors.$text-secondary;
   font-weight: 500;
   border: none;
-  border-radius: $popup-radius - $space-size * 2;
+  border-radius: variables.$popup-radius - variables.$space-size * 2;
 
   .popup-menu & {
-    border-radius: $menuitem-radius;
+    border-radius: variables.$menuitem-radius;
   }
 
   &:focus {
     background-color: transparent;
-    color: $text-secondary;
-    box-shadow: inset 0 0 0 2px $secondary-fill;
+    color: colors.$text-secondary;
+    box-shadow: inset 0 0 0 2px colors.$secondary-fill;
   }
 
   &:hover {
-    background-color: $secondary-fill;
-    color: $text;
+    background-color: colors.$secondary-fill;
+    color: colors.$text;
     box-shadow: none;
   }
 
-  &:active, &:checked { background-color: $track; color: $text; }
+  &:active, &:checked { background-color: colors.$track; color: colors.$text; }
 
   &:insensitive {
     background-color: transparent;
-    color: $text-secondary-disabled;
+    color: colors.$text-secondary-disabled;
   }
 }

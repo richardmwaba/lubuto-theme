@@ -1,0 +1,5 @@
+// The variant an entry file builds. Entry files configure these; every other
+// partial reads them.
+$variant: 'light' !default;
+$topbar: 'light' !default;
+$compact: 'false' !default;

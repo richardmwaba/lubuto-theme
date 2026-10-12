@@ -1,3 +1,6 @@
+@use "../../colors";
+@use "../../variables";
+
 /* Network Dialogs */
 .nm-dialog {
   max-height: 34em;
@@ -17,7 +20,7 @@
   text-align: center;
 }
 
-.nm-dialog-airplane-text { color: $text; }
+.nm-dialog-airplane-text { color: colors.$text; }
 
 // header
 .nm-dialog-header {
@@ -31,9 +34,9 @@
 // list of networks
 .nm-dialog-scroll-view {
   border: none;
-  background-color: $secondary-fill;
-  border-radius: $material-radius;
-  padding: $space-size * 2;
+  background-color: colors.$secondary-fill;
+  border-radius: variables.$material-radius;
+  padding: variables.$space-size * 2;
   padding-right: 0;
 }
 
@@ -41,24 +44,24 @@
 .nm-dialog-item {
   font-size: 1em;
   border-bottom: none;
-  border-radius: $material-radius - $space-size;
-  padding: $space-size * 2;
+  border-radius: variables.$material-radius - variables.$space-size;
+  padding: variables.$space-size * 2;
   spacing: 0px;
 
-  &:hover, &:focus { background-color: $secondary-fill; }
+  &:hover, &:focus { background-color: colors.$secondary-fill; }
 
-  &:active { background-color: $track; }
+  &:active { background-color: colors.$track; }
 
   &:selected {
-    background-color: $primary;
-    color: on(dark);
+    background-color: colors.$primary;
+    color: colors.on(dark);
   }
 }
 
 // icons in list
-.nm-dialog-icon { icon-size: $base-icon-size; }
-.nm-dialog-icons { spacing: $space-size * 2; }
+.nm-dialog-icon { icon-size: variables.$base-icon-size; }
+.nm-dialog-icons { spacing: variables.$space-size * 2; }
 
 // no networks
-.no-networks-label { color: $text-disabled; }
-.no-networks-box { spacing: $space-size; }
+.no-networks-label { color: colors.$text-disabled; }
+.no-networks-box { spacing: variables.$space-size; }

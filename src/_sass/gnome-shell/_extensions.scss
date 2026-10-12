@@ -1,3 +1,9 @@
+@use "../colors";
+@use "../tweaks-temp";
+@use "../variables";
+@use "drawing";
+@use "widgets/dash-46";
+
 //
 // Dash to Dock
 //
@@ -28,10 +34,10 @@
   .notification-badge {
     min-width: 16px;
     min-height: 16px;
-    color: on($primary);
-    background-color: $primary;
+    color: colors.on(colors.$primary);
+    background-color: colors.$primary;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.25);
-    border-radius: $circular-radius;
+    border-radius: variables.$circular-radius;
     margin: 2px 3px 5px;
     padding: 0.2em 0.4em;
     font-weight: bold;
@@ -43,7 +49,7 @@
                          (left, right),
                          (right, left) {
     &.#{$_pos} #dash .dash-background {
-      border-radius: $dash_border_radius !important;
+      border-radius: dash-46.$dash_border_radius !important;
     }
 
     &.#{$_pos}.straight-corner,
@@ -78,7 +84,7 @@
 
   &.shrink {
     .dash-background {
-      padding: $dash_spacing !important;
+      padding: dash-46.$dash_spacing !important;
       // border-radius: $material-radius + $space-size / 2;
     }
 
@@ -103,16 +109,16 @@
   &.right {
     #dash {
       margin-top: 0 !important;
-      padding: $dash_padding !important;
+      padding: dash-46.$dash_padding !important;
 
       #dashtodockDashContainer {
-        padding: $dash_padding - $dash_spacing 0 !important;
+        padding: dash-46.$dash_padding - dash-46.$dash_spacing 0 !important;
       }
     }
 
     .show-apps,
     .overview-tile {
-      padding: $dash_spacing $space-size !important;
+      padding: dash-46.$dash_spacing variables.$space-size !important;
     }
 
     .dash-background {
@@ -122,12 +128,12 @@
     &.shrink {
       #dash {
         #dashtodockDashContainer {
-          padding: $margin-size 0 !important;
+          padding: variables.$margin-size 0 !important;
         }
       }
 
       .dash-background {
-        padding: $margin-size !important;
+        padding: variables.$margin-size !important;
       }
 
       .show-apps,
@@ -153,13 +159,13 @@
 
           & > :first-child {
             .show-apps {
-              padding-bottom: $space-size !important;
+              padding-bottom: variables.$space-size !important;
             }
           }
 
           & > :last-child {
             .show-apps {
-              padding-bottom: $dash_padding + $space-size * 2 !important;
+              padding-bottom: dash-46.$dash_padding + variables.$space-size * 2 !important;
             }
           }
         }
@@ -178,11 +184,11 @@
       }
 
       .overview-tile {
-        padding: $dash_spacing $dash_padding !important;
+        padding: dash-46.$dash_spacing dash-46.$dash_padding !important;
       }
 
       .show-apps {
-        padding: $dash_spacing $dash_padding $dash_padding * 2 !important;
+        padding: dash-46.$dash_spacing dash-46.$dash_padding dash-46.$dash_padding * 2 !important;
       }
     }
   }
@@ -190,29 +196,29 @@
   &.top,
   &.bottom {
     .dash-background {
-      padding: $dash_padding ($dash_padding - $dash_spacing) !important;;
+      padding: dash-46.$dash_padding (dash-46.$dash_padding - dash-46.$dash_spacing) !important;;
     }
 
     .show-apps,
     .overview-tile {
-      margin: 0 $dash_spacing !important;
-      padding-bottom: $dash_edge_offset !important;
+      margin: 0 dash-46.$dash_spacing !important;
+      padding-bottom: dash-46.$dash_edge_offset !important;
 
       .overview-icon {
-        padding: $space-size !important;
-        spacing: $space-size !important;
+        padding: variables.$space-size !important;
+        spacing: variables.$space-size !important;
       }
     }
 
     &.shrink {
       .dash-background {
-        padding: $margin-size $margin-size * 0.5 !important;
+        padding: variables.$margin-size variables.$margin-size * 0.5 !important;
       }
 
       .show-apps,
       .overview-tile {
         margin: 0 !important;
-        padding: 0 $margin-size * 0.5 $dash_padding !important;
+        padding: 0 variables.$margin-size * 0.5 dash-46.$dash_padding !important;
       }
     }
 
@@ -238,7 +244,7 @@
 
           & > :last-child {
             .show-apps {
-              padding-right: $dash_padding + $space-size !important;
+              padding-right: dash-46.$dash_padding + variables.$space-size !important;
             }
           }
         }
@@ -257,19 +263,19 @@
       }
 
       .dash-separator {
-        margin: 0 ($dash_spacing + ($dash_padding * 0.5)) !important;
+        margin: 0 (dash-46.$dash_spacing + (dash-46.$dash_padding * 0.5)) !important;
       }
 
       .show-apps,
       .overview-tile {
-        padding: $dash_padding $dash_spacing !important;
+        padding: dash-46.$dash_padding dash-46.$dash_spacing !important;
       }
     }
   }
 
   #dash {
     .dash-background {
-      background-color: $panel;
+      background-color: colors.$panel;
     }
 
     .app-grid-running-dot {
@@ -279,27 +285,27 @@
     }
 
     StWidget.focused .app-grid-running-dot {
-      background-color: $primary;
+      background-color: colors.$primary;
     }
   }
 
   &.opaque #dash .dash-background { // solid-mode
-    background-color: $panel-solid;
+    background-color: colors.$panel-solid;
   }
 
   &.transparent #dash .dash-background { // translucent-mode
-    background-color: $panel; // does not work
+    background-color: colors.$panel; // does not work
   }
 
   &:overview #dash { // overview-mode #1
     background: none;
 
     .dash-background {
-      background-color: on(dark, divider);
+      background-color: colors.on(dark, divider);
     }
 
     StWidget.focused .app-grid-running-dot {
-      background-color: $primary;
+      background-color: colors.$primary;
     }
   }
 
@@ -342,7 +348,7 @@
     .overview-tile,
     .show-apps {
       .overview-icon {
-        border-radius: $material-radius;
+        border-radius: variables.$material-radius;
       }
     }
   }
@@ -364,7 +370,7 @@
 }
 
 .dash-label.bottom {
-  margin-bottom: $dash_padding + $space-size !important;
+  margin-bottom: dash-46.$dash_padding + variables.$space-size !important;
 }
 
 //
@@ -379,7 +385,7 @@ $dash_to_panel_item_radius: 5px;
   margin: 0 !important;
 
   .dash-background {
-    background-color: $panel;
+    background-color: colors.$panel;
     margin-bottom: 0 !important;
     padding: 0 !important;
     border-radius: 0 !important;
@@ -398,21 +404,21 @@ $dash_to_panel_item_radius: 5px;
   }
 
   .show-apps {
-    color: on($panel) !important;
+    color: colors.on(colors.$panel) !important;
     border-radius: 0 !important;
 
     &:hover {
-      background: on($panel, divider) !important;
+      background: colors.on(colors.$panel, divider) !important;
     }
 
     &:active {
-      background: on($panel, track) !important;
+      background: colors.on(colors.$panel, track) !important;
     }
   }
 
   .panel-button {
     &, &.clock-display .clock {
-      border-radius: $dash_to_panel_item_radius + $space-size * 0.5 !important;
+      border-radius: $dash_to_panel_item_radius + variables.$space-size * 0.5 !important;
       margin: 0 !important;
     }
   }
@@ -425,7 +431,7 @@ $dash_to_panel_item_radius: 5px;
 
 .popup-menu.panel-menu, .popup-menu.panel-menu.quick-settings {
   .popup-menu-content {
-    margin-bottom: $space-size * 0.5 !important;
+    margin-bottom: variables.$space-size * 0.5 !important;
   }
 }
 
@@ -436,7 +442,7 @@ $dash_to_panel_menu_radius: 12px;
 }
 
 #preview-menu {
-  margin: $space-size !important;
+  margin: variables.$space-size !important;
   box-shadow: 0 3px 8px rgba(black, 0.2) !important;
   border-radius: $dash_to_panel_menu_radius !important;
   padding: 0 !important;
@@ -468,11 +474,11 @@ $dash_to_panel_menu_radius: 12px;
     // generic text buttons are allocated with y-expand-ed
     padding: 0 16px;
     font-weight: 500;
-    @include button(flat-normal);
-    &:hover { @include button(flat-hover); }
-    &:focus { @include button(flat-focus); }
-    &:active { @include button(flat-active); }
-    &:insensitive { @include button(flat-disabled); }
+    @include drawing.button(flat-normal);
+    &:hover { @include drawing.button(flat-hover); }
+    &:focus { @include drawing.button(flat-focus); }
+    &:active { @include drawing.button(flat-active); }
+    &:insensitive { @include drawing.button(flat-disabled); }
   }
 
   &-current {
@@ -480,17 +486,17 @@ $dash_to_panel_menu_radius: 12px;
     &-summary,
     &-summarybox {
       background: none;
-      color: $text;
+      color: colors.$text;
     }
 
     &-databox-values {
       background: none;
-      color: $text-disabled;
+      color: colors.$text-disabled;
     }
 
     &-databox-captions {
       background: none;
-      color: $text-disabled;
+      color: colors.$text-disabled;
     }
   }
 
@@ -498,22 +504,22 @@ $dash_to_panel_menu_radius: 12px;
     &-icon,
     &-summary {
       background: none;
-      color: $text-secondary;
+      color: colors.$text-secondary;
     }
 
     &-day,
     &-temperature {
       background: none;
-      color: $text-disabled;
+      color: colors.$text-disabled;
     }
   }
 
   &-sunrise-icon,
   &-sunset-icon,
-  &-build-icon { color: $text-secondary; }
+  &-build-icon { color: colors.$text-secondary; }
 }
 
-@if $submenu_style == 'false' {
+@if tweaks-temp.$submenu_style == 'false' {
   .popup-sub-menu .openweather {
     &-current {
       &-icon,
@@ -556,7 +562,7 @@ $dash_to_panel_menu_radius: 12px;
 .arcmenu-menu-button,
 .arcmenu-button {
   border-width: 0 !important;
-  border-radius: $circular-radius !important;
+  border-radius: variables.$circular-radius !important;
 }
 
 //
@@ -564,7 +570,7 @@ $dash_to_panel_menu_radius: 12px;
 //
 
 .cosmic-solid-bg {
-  background-color: $system;
+  background-color: colors.$system;
 }
 
 .cosmic-dock {
@@ -572,7 +578,7 @@ $dash_to_panel_menu_radius: 12px;
     background-color: transparent;
 
     .dash-background {
-      background-color: $panel;
+      background-color: colors.$panel;
     }
   }
 

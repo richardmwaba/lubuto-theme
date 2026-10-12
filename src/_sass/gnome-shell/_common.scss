@@ -1,3 +1,8 @@
+@use "../colors";
+@use "../tweaks-temp";
+@use "../variables";
+@use "drawing";
+
 //This is the RIGHT PLACE to edit the stylesheet
 
 //let's start by telling people not to edit the generated CSS:
@@ -5,27 +10,27 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 /* #{$cakeisalie} */
 
 stage {
-  @include font(body-1);
-  color: $text;
+  @include drawing.font(body-1);
+  color: colors.$text;
 }
 
 %status_text {
-  @include font(display-2);
-  color: on(dark, disabled);
+  @include drawing.font(display-2);
+  color: colors.on(dark, disabled);
 }
 
-$bubble_button_radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
+$bubble_button_radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius);
 
 %bubble_button {
   border: none;
   margin: 0;
-  @include button(normal);
-  @include font(button);
+  @include drawing.button(normal);
+  @include drawing.font(button);
 
-  &:hover { @include button(hover); }
-  &:active { @include button(active); color: $text !important; }
-  &:insensitive { @include button(insensitive); }
-  &:focus { @include button(focus); }
+  &:hover { @include drawing.button(hover); }
+  &:active { @include drawing.button(active); color: colors.$text !important; }
+  &:insensitive { @include drawing.button(insensitive); }
+  &:focus { @include drawing.button(focus); }
 
   &:first-child {
     border-radius: $bubble_button_radius 0 0 $bubble_button_radius;
@@ -46,13 +51,13 @@ $bubble_button_radius: if(sass($corner_style == 'circular'): $circular-radius; e
   border: none;
   margin: 0;
   border-radius: $bubble_button_radius;
-  @include button(normal);
-  @include font(button);
+  @include drawing.button(normal);
+  @include drawing.font(button);
 
-  &:hover { @include button(hover); }
-  &:active { @include button(active); color: $text !important; }
-  &:insensitive { @include button(insensitive); }
-  &:focus { @include button(focus); }
+  &:hover { @include drawing.button(hover); }
+  &:active { @include drawing.button(active); color: colors.$text !important; }
+  &:insensitive { @include drawing.button(insensitive); }
+  &:focus { @include drawing.button(focus); }
 }
 
 %osd_button {
@@ -60,66 +65,66 @@ $bubble_button_radius: if(sass($corner_style == 'circular'): $circular-radius; e
   background-color: transparent;
   box-shadow: none;
 
-  &:insensitive { @include button(insensitive, $c:$system, $tc: on(dark, secondary-disabled)); }
-  &:focus { @include button(focus, $c:$system, $tc: on(dark)); }
-  &:hover { @include button(hover, $c:$system, $tc: on(dark)); }
-  &:active { @include button(active, $c:$system, $tc: on(dark)); }
-  &:outlined, &:checked { @include button(checked); }
+  &:insensitive { @include drawing.button(insensitive, $c:colors.$system, $tc: colors.on(dark, secondary-disabled)); }
+  &:focus { @include drawing.button(focus, $c:colors.$system, $tc: colors.on(dark)); }
+  &:hover { @include drawing.button(hover, $c:colors.$system, $tc: colors.on(dark)); }
+  &:active { @include drawing.button(active, $c:colors.$system, $tc: colors.on(dark)); }
+  &:outlined, &:checked { @include drawing.button(checked); }
 }
 
 %osd_panel {
-  color: on($popover);
-  background-color: $popover;
+  color: colors.on(colors.$popover);
+  background-color: colors.$popover;
   border: none;
-  box-shadow: $shell-shadow-z4;
-  padding: $space-size * 2;
+  box-shadow: variables.$shell-shadow-z4;
+  padding: variables.$space-size * 2;
 }
 
 /* General Typography */
 
 %large_title {
   font-weight: 300;
-  @include fontsize(24);
+  @include drawing.fontsize(24);
 }
 
 %title_1 {
   font-weight: 800;
-  @include fontsize(20);
+  @include drawing.fontsize(20);
 }
 
 %title_2 {
   font-weight: 800;
-  @include fontsize(15);
+  @include drawing.fontsize(15);
 }
 
 %title_3 {
   font-weight: 700;
-  @include fontsize(15);
+  @include drawing.fontsize(15);
 }
 
 %title_4 {
   font-weight: 700;
-  @include fontsize(13);
+  @include drawing.fontsize(13);
 }
 
 %heading {
   font-weight: 700;
-  @include fontsize(11);
+  @include drawing.fontsize(11);
 }
 
 %caption_heading {
   font-weight: 700;
-  @include fontsize(9);
+  @include drawing.fontsize(9);
 }
 
 %caption {
   font-weight: 400;
-  @include fontsize(9);
+  @include drawing.fontsize(9);
 }
 
 %smaller {
   font-weight: 400;
-  @include fontsize(8);
+  @include drawing.fontsize(8);
 }
 
 %monospace {font-family: monospace;}

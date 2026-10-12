@@ -1,28 +1,33 @@
+@use "../../colors";
+@use "../../tweaks-temp";
+@use "../../variables";
+@use "../drawing";
+
 /* Entries */
 
 StEntry {
-  min-height: $medium-size;
+  min-height: variables.$medium-size;
   padding: 0 8px;
-  border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
+  border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius);
   border-width: 0;
-  selection-background-color: rgba($primary, 0.35) !important;
-  selected-color: $primary !important;
-  @include font(subheading);
-  @include entry(normal);
-  &:hover { @include entry(hover); }
-  &:focus { @include entry(focus); }
-  &:insensitive { @include entry(insensitive); }
+  selection-background-color: rgba(colors.$primary, 0.35) !important;
+  selected-color: colors.$primary !important;
+  @include drawing.font(subheading);
+  @include drawing.entry(normal);
+  &:hover { @include drawing.entry(hover); }
+  &:focus { @include drawing.entry(focus); }
+  &:insensitive { @include drawing.entry(insensitive); }
   StIcon.capslock-warning {
-    icon-size: $base-icon-size;
-    warning-color: $warning;
+    icon-size: variables.$base-icon-size;
+    warning-color: colors.$warning;
     padding: 0 4px;
   }
   StIcon.peek-password {
-    icon-size: $base-icon-size;
+    icon-size: variables.$base-icon-size;
     padding: 0 4px;
   }
   StLabel.hint-text {
     margin-left: 2px;
-    color: $text-disabled;
+    color: colors.$text-disabled;
   }
 }

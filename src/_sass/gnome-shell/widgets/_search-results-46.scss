@@ -1,8 +1,13 @@
+@use "../../colors";
+@use "../../variables";
+@use "../common";
+@use "app-grid-46";
+
 /* Search */
 
 // search overview container
 #searchResults {
-  margin: 0 $margin-size;
+  margin: 0 variables.$margin-size;
 }
 
 
@@ -13,87 +18,87 @@
 // search results sections "the boxes"
 .search-section {
   // This should be equal to #searchResultsContent spacing
-  spacing: $margin-size * 3;
+  spacing: variables.$margin-size * 3;
 
   // separator
   .search-section-separator {
-    height: $margin-size * 2; // use it as a spacer
+    height: variables.$margin-size * 2; // use it as a spacer
     background-color: transparent;
   }
 }
 
 // content
 .search-section-content {
-  background-color: on(dark, divider);
-  border-radius: $material-radius + $space-size * 2;
+  background-color: colors.on(dark, divider);
+  border-radius: variables.$material-radius + variables.$space-size * 2;
   border: none;
   box-shadow: none;
   text-shadow: none;
-  color: on(dark);
-  padding: $space-size * 2;
-  margin:0 $margin-size * 3;
+  color: colors.on(dark);
+  padding: variables.$space-size * 2;
+  margin:0 variables.$margin-size * 3;
 }
 
 %search-section-content-item {
-  border-radius: $material-radius;
+  border-radius: variables.$material-radius;
   background-color: transparent;
-  color: on(dark, secondary);
+  color: colors.on(dark, secondary);
 
   &:focus,
   &:hover,
   &:selected {
-    color: on(dark);
-    background-color: on(dark, divider);
+    color: colors.on(dark);
+    background-color: colors.on(dark, divider);
     transition-duration: 200ms;
-    border-radius: $material-radius;
+    border-radius: variables.$material-radius;
   }
 
   &:active,
   &:checked {
-    color: on(dark);
-    background-color: on(dark, track);
-    border-radius: $material-radius;
+    color: colors.on(dark);
+    background-color: colors.on(dark, track);
+    border-radius: variables.$material-radius;
   }
 }
 
 // "no results" text
 .search-statustext {
   @extend %status_text;
-  color: on(dark, secondary);
+  color: colors.on(dark, secondary);
 }
 
 .grid-search-results {
-  spacing: $space-size * 5;
-  margin: 0 $margin-size * 3;
+  spacing: variables.$space-size * 5;
+  margin: 0 variables.$margin-size * 3;
 }
 
 // Search results with icons
 .grid-search-result {
-  @extend .overview-tile;
+  @extend %overview-tile;
 }
 
 // search result provider
 .search-provider-icon {
   @extend %search-section-content-item;
-  &:ltr { margin-right: $margin-size; }
-  &:rtl { margin-left: $margin-size; }
+  &:ltr { margin-right: variables.$margin-size; }
+  &:rtl { margin-left: variables.$margin-size; }
 
   // content
   .list-search-provider-content {
-    spacing: $space-size * 2;
+    spacing: variables.$space-size * 2;
 
     // provider labels
     .list-search-provider-details {
       width: 120px;
       margin-top: 0;
-      color: on(dark, secondary);
+      color: colors.on(dark, secondary);
     }
   }
 }
 
 // search results list
 .list-search-results {
-  spacing: $space-size;
+  spacing: variables.$space-size;
 }
 
 // search result listitem
@@ -102,17 +107,17 @@
 
   // content
   .list-search-result-content {
-    spacing: $space-size;
+    spacing: variables.$space-size;
   }
 
   // list item title (with leading icon)
   .list-search-result-title {
-    spacing: $space-size * 2;
+    spacing: variables.$space-size * 2;
     // font-weight: bold;
   }
 
   // list item description
   .list-search-result-description {
-    color: on(dark, disabled);
+    color: colors.on(dark, disabled);
   }
 }

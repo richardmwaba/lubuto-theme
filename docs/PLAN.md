@@ -162,8 +162,8 @@ New SASS tokens in `_variables.scss`, derived per colour and variant so the whol
       decoration headerbar rule are in. The sidebar selector change and the `theme($theme)` selection colour
       were already upstream.
 - [x] Replace `sassc` with Dart Sass (`sass-embedded`, the native compiler, pinned; the JS `sass` package
-      compiles five times slower). Fix `/` division with `math.div`. `@import` stays for now; the `@use`
-      migration is Phase 3. Recursive `@extend rubberband` chains now extend a placeholder, since Dart Sass
+      compiles five times slower). Fix `/` division with `math.div`. The `@use`
+      migration is in Phase 3. Recursive `@extend rubberband` chains now extend a placeholder, since Dart Sass
       expanded them into a tenfold larger GTK 3 stylesheet.
 - [x] GitHub Actions: build the full CSS matrix with Dart Sass on push, fail on errors and on deprecation
       warnings.
@@ -228,14 +228,19 @@ login, so a first install enables through the setting and takes effect next logi
 - [x] Migrate off legacy `if()`, the global colour functions and unqualified built-ins, output-identical.
       Lightness steps go through `lighter()` and `darker()`, which clamp and convert back to rgb, because
       GTK 3 cannot parse the `hsl()` Dart Sass would otherwise emit.
-- [ ] `@use` and `@forward`: deferred. The module migrator refuses the tree because entry files configure
-      the shared partials with plain variables before importing them. Converting to `@use ... with ()` is
-      a manual refactor. `@import` keeps working while sass-embedded 1.x is pinned. Revisit before Phase 9
-      or when Dart Sass 3.0 ships.
+- [x] `@use` and `@forward`, done 2026-10-11. `_config.scss` declares `$variant`, `$topbar` and `$compact`
+      with `!default`; each entry file configures it once with `@use 'config' with (...)` and then loads
+      the rest plainly, which is what let the module migrator convert the tree. `_tweaks.scss` forwards the
+      colour palette, so the installer's Nord and Dracula swap still works by rewriting that one line.
+      Placeholders extended across modules now load the defining module; `%card` lives in `_common-4.0`
+      so the dependency between it and `_libadwaita` points one way. Two class extends in the shell
+      (`.icon-button`, `.overview-tile`) became placeholders, which drops the nested variants they used
+      to copy by accident. GTK 3 output is identical; GTK 4 and shell output differ only in those
+      cleanups, checked with a selector-order-normalised diff of every entry.
 
 Exit: tokens compile across the matrix, no visual change yet except radii and window buttons.
 
-Result: done 2026-10-11. The only remaining Sass deprecation is `@import`.
+Result: done 2026-10-11. No Sass deprecation warnings remain.
 
 ### Phase 4: blur and corners
 

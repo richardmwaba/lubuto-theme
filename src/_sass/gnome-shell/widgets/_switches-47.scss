@@ -1,3 +1,6 @@
+@use "../../config";
+@use "../../tweaks-temp";
+
 /* Switches */
 
 .toggle-switch {
@@ -24,7 +27,7 @@
     }
   }
 
-  @if $submenu_style == 'false' and $variant == 'dark' {
+  @if tweaks-temp.$submenu_style == 'false' and config.$variant == 'dark' {
     .popup-sub-menu &,
     .quick-toggle-menu & {
       background-image: url("assets/menu-toggle-off.svg") !important;

@@ -1,3 +1,5 @@
+@use "../../colors";
+
 @use "sass:color";
 
 // Pointer location
@@ -5,8 +7,8 @@
   width: 48px;
   height: 48px;
   border-radius: 24px; // radius equals the size of the box to give us the curve
-  background-color: lighter(color.adjust($primary, $alpha: -0.7), 30%);
-  box-shadow: 0 0 2px 2px lighter($primary, 20%);
+  background-color: colors.lighter(color.adjust(colors.$primary, $alpha: -0.7), 30%);
+  box-shadow: 0 0 2px 2px colors.lighter(colors.$primary, 20%);
 }
 
 // Pointer accessibility notifications
@@ -14,12 +16,12 @@
   width: 60px;
   height: 60px;
   -pie-border-width: 3px;
-  -pie-border-color: $primary;
-  -pie-background-color: lighter(color.adjust($primary, $alpha: -0.7), 40%);
+  -pie-border-color: colors.$primary;
+  -pie-background-color: colors.lighter(color.adjust(colors.$primary, $alpha: -0.7), 40%);
 }
 
 // Screen zoom/Magnifier
 .magnifier-zoom-region {
-  border: 2px solid $primary;
+  border: 2px solid colors.$primary;
   &.full-screen { border-width: 0; }
 }

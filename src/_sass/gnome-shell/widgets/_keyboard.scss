@@ -1,9 +1,14 @@
+@use "../../colors";
+@use "../../tweaks-temp";
+@use "../../config";
+@use "../../variables";
+
 @use "sass:color";
 
 /* On-screen Keyboard */
 
-$keyboard_hover_bg_color: if(sass($variant == 'light'): darker($keyboard, 10%); else: lighter($keyboard, 10%));
-$keyboard_active_bg_color: if(sass($variant == 'light'): darker($keyboard, 20%); else: lighter($keyboard, 20%));
+$keyboard_hover_bg_color: if(sass(config.$variant == 'light'): colors.darker(colors.$keyboard, 10%); else: colors.lighter(colors.$keyboard, 10%));
+$keyboard_active_bg_color: if(sass(config.$variant == 'light'): colors.darker(colors.$keyboard, 20%); else: colors.lighter(colors.$keyboard, 20%));
 
 // draw keys using button function
 #keyboard {
@@ -13,7 +18,7 @@ $keyboard_active_bg_color: if(sass($variant == 'light'): darker($keyboard, 20%);
   box-shadow: none;
 
   .page-indicator {
-    padding: $space-size;
+    padding: variables.$space-size;
 
     .page-indicator-icon {
       width: 8px;
@@ -24,8 +29,8 @@ $keyboard_active_bg_color: if(sass($variant == 'light'): darker($keyboard, 20%);
 
 // the container for individual keys
 .key-container {
-  padding: $margin-size;
-  spacing: $margin-size;
+  padding: variables.$margin-size;
+  spacing: variables.$margin-size;
 }
 
 // the keys
@@ -34,37 +39,37 @@ $keyboard_active_bg_color: if(sass($variant == 'light'): darker($keyboard, 20%);
   min-width: 2em;
   font-size: 14pt;
   font-weight: bold;
-  border-radius: $material-radius;
+  border-radius: variables.$material-radius;
   border: none;
   color: inherit;
-  background-color: $keyboard;
-  box-shadow: 0 1px rgba($black, 0.2);
+  background-color: colors.$keyboard;
+  box-shadow: 0 1px rgba(tweaks-temp.$black, 0.2);
 
-  &:focus, &:hover { color: $text; background-color: $keyboard_hover_bg_color; }
-  &:checked, &:active { color: $text; background-color: $keyboard_active_bg_color; }
+  &:focus, &:hover { color: colors.$text; background-color: $keyboard_hover_bg_color; }
+  &:checked, &:active { color: colors.$text; background-color: $keyboard_active_bg_color; }
 
   &:grayed { //FIXME
-    background-color: $scrim;
-    color: on(dark);
-    border-color: $scrim;
+    background-color: colors.$scrim;
+    color: colors.on(dark);
+    border-color: colors.$scrim;
   }
 
   &.default-key {
-    background-color: $keyboard-alt;
-    box-shadow: 0 1px rgba($black, 0.2);
-    &:focus, &:hover { color: $text-secondary; background-color: $keyboard; }
-    &:checked, &:active { color: $text-secondary; background-color: darker($keyboard, 6%); }
+    background-color: colors.$keyboard-alt;
+    box-shadow: 0 1px rgba(tweaks-temp.$black, 0.2);
+    &:focus, &:hover { color: colors.$text-secondary; background-color: colors.$keyboard; }
+    &:checked, &:active { color: colors.$text-secondary; background-color: colors.darker(colors.$keyboard, 6%); }
   }
 
   &.enter-key {
-    background-color: $primary;
-    color: on(dark);
+    background-color: colors.$primary;
+    color: colors.on(dark);
 
-    &:focus, &:hover { color: on(dark); background-color: lighter($primary, 5%); }
-    &:checked, &:active { color: on(dark); background-color: darker($primary, 10%); }
+    &:focus, &:hover { color: colors.on(dark); background-color: colors.lighter(colors.$primary, 5%); }
+    &:checked, &:active { color: colors.on(dark); background-color: colors.darker(colors.$primary, 10%); }
   }
 
-  &.shift-key-uppercase { color: $primary }
+  &.shift-key-uppercase { color: colors.$primary }
 
   StIcon { icon-size: 1.125em; }
 }
@@ -72,19 +77,19 @@ $keyboard_active_bg_color: if(sass($variant == 'light'): darker($keyboard, 20%);
 // long press on a key popup
 .keyboard-subkeys-boxpointer {
   color: inherit;
-  -arrow-border-radius: $material-radius;
+  -arrow-border-radius: variables.$material-radius;
   -arrow-background-color: rgba(black, 0.45);
   -arrow-border-width: 0;
   -arrow-border-color: transparent;
   -arrow-base: 20px;
   -arrow-rise: 10px;
   -boxpointer-gap: 5px;
-  border-radius: $material-radius;
-  box-shadow: $shell-shadow-z2;
+  border-radius: variables.$material-radius;
+  box-shadow: variables.$shell-shadow-z2;
 
   .key-container {
-    padding: $space-size * 2;
-    spacing: $space-size + 2px;
+    padding: variables.$space-size * 2;
+    spacing: variables.$space-size + 2px;
   }
 }
 
@@ -99,8 +104,8 @@ $keyboard_active_bg_color: if(sass($variant == 'light'): darker($keyboard, 20%);
 
 .emoji-panel {
   .keyboard-key:latched {
-    border-color: lighter($primary, 5%);
-    background-color: $primary;
+    border-color: colors.lighter(colors.$primary, 5%);
+    background-color: colors.$primary;
   }
 }
 

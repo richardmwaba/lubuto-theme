@@ -1,48 +1,52 @@
+@use "../../colors";
+@use "../../variables";
+@use "../drawing";
+
 // Search entry
 
 $search_entry_width: 320px;
 
 .search-entry {
   min-height: 24px;
-  padding: $space-size $space-size * 1;
+  padding: variables.$space-size variables.$space-size * 1;
   width: $search_entry_width;
-  border-radius: $circular-radius;
-  selection-background-color: $primary;
-  selected-color: on(dark) !important;
-  @include entry(normal);
+  border-radius: variables.$circular-radius;
+  selection-background-color: colors.$primary;
+  selected-color: colors.on(dark) !important;
+  @include drawing.entry(normal);
 
-  &:hover { @include entry(hover); }
-  &:focus { @include entry(focus); }
-  &:insensitive { @include entry(insensitive); }
+  &:hover { @include drawing.entry(hover); }
+  &:focus { @include drawing.entry(focus); }
+  &:insensitive { @include drawing.entry(insensitive); }
 
   .search-entry-icon {
-    icon-size: $base-icon-size;
+    icon-size: variables.$base-icon-size;
     padding: 0 4px;
-    color: $text-secondary;
+    color: colors.$text-secondary;
   }
 
   StLabel.hint-text {
     margin-left: 2px;
-    color: $text-disabled;
+    color: colors.$text-disabled;
   }
 }
 
 #overview {
   .search-entry {
-    margin-top: $space-size * 2;
-    margin-bottom: $space-size;
+    margin-top: variables.$space-size * 2;
+    margin-bottom: variables.$space-size;
     border: none !important;
 
-    @include search_entry(normal);
+    @include drawing.search_entry(normal);
 
     &:hover {
-      @include search_entry(hover);
+      @include drawing.search_entry(hover);
     }
 
     &:focus {
-      @include search_entry(focus);
-      selection-background-color: $primary;
-      selected-color: on(dark) !important;
+      @include drawing.search_entry(focus);
+      selection-background-color: colors.$primary;
+      selected-color: colors.on(dark) !important;
     }
 
     .search-entry-icon {

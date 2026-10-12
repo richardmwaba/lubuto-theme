@@ -1,3 +1,6 @@
+@use "../../colors";
+@use "../../variables";
+
 /* Scrollbars */
 
 StScrollView {
@@ -15,32 +18,32 @@ StScrollBar {
   }
 
   StBin#trough {
-    border-radius: $circular-radius;
-    background-color: $secondary-fill;
+    border-radius: variables.$circular-radius;
+    background-color: colors.$secondary-fill;
   }
 
   > .vhandle, > .hhandle {
-    border-radius: $circular-radius;
-    background-color: $text-disabled;
+    border-radius: variables.$circular-radius;
+    background-color: colors.$text-disabled;
     border: 4px solid transparent; //would be nice to margin or at least to transparent
     transition: 500ms all ease;
 
-    &:hover { background-color: $text-secondary; }
-    &:active { background-color: $text; }
+    &:hover { background-color: colors.$text-secondary; }
+    &:active { background-color: colors.$text; }
   }
 }
 
 %scrollbar_on_dark {
   StScrollBar {
     StBin#trough {
-      background-color: on(dark, divider);
+      background-color: colors.on(dark, divider);
     }
 
     > .vhandle, > .hhandle {
-      background-color: on(dark, disabled);
+      background-color: colors.on(dark, disabled);
 
-      &:hover { background-color: on(dark, secondary); }
-      &:active { background-color: on(dark); }
+      &:hover { background-color: colors.on(dark, secondary); }
+      &:active { background-color: colors.on(dark); }
     }
   }
 }

@@ -1,3 +1,6 @@
+@use "../../colors";
+@use "../../variables";
+
 // IBus Candidate Popup
 
 .candidate-popup-boxpointer {
@@ -10,28 +13,28 @@
 }
 
 .candidate-popup-content {
-  background-color: $surface;
-  border-radius: $menu-radius;
+  background-color: colors.$surface;
+  border-radius: variables.$menu-radius;
   box-shadow: 0 3px 8px rgba(black, 0.2);
-  margin: ($space-size * 0.5) 10px 13px;
-  padding: $space-size;
-  spacing: $space-size;
+  margin: (variables.$space-size * 0.5) 10px 13px;
+  padding: variables.$space-size;
+  spacing: variables.$space-size;
   border: none;
 }
 
 .candidate-index {
   padding: 0 0.5em 0 0;
-  color: $text-disabled;
-  .candidate-box:selected & { color: on(dark, disabled); }
+  color: colors.$text-disabled;
+  .candidate-box:selected & { color: colors.on(dark, disabled); }
 }
 
 .candidate-box {
   padding: 0.3em 0.5em 0.3em 0.5em;
-  margin-right: $space-size * 0.5;
-  border-radius: $menuitem-radius;
-  &:hover { background-color: $secondary-fill; color: $text; }
-  &:active { background-color: $track; color: $text; }
-  &:selected { background-color: $primary; color: on(dark); }
+  margin-right: variables.$space-size * 0.5;
+  border-radius: variables.$menuitem-radius;
+  &:hover { background-color: colors.$secondary-fill; color: colors.$text; }
+  &:active { background-color: colors.$track; color: colors.$text; }
+  &:selected { background-color: colors.$primary; color: colors.on(dark); }
   &:last-child { margin-right: 0; }
 }
 
@@ -45,6 +48,6 @@
   padding: 4px 8px;
 }
 
-.candidate-page-button-previous { border-radius: $menuitem-radius; border-right-width: 0; }
-.candidate-page-button-next { border-radius: $menuitem-radius; margin-left: 2px; }
+.candidate-page-button-previous { border-radius: variables.$menuitem-radius; border-right-width: 0; }
+.candidate-page-button-next { border-radius: variables.$menuitem-radius; margin-left: 2px; }
 .candidate-page-button-icon { icon-size: 1em; }

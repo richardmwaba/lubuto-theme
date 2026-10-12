@@ -1,36 +1,40 @@
+@use "../../colors";
+@use "../../variables";
+@use "../drawing";
+
 /* Buttons */
 
 %flat_button {
-  @include button(flat-normal);
-  &:focus { @include button(flat-focus); }
-  &:hover { @include button(flat-hover); }
-  &:selected, &:active { @include button(flat-active); }
-  &:checked { @include button(flat-checked); }
-  &:insensitive { @include button(flat-insensitive); }
+  @include drawing.button(flat-normal);
+  &:focus { @include drawing.button(flat-focus); }
+  &:hover { @include drawing.button(flat-hover); }
+  &:selected, &:active { @include drawing.button(flat-active); }
+  &:checked { @include drawing.button(flat-checked); }
+  &:insensitive { @include drawing.button(flat-insensitive); }
 }
 
 %default_button {
-  @include button(normal, $c:$primary, $tc:on($primary, secondary));
-  &:focus { @include button(focus, $c:$primary, $tc:on($primary)); }
-  &:hover { @include button(hover, $c:$primary, $tc:on($primary)); }
-  &:insensitive { @include button(insensitive, $c:$primary, $tc:on($primary, secondary-disabled)); }
-  &:active { @include button(active, $c:$primary, $tc:on($primary)); }
+  @include drawing.button(normal, $c:colors.$primary, $tc:colors.on(colors.$primary, secondary));
+  &:focus { @include drawing.button(focus, $c:colors.$primary, $tc:colors.on(colors.$primary)); }
+  &:hover { @include drawing.button(hover, $c:colors.$primary, $tc:colors.on(colors.$primary)); }
+  &:insensitive { @include drawing.button(insensitive, $c:colors.$primary, $tc:colors.on(colors.$primary, secondary-disabled)); }
+  &:active { @include drawing.button(active, $c:colors.$primary, $tc:colors.on(colors.$primary)); }
 }
 
 .button {
   min-height: 24px;
-  padding: $space-size $space-size * 2;
+  padding: variables.$space-size variables.$space-size * 2;
   border: none;
-  border-radius: $material-radius;
+  border-radius: variables.$material-radius;
   text-align: center;
 
-  @include font(button);
-  @include button(flat-normal);
-  &:hover { @include button(flat-hover); }
-  &:active { @include button(flat-active); }
-  &:checked { @include button(flat-checked); }
-  &:insensitive { @include button(flat-insensitive); }
-  &:focus { @include button(flat-focus); }
+  @include drawing.font(button);
+  @include drawing.button(flat-normal);
+  &:hover { @include drawing.button(flat-hover); }
+  &:active { @include drawing.button(flat-active); }
+  &:checked { @include drawing.button(flat-checked); }
+  &:insensitive { @include drawing.button(flat-insensitive); }
+  &:focus { @include drawing.button(flat-focus); }
 
   // default style
   &.default {
@@ -43,22 +47,22 @@
   }
 }
 
-.icon-button {
-  min-height: $base-icon-size;
-  min-width: $base-icon-size;
-  padding: $space-size * 2;
-  border-radius: $circular-radius;
+.icon-button, %icon-button {
+  min-height: variables.$base-icon-size;
+  min-width: variables.$base-icon-size;
+  padding: variables.$space-size * 2;
+  border-radius: variables.$circular-radius;
   border: none;
 
-  @include button(flat-normal);
-  &:hover { @include button(flat-hover); }
-  &:active { @include button(flat-active); }
-  &:checked { @include button(flat-checked); }
-  &:insensitive { @include button(flat-insensitive); }
-  &:focus { @include button(flat-focus); }
+  @include drawing.button(flat-normal);
+  &:hover { @include drawing.button(flat-hover); }
+  &:active { @include drawing.button(flat-active); }
+  &:checked { @include drawing.button(flat-checked); }
+  &:insensitive { @include drawing.button(flat-insensitive); }
+  &:focus { @include drawing.button(flat-focus); }
 
   StIcon {
-    icon-size: $base-icon-size;
+    icon-size: variables.$base-icon-size;
     -st-icon-style: symbolic;
   }
 

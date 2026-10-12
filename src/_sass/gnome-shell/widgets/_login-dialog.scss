@@ -1,3 +1,7 @@
+@use "../../colors";
+@use "../../variables";
+@use "../drawing";
+
 /* Login Dialog */
 
 .login-dialog-banner-view {
@@ -12,12 +16,12 @@
   background-color: transparent;
 
   StEntry {
-    selection-background-color: $primary;
-    selected-color: on(dark) !important;
-    @include entry(normal, $fc:on(dark, track));
-    &:focus { @include entry(focus, $fc:on(dark)); }
+    selection-background-color: colors.$primary;
+    selected-color: colors.on(dark) !important;
+    @include drawing.entry(normal, $fc:colors.on(dark, track));
+    &:focus { @include drawing.entry(focus, $fc:colors.on(dark)); }
     &:insensitive {
-      @include entry(insensitive, $fc:on(dark, divider));
+      @include drawing.entry(insensitive, $fc:colors.on(dark, divider));
     }
   }
 
@@ -25,16 +29,16 @@
   .modal-dialog-button {
     padding: 4px 18px;
     box-shadow: none;
-    @include button(flat-normal, $tc: on(dark));
-    &:hover,&:focus { @include button(flat-hover, $tc: on(dark)); }
-    &:active { @include button(flat-active, $tc: on(dark)); }
-    &:insensitive { @include button(flat-insensitive, $tc: on(dark)); }
+    @include drawing.button(flat-normal, $tc: colors.on(dark));
+    &:hover,&:focus { @include drawing.button(flat-hover, $tc: colors.on(dark)); }
+    &:active { @include drawing.button(flat-active, $tc: colors.on(dark)); }
+    &:insensitive { @include drawing.button(flat-insensitive, $tc: colors.on(dark)); }
 
     &:default {
-      @include button(normal, $c: $suggested, $tc: on(dark));
-      &:hover,&:focus { @include button(hover, $c: $suggested, $tc: on(dark)); }
-      &:active { @include button(active, $c: $suggested, $tc: on(dark)); }
-      &:insensitive { @include button(insensitive, $c: on(dark, divider), $tc: on(dark, disabled)); }
+      @include drawing.button(normal, $c: colors.$suggested, $tc: colors.on(dark));
+      &:hover,&:focus { @include drawing.button(hover, $c: colors.$suggested, $tc: colors.on(dark)); }
+      &:active { @include drawing.button(active, $c: colors.$suggested, $tc: colors.on(dark)); }
+      &:insensitive { @include drawing.button(insensitive, $c: colors.on(dark, divider), $tc: colors.on(dark, disabled)); }
     }
   }
 
@@ -46,26 +50,26 @@
     width: 32px;
     height: 32px;
     border: none;
-    background-color: on(dark, divider);
-    color: on(dark, secondary);
+    background-color: colors.on(dark, divider);
+    color: colors.on(dark, secondary);
 
-    &:hover,&:focus { color: on(dark); }
+    &:hover,&:focus { color: colors.on(dark); }
     &:active {
-      color: on(dark);
-      background-color: on(dark, track);
+      color: colors.on(dark);
+      background-color: colors.on(dark, track);
     }
 
-    StIcon { icon-size: $base-icon-size; }
+    StIcon { icon-size: variables.$base-icon-size; }
   }
 
   .caps-lock-warning-label,
   .login-dialog-message-warning {
-    color: on(dark);
+    color: colors.on(dark);
   }
 }
 
 .login-dialog-logo-bin { padding: 24px 0px; }
-.login-dialog-banner { color: on(dark, secondary); }
+.login-dialog-banner { color: colors.on(dark, secondary); }
 .login-dialog-button-box { width: 23em; spacing: 5px; }
 .login-dialog-message { text-align: center; }
 .login-dialog-user-selection-box { padding: 100px 0px; }
@@ -74,14 +78,14 @@
   padding-left: 2px;
   font-size: 1em;
   font-weight: bold;
-  color: on(dark, secondary);
+  color: colors.on(dark, secondary);
   padding-top: 1em;
-  &:hover { color: on(dark); }
-  &:focus { background-color: on(dark, divider); }
+  &:hover { color: colors.on(dark); }
+  &:focus { background-color: colors.on(dark, divider); }
 
   .login-dialog-not-listed-button:focus &,
   .login-dialog-not-listed-button:hover & {
-    color: on(dark);
+    color: colors.on(dark);
   }
 }
 
@@ -89,34 +93,34 @@
 .login-dialog-user-list {
   spacing: 12px;
   width: 23em;
-  &:expanded .login-dialog-user-list-item:selected { background-color: on(dark, divider); color: on(dark); }
-  &:expanded .login-dialog-user-list-item:hover { background-color: on(dark, divider); color: on(dark); }
-  &:expanded .login-dialog-user-list-item:active { background-color: on(dark, track); color: on(dark); }
-  &:expanded .login-dialog-user-list-item:logged-in { border-right: 2px solid on(dark); }
+  &:expanded .login-dialog-user-list-item:selected { background-color: colors.on(dark, divider); color: colors.on(dark); }
+  &:expanded .login-dialog-user-list-item:hover { background-color: colors.on(dark, divider); color: colors.on(dark); }
+  &:expanded .login-dialog-user-list-item:active { background-color: colors.on(dark, track); color: colors.on(dark); }
+  &:expanded .login-dialog-user-list-item:logged-in { border-right: 2px solid colors.on(dark); }
 }
 
 .login-dialog-user-list-item {
-  border-radius: $material-radius;
+  border-radius: variables.$material-radius;
   padding: 6px;
-  color: on(dark, secondary);
+  color: colors.on(dark, secondary);
   &:ltr { padding-right: 1em; }
   &:rtl { padding-left: 1em; }
-  &:hover { background-color: on(dark, divider); color: on(dark); }
-  &:active { background-color: on(dark, track); color: on(dark); }
+  &:hover { background-color: colors.on(dark, divider); color: colors.on(dark); }
+  &:active { background-color: colors.on(dark, track); color: colors.on(dark); }
   .login-dialog-timed-login-indicator {
     height: 2px;
     margin: 6px 0 0 0;
-    background-color: on(dark);
+    background-color: colors.on(dark);
   }
-  &:focus .login-dialog-timed-login-indicator { background-color: on(dark); }
+  &:focus .login-dialog-timed-login-indicator { background-color: colors.on(dark); }
 }
 
 .user-widget-label {
-  color: on(dark);
+  color: colors.on(dark);
 }
 
 .user-widget.horizontal .user-widget-label {
-  @include font(title);
+  @include drawing.font(title);
   font-weight: bold;
   padding-left: 15px;
 
@@ -125,16 +129,16 @@
 }
 
 .user-widget.vertical .user-widget-label {
-  @include font(title);
+  @include drawing.font(title);
   text-align: center;
   font-weight: normal;
-  padding-top: $base-icon-size;
+  padding-top: variables.$base-icon-size;
 }
 
 .login-dialog-prompt-layout {
   padding-top: 24px;
   padding-bottom: 12px;
-  spacing: $space-size * 2;
+  spacing: variables.$space-size * 2;
   width: 23em;
 }
 
@@ -143,7 +147,7 @@
 }
 
 .login-dialog-prompt-label {
-  color: on(dark, disabled);
+  color: colors.on(dark, disabled);
   font-size: 1em;
   padding-top: 1em;
 }

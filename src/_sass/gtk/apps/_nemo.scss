@@ -1,5 +1,10 @@
+@use "../../colors";
+@use "../common-3.20";
+@use "../../variables";
+
 @use "sass:math";
 @use "sass:color";
+@use "gnome-3.22";
 /********
  * Nemo *
  ********/
@@ -11,8 +16,8 @@
 
 .nemo-window {
   .primary-toolbar {
-    background-color: $titlebar;
-    border-bottom: 1px solid $divider;
+    background-color: colors.$titlebar;
+    border-bottom: 1px solid colors.$divider;
 
     // FIXME: workaround for wrong size allocation of Nemo
     entry {
@@ -27,11 +32,11 @@
     button.text-button {
       padding-left: 8px;
       padding-right: 8px;
-      color: $titlebar-text-secondary;
+      color: colors.$titlebar-text-secondary;
 
-      &:hover, &:active, &:checked { color: $titlebar-text; }
+      &:hover, &:active, &:checked { color: colors.$titlebar-text; }
 
-      &:disabled { color: $titlebar-text-disabled; }
+      &:disabled { color: colors.$titlebar-text-disabled; }
     }
 
     // instead of .path-bar button.slider-button
@@ -52,12 +57,12 @@
   // infobar { margin-top: -6px; }
 
   // Inactive F3 pane shading
-  .nemo-inactive-pane .view:not(:selected) { background-color: $base-alt; }
+  .nemo-inactive-pane .view:not(:selected) { background-color: colors.$base-alt; }
 
   // Rename box styling in the icon view.
   .nemo-window-pane widget.entry {
-    border-radius: $corner-radius;
-    background-color: $fill;
+    border-radius: variables.$corner-radius;
+    background-color: colors.$fill;
 
     &:selected { @extend %selected_items_primary; }
   }
@@ -74,14 +79,14 @@
 
 // For Places Sidebar diskfull indicators
 .places-treeview {
-  -NemoPlacesTreeView-disk-full-bg-color: color.mix($text, $background, math.percentage(0.3)); // Can't use translucent colors
-  -NemoPlacesTreeView-disk-full-fg-color: $primary;
+  -NemoPlacesTreeView-disk-full-bg-color: color.mix(colors.$text, colors.$background, math.percentage(0.3)); // Can't use translucent colors
+  -NemoPlacesTreeView-disk-full-fg-color: colors.$primary;
   -NemoPlacesTreeView-disk-full-bar-width: 2px;
   -NemoPlacesTreeView-disk-full-bar-radius: 0;
   -NemoPlacesTreeView-disk-full-bottom-padding: 1px; // There is already hard-coded 1px bottom-padding
   -NemoPlacesTreeView-disk-full-max-length: 80px;
-  padding-top: $space-size * 0.5;
-  padding-bottom: $space-size * 0.5;
+  padding-top: variables.$space-size * 0.5;
+  padding-bottom: variables.$space-size * 0.5;
 }
 
 .nemo-desktop.nemo-canvas-item {

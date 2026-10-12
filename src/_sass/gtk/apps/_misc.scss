@@ -1,3 +1,8 @@
+@use "../../colors";
+@use "../../tweaks-temp";
+@use "../../variables";
+@use "../common-3.20";
+
 /*********
  * Tilix *
  *********/
@@ -5,7 +10,7 @@ overlay > revealer {
   &.left > scrolledwindow.frame,
   &.right > scrolledwindow.frame {
     border-style: none;
-    box-shadow: $shadow-z16;
+    box-shadow: variables.$shadow-z16;
   }
 
   &.left > scrolledwindow.frame { margin-right: 32px; }
@@ -14,11 +19,11 @@ overlay > revealer {
 }
 
 .terminix-session-sidebar, // for backward compatibility
-.tilix-session-sidebar { background-image: image($surface); }
+.tilix-session-sidebar { background-image: image(colors.$surface); }
 
 .terminal-titlebar button { border-radius: 0; }
 
-button.image-button.session-new-button { min-width: $medium-size - 4px; }
+button.image-button.session-new-button { min-width: variables.$medium-size - 4px; }
 
 // Remove extra padding
 notebook.tilix-background tab > box > stack { margin: -6px; }
@@ -26,8 +31,8 @@ notebook.tilix-background tab > box > stack { margin: -6px; }
 button.flat.tilix-small-button {
   // NOTE: padding is hard-coded with:
   // padding: 2px 4px;
-  min-height: $small-size - 2px * 2;
-  min-width: $small-size - 4px * 2;
+  min-height: variables.$small-size - 2px * 2;
+  min-width: variables.$small-size - 4px * 2;
 }
 
 
@@ -35,7 +40,7 @@ button.flat.tilix-small-button {
  * Terminator *
  **************/
 .terminator-terminal-window {
-  paned > separator { background-color: $background; }
+  paned > separator { background-color: colors.$background; }
 
   // this should be fixed by the upstream
   notebook.frame { border-style: none; }
@@ -47,7 +52,7 @@ button.flat.tilix-small-button {
  *************/
 #live_installer .menubar progressbar trough {
   border-radius: 4px; // Adjust to hard-coded progress border-radius
-  background-color: $titlebar-track-disabled;
+  background-color: colors.$titlebar-track-disabled;
 }
 
 
@@ -60,7 +65,7 @@ window.background > box.vertical > scrolledwindow > widget toolbar {
   separator,
   button { margin: 2px; }
 
-  button { border-radius: $corner-radius; }
+  button { border-radius: variables.$corner-radius; }
 }
 
 
@@ -69,18 +74,18 @@ window.background > box.vertical > scrolledwindow > widget toolbar {
  ********/
 
 notebook.meld-notebook {
-  background-color: $base;
-  border-radius: 0 0 $window-radius $window-radius;
+  background-color: colors.$base;
+  border-radius: 0 0 variables.$window-radius variables.$window-radius;
 
   > stack {
-    background-color: $base;
-    border-radius: 0 0 $window-radius $window-radius;
+    background-color: colors.$base;
+    border-radius: 0 0 variables.$window-radius variables.$window-radius;
   }
 }
 
 .meld-notebook-child {
-  background-color: $base;
-  border-radius: 0 0 $window-radius $window-radius;
+  background-color: colors.$base;
+  border-radius: 0 0 variables.$window-radius variables.$window-radius;
 }
 
 .meld-status-bar {
@@ -93,7 +98,7 @@ notebook.meld-notebook {
  * Chromium *
  ************/
 window.background.chromium {
-  background-color: $surface;
+  background-color: colors.$surface;
 
   // FIXME: There is no way to change the color of the toolbar buttons
   // toolbar button { color: $text-secondary; }
@@ -101,53 +106,53 @@ window.background.chromium {
   // toolbar's border-bottom refers to button's border
   // FIXME: Chrome's button border ignores theme's alpha value :(
   entry,
-  > button { border: 1px solid $solid-border; }
+  > button { border: 1px solid colors.$solid-border; }
 
   > button {
-    color: $primary;
+    color: colors.$primary;
 
-    &:disabled { color: $text-secondary-disabled; }
+    &:disabled { color: colors.$text-secondary-disabled; }
   }
 
-  menubar, headerbar { color: $titlebar-text-secondary; }
+  menubar, headerbar { color: colors.$titlebar-text-secondary; }
 
   menu {
     padding: 0;
-    border: 1px solid $divider;
+    border: 1px solid colors.$divider;
     box-shadow: none;
 
     menuitem { border-radius: 0; }
   }
 
   headerbar {
-    padding: 0 $space-size * 2;
+    padding: 0 variables.$space-size * 2;
   }
 
   // Workaround for non-animatable buttons in headerbar
   // headerbar button:active { background-color: $overlay-active; }
 
-  spinner { color: $primary; }
+  spinner { color: colors.$primary; }
 
   // For text field
   textview.view { background-color: transparent; }
 
   // For prominent button, starred icon, etc.
   treeview.view.cell:selected:focus {
-    background-color: $primary;
-    color: on($primary);
+    background-color: colors.$primary;
+    color: colors.on(colors.$primary);
   }
 
   // For table header
   treeview.view button {
-    border: 1px solid $track;
-    background-color: $base; // FIXME: This should not be necessary
+    border: 1px solid colors.$track;
+    background-color: colors.$base; // FIXME: This should not be necessary
     // color: $text-secondary;
   }
 }
 
 tooltip.background.chromium {
   color: white;
-  background-color: rgba($tooltip, 1);
+  background-color: rgba(colors.$tooltip, 1);
 }
 
 
@@ -157,52 +162,52 @@ tooltip.background.chromium {
 #MozillaGtkWidget {
   > widget {
     // For popover, entry in toolbar, etc.
-    text { background-color: $surface; }
+    text { background-color: colors.$surface; }
 
     // For selection, active tab indicator, etc.
     text:selected {
       // Use traditional selection style as workaround
-      background-color: $primary;
-      color: on($primary);
+      background-color: colors.$primary;
+      color: colors.on(colors.$primary);
     }
 
     // For separators in bookmark toolbar
-    > separator { color: $solid-border; }
+    > separator { color: colors.$solid-border; }
 
     // avoid black border
     > scrollbar { background-clip: border-box; }
 
     // Emphasize toolbar's border-bottom
-    > frame > border { border-color: $solid-border; }
+    > frame > border { border-color: colors.$solid-border; }
 
     > entry,
     > button > button {
-      border: 1px solid $solid-border;
-      border-radius: $corner-radius;
+      border: 1px solid colors.$solid-border;
+      border-radius: variables.$corner-radius;
       box-shadow: none;
 
-      &:disabled { border-color: $track-disabled; }
+      &:disabled { border-color: colors.$track-disabled; }
     }
 
     > entry {
       min-height: 32px - 2px;
-      background-color: $base;
+      background-color: colors.$base;
 
       &:focus {
-        border-color: $primary;
-        box-shadow: inset 0 0 0 1px $primary;
+        border-color: colors.$primary;
+        box-shadow: inset 0 0 0 1px colors.$primary;
       }
 
-      &:disabled { background-color: $base-alt; }
+      &:disabled { background-color: colors.$base-alt; }
     }
 
     > button > button {
       padding: 4px 8px;
       background-size: auto;
 
-      &:hover { box-shadow: inset 0 0 0 9999px $overlay-hover; }
+      &:hover { box-shadow: inset 0 0 0 9999px colors.$overlay-hover; }
 
-      &:active { background-image: image($overlay-active); }
+      &:active { background-image: image(colors.$overlay-active); }
     }
 
     // use 16px assets for hard-coded sizing
@@ -219,11 +224,11 @@ tooltip.background.chromium {
     // make check/radio visible regardless of whether the background is bright or dark
     > checkbutton > check:not(:checked):not(:indeterminate),
     > radiobutton > radio:not(:checked):not(:indeterminate) {
-      color: $grey-600;
+      color: tweaks-temp.$grey-600;
 
-      &:hover, &:active { color: $grey-500; }
+      &:hover, &:active { color: tweaks-temp.$grey-500; }
 
-      &:disabled { color: rgba($grey-600, 0.5); }
+      &:disabled { color: rgba(tweaks-temp.$grey-600, 0.5); }
     }
   }
 
@@ -235,17 +240,17 @@ tooltip.background.chromium {
 #MozillaGtkWidget {
   > widget {
     > menubar {
-      color: $titlebar-text-secondary;
+      color: colors.$titlebar-text-secondary;
 
-      &:hover { color: $titlebar-text; }
+      &:hover { color: colors.$titlebar-text; }
 
-      &:disabled { color: $titlebar-text-secondary-disabled; }
+      &:disabled { color: colors.$titlebar-text-secondary-disabled; }
     }
 
-    > frame { color: $solid-border; }
+    > frame { color: colors.$solid-border; }
   }
 
-  menu > separator { color: $solid-border; }
+  menu > separator { color: colors.$solid-border; }
 }
 
 //
@@ -266,8 +271,8 @@ window.background:not(.csd) {
 
 .background.popup.xapp-status-icon-menu-window {
   decoration {
-    border-radius: $menu-radius;
-    box-shadow: $shadow-z4;
+    border-radius: variables.$menu-radius;
+    box-shadow: variables.$shadow-z4;
   }
 }
 
@@ -287,7 +292,7 @@ window.background:not(.csd) {
       min-height: 24px;
       min-width: 16px;
       padding: 4px 8px;
-      border-radius: $corner-radius;
+      border-radius: variables.$corner-radius;
     }
 
     spinbutton button { border-width: 4px; }
@@ -300,7 +305,7 @@ window.background:not(.csd) {
       min-height: 24px;
       min-width: 24px;
       padding: 4px;
-      border-radius: $corner-radius;
+      border-radius: variables.$corner-radius;
     }
   }
 }
@@ -312,12 +317,12 @@ window.background:not(.csd) {
     padding: 0;
   }
 
-  #HorizontalScrollbar { border-top: 1px solid $divider; }
+  #HorizontalScrollbar { border-top: 1px solid colors.$divider; }
 
   #VerticalScrollbar {
-    &:dir(ltr) { border-left: 1px solid $divider; }
+    &:dir(ltr) { border-left: 1px solid colors.$divider; }
 
-    &:dir(rtl) { border-right: 1px solid $divider; }
+    &:dir(rtl) { border-right: 1px solid colors.$divider; }
   }
 }
 
@@ -385,7 +390,7 @@ window.background.csd {
     border: none;
 
     > viewport.frame > box.vertical > stack > scrolledwindow {
-      border-top: 1px solid $divider;
+      border-top: 1px solid colors.$divider;
     }
   }
 }
@@ -397,8 +402,8 @@ window.background.csd {
 window.background:not(.solid-csd):not(.csd) {
   // reserved area at the most-right side of GtkMenuBar
   > grid.horizontal > grid.horizontal {
-    box-shadow: inset 0 -1px $titlebar-divider;
-    background-color: $titlebar;
+    box-shadow: inset 0 -1px colors.$titlebar-divider;
+    background-color: colors.$titlebar;
 
     // > button.flat.small-button { // 'close' button
     // }
@@ -412,13 +417,13 @@ window.background:not(.solid-csd):not(.csd) {
     }
 
     > scrolledwindow > viewport.frame {
-      background: $base; // Not Use ?
+      background: colors.$base; // Not Use ?
 
       > grid > box.horizontal {
-        background: $base;
+        background: colors.$base;
 
         > box.vertical > toolbar {
-          background: $base;
+          background: colors.$base;
         }
       }
 
@@ -431,7 +436,7 @@ window.background:not(.solid-csd):not(.csd) {
       }
 
       > grid > box.horizontal > #combobox.linked,
-      > grid > box.horizontal > grid.horizontal > box.horizontal { background: $base; }
+      > grid > box.horizontal > grid.horizontal > box.horizontal { background: colors.$base; }
     }
 
     toolbar.small-button {
@@ -441,16 +446,16 @@ window.background:not(.solid-csd):not(.csd) {
 
   // for 'Notebookbar' toolbar
   > notebook:not(.frame) {
-    border: 1px solid $border; // unset borders
+    border: 1px solid colors.$border; // unset borders
     border-left: none;
     border-right: none;
-    background-color: $base;
+    background-color: colors.$base;
     box-shadow: none;
 
     > stack {
       border: none;
       box-shadow: none;
-      background-color: $base;
+      background-color: colors.$base;
     }
 
     > header {
@@ -476,8 +481,8 @@ window.background:not(.solid-csd):not(.csd) {
 
   treeview.view {
     &:selected, &:hover {
-      background-image: image($primary);
-      &, label { color: on($primary); }
+      background-image: image(colors.$primary);
+      &, label { color: colors.on(colors.$primary); }
     }
   }
 }
@@ -493,7 +498,7 @@ stack > scrolledwindow > viewport > box {
   > revealer > box > stack > box > box {
     > frame.view {
       &, > border {
-        border-radius: $corner-radius;
+        border-radius: variables.$corner-radius;
       }
 
       > box > box {
@@ -503,19 +508,19 @@ stack > scrolledwindow > viewport > box {
 
         &:first-child > list {
           &, > row {
-            border-radius: $corner-radius $corner-radius 0 0;
+            border-radius: variables.$corner-radius variables.$corner-radius 0 0;
           }
         }
 
         &:last-child > list {
           &, > row {
-            border-radius: 0 0 $corner-radius $corner-radius;
+            border-radius: 0 0 variables.$corner-radius variables.$corner-radius;
           }
         }
 
         &:only-child > list {
           &, > row {
-            border-radius: $corner-radius;
+            border-radius: variables.$corner-radius;
           }
         }
       }
@@ -527,7 +532,7 @@ stack > scrolledwindow > viewport > box {
   > box > revealer > box > box {
     > frame.view {
       &, > border {
-        border-radius: $corner-radius;
+        border-radius: variables.$corner-radius;
       }
 
       > box > box {
@@ -537,19 +542,19 @@ stack > scrolledwindow > viewport > box {
 
         &:first-child > list {
           &, > row {
-            border-radius: $corner-radius $corner-radius 0 0;
+            border-radius: variables.$corner-radius variables.$corner-radius 0 0;
           }
         }
 
         &:last-child > list {
           &, > row {
-            border-radius: 0 0 $corner-radius $corner-radius;
+            border-radius: 0 0 variables.$corner-radius variables.$corner-radius;
           }
         }
 
         &:only-child > list {
           &, > row {
-            border-radius: $corner-radius;
+            border-radius: variables.$corner-radius;
           }
         }
       }
@@ -561,13 +566,13 @@ stack > scrolledwindow > viewport > box {
 
         &:first-child > box > box > list {
           &, > row {
-            border-radius: $corner-radius $corner-radius 0 0;
+            border-radius: variables.$corner-radius variables.$corner-radius 0 0;
           }
         }
 
         &:last-child > box > box > list {
           &, > row {
-            border-radius: 0 0 $corner-radius $corner-radius;
+            border-radius: 0 0 variables.$corner-radius variables.$corner-radius;
           }
         }
       }
@@ -577,19 +582,19 @@ stack > scrolledwindow > viewport > box {
   > box > widget > overlay > scrolledwindow > viewport > grid > box {
     > frame {
       &, > border {
-        border-radius: $corner-radius;
+        border-radius: variables.$corner-radius;
       }
 
       > list {
-        border-radius: $corner-radius;
+        border-radius: variables.$corner-radius;
 
         > row {
           &:first-child {
-            border-radius: $corner-radius $corner-radius 0 0;
+            border-radius: variables.$corner-radius variables.$corner-radius 0 0;
           }
 
           &:last-child {
-            border-radius: 0 0 $corner-radius $corner-radius;
+            border-radius: 0 0 variables.$corner-radius variables.$corner-radius;
           }
         }
       }
@@ -598,7 +603,7 @@ stack > scrolledwindow > viewport > box {
 
   > stack > box > box > frame.view {
     &, > border {
-      border-radius: $corner-radius;
+      border-radius: variables.$corner-radius;
     }
 
     frame.view {
@@ -607,15 +612,15 @@ stack > scrolledwindow > viewport > box {
 
     > box > scrolledwindow > viewport.frame > box {
       > list {
-        border-radius: $corner-radius;
+        border-radius: variables.$corner-radius;
 
         > row {
           &:first-child {
-            border-radius: $corner-radius $corner-radius 0 0;
+            border-radius: variables.$corner-radius variables.$corner-radius 0 0;
           }
 
           &:last-child {
-            border-radius: 0 0 $corner-radius $corner-radius;
+            border-radius: 0 0 variables.$corner-radius variables.$corner-radius;
           }
         }
       }
@@ -625,7 +630,7 @@ stack > scrolledwindow > viewport > box {
   > widget > box > frame.view {
     &, > border,
     > widget > box > box > list {
-      border-radius: $corner-radius;
+      border-radius: variables.$corner-radius;
     }
   }
 
@@ -647,6 +652,6 @@ stack > scrolledwindow > viewport > box {
 
 window.background:not(.csd):not(.solid-csd) {
   > button:not(:hover):not(:active):not(:checked):not(:disabled):not(.flat) { // Why this ?
-    background-color: $base-alt;
+    background-color: colors.$base-alt;
   }
 }

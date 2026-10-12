@@ -1,30 +1,31 @@
 @use "sass:math";
 
-@import 'tweaks-temp';
+@use 'config';
+@use 'tweaks-temp';
 
 // Function to convert px values to em
 @function to_em($input, $base: 16px) {
   // multiplied and divided by 1000 to make up for round() shortcoming
   $em_value: math.div($input, $base) * 1.091 * 1000;
-  @return round($em_value) * 0.001 * 1em;
+  @return math.round($em_value) * 0.001 * 1em;
 }
 
-$asset-suffix: if(sass($variant == 'dark'): '-dark'; else: '');
-$theme-asset-suffix: if(sass($topbar == 'dark'): if(sass($variant == 'dark'): '-dark'; else: ''); else: '-light');
-$blackness-asset-suffix: if(sass($blackness == 'false' or $topbar == 'light'): ''; else: '-blackness');
+$asset-suffix: if(sass(config.$variant == 'dark'): '-dark'; else: '');
+$theme-asset-suffix: if(sass(config.$topbar == 'dark'): if(sass(config.$variant == 'dark'): '-dark'; else: ''); else: '-light');
+$blackness-asset-suffix: if(sass(tweaks-temp.$blackness == 'false' or config.$topbar == 'light'): ''; else: '-blackness');
 
 //
 // Sizes
 //
 
-$space-size: if(sass($compact == 'false'): 6px; else: 4px);
-$margin-size: if(sass($compact == 'false'): 4px; else: 2px);
-$small-size: if(sass($compact == 'false'): 24px; else: 22px);
-$medium-size: if(sass($compact == 'false'): 36px; else: 32px);
-$large-size: if(sass($compact == 'false'): 48px; else: 40px);
+$space-size: if(sass(config.$compact == 'false'): 6px; else: 4px);
+$margin-size: if(sass(config.$compact == 'false'): 4px; else: 2px);
+$small-size: if(sass(config.$compact == 'false'): 24px; else: 22px);
+$medium-size: if(sass(config.$compact == 'false'): 36px; else: 32px);
+$large-size: if(sass(config.$compact == 'false'): 48px; else: 40px);
 
 $bar-size: 6px;
-$menuitem-size: if(sass($compact == 'false'): 28px; else: 24px);
+$menuitem-size: if(sass(config.$compact == 'false'): 28px; else: 24px);
 $base-icon-size: 16px;
 $medium-icon-size: $base-icon-size * 1.5; // 24px
 $large-icon-size: $base-icon-size * 2;
@@ -44,18 +45,18 @@ $large-scalable-icon-size: $scalable-icon-size * 2;
 
 // Equal to the rounded corners the extension clips windows to, so CSD corners,
 // the clip and the shadow under it agree.
-$window-radius: $default_corner;
-$material-radius: $default_corner * 0.5 + 4px;
-$popup-radius: $default_corner + $space-size * 2 - 4px;
+$window-radius: tweaks-temp.$default_corner;
+$material-radius: tweaks-temp.$default_corner * 0.5 + 4px;
+$popup-radius: tweaks-temp.$default_corner + $space-size * 2 - 4px;
 $circular-radius: 9999px;
 $panel-corner-radius: 0; // For gnome-shell
 
 // Glass radii. Windows, floating surfaces and controls step down together so
 // nested corners stay concentric. The window radius matches the rounded window
 // corners the extension applies, so CSD and SSD windows look alike.
-$radius-window: $default_corner;
-$radius-surface: $default_corner - 4px;
-$radius-control: $default_corner * 0.5;
+$radius-window: tweaks-temp.$default_corner;
+$radius-surface: tweaks-temp.$default_corner - 4px;
+$radius-control: tweaks-temp.$default_corner * 0.5;
 
 // Controls are the common case in the stylesheets, so the control radius is
 // the plain corner radius; surfaces and menus name their step explicitly.
@@ -70,8 +71,8 @@ $font-family: "SF Pro Text", Inter, Cantarell, sans-serif;
 $large-font-family: "SF Pro Display", Inter, Cantarell, sans-serif;
 
 // font sizes
-$root-font-size: if(sass($compact == 'false'): 14px; else: 13px);
-$subheading-size: if(sass($compact == 'false'): 16px; else: 15px);
+$root-font-size: if(sass(config.$compact == 'false'): 14px; else: 13px);
+$subheading-size: if(sass(config.$compact == 'false'): 16px; else: 15px);
 
 //
 // Durations

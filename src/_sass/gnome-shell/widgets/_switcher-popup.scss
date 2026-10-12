@@ -1,37 +1,41 @@
+@use "../../colors";
+@use "../../variables";
+@use "../common";
+
 /* App Switcher */
 
 .switcher-popup {
   padding: 8px;
-  spacing: $space-size * 4;
+  spacing: variables.$space-size * 4;
 }
 
 // switcher onscreen panel
 .switcher-list {
   @extend %osd_panel;
-  border-radius: $material-radius + $space-size * 2;
+  border-radius: variables.$material-radius + variables.$space-size * 2;
 
   .item-box {
     padding: 8px;
-    border-radius: $material-radius;
+    border-radius: variables.$material-radius;
     border: none;
     background-color: transparent;
-    color: $text;
+    color: colors.$text;
 
     &:outlined {
-      background-color: $secondary-fill;
-      color: $text;
+      background-color: colors.$secondary-fill;
+      color: colors.$text;
     }
 
     &:selected {
-      background-color: $primary;
-      color: on($primary);
+      background-color: colors.$primary;
+      color: colors.on(colors.$primary);
     }
   }
 
   // window thumbnails
   .thumbnail-box {
     padding: 2px;
-    spacing: $space-size;
+    spacing: variables.$space-size;
   }
 
   .thumbnail {
@@ -40,20 +44,20 @@
 
   .separator {
     width: 1px;
-    background: $border;
+    background: colors.$border;
   }
 
   .switcher-list-item-container {
-    spacing: $space-size * 2;
+    spacing: variables.$space-size * 2;
   }
 }
 
 .switcher-arrow {
-  border-color: on(dark, secondary);
-  color: on(dark, secondary);
+  border-color: colors.on(dark, secondary);
+  color: colors.on(dark, secondary);
 
   &:highlighted {
-    color: on($primary);
+    color: colors.on(colors.$primary);
   }
 }
 
@@ -66,5 +70,5 @@
 
 // Window cycler highlight
 .cycler-highlight {
-  border: 5px solid $primary;
+  border: 5px solid colors.$primary;
 }

@@ -6,7 +6,8 @@
 
 @use "sass:math";
 
-@import 'tweaks-temp';
+@use 'tweaks-temp';
+@use "config";
 
 @function gtkalpha($c, $a) {
   @return string.unquote("alpha(#{$c}, #{$a})");
@@ -74,45 +75,45 @@
 }
 
 @function theme($color) {
-  @if ($variant == 'light') {
-    @if ($color == 'default') { @return $blue-dark; }
-    @if ($color == 'purple') { @return $purple-dark; }
-    @if ($color == 'pink') { @return $pink-dark; }
-    @if ($color == 'red') { @return $red-dark; }
-    @if ($color == 'orange') { @return $orange-dark; }
-    @if ($color == 'yellow') { @return $yellow-dark; }
-    @if ($color == 'green') { @return $green-dark; }
-    @if ($color == 'teal') { @return $teal-dark; }
-    @if ($color == 'grey') { @return $grey-600; }
+  @if (config.$variant == 'light') {
+    @if ($color == 'default') { @return tweaks-temp.$blue-dark; }
+    @if ($color == 'purple') { @return tweaks-temp.$purple-dark; }
+    @if ($color == 'pink') { @return tweaks-temp.$pink-dark; }
+    @if ($color == 'red') { @return tweaks-temp.$red-dark; }
+    @if ($color == 'orange') { @return tweaks-temp.$orange-dark; }
+    @if ($color == 'yellow') { @return tweaks-temp.$yellow-dark; }
+    @if ($color == 'green') { @return tweaks-temp.$green-dark; }
+    @if ($color == 'teal') { @return tweaks-temp.$teal-dark; }
+    @if ($color == 'grey') { @return tweaks-temp.$grey-600; }
   } @else {
-    @if ($color == 'default') { @return $blue-light; }
-    @if ($color == 'purple') { @return $purple-light; }
-    @if ($color == 'pink') { @return $pink-light; }
-    @if ($color == 'red') { @return $red-light; }
-    @if ($color == 'orange') { @return $orange-light; }
-    @if ($color == 'yellow') { @return $yellow-light; }
-    @if ($color == 'green') { @return $green-light; }
-    @if ($color == 'teal') { @return $teal-light; }
-    @if ($color == 'grey') { @return $grey-200; }
+    @if ($color == 'default') { @return tweaks-temp.$blue-light; }
+    @if ($color == 'purple') { @return tweaks-temp.$purple-light; }
+    @if ($color == 'pink') { @return tweaks-temp.$pink-light; }
+    @if ($color == 'red') { @return tweaks-temp.$red-light; }
+    @if ($color == 'orange') { @return tweaks-temp.$orange-light; }
+    @if ($color == 'yellow') { @return tweaks-temp.$yellow-light; }
+    @if ($color == 'green') { @return tweaks-temp.$green-light; }
+    @if ($color == 'teal') { @return tweaks-temp.$teal-light; }
+    @if ($color == 'grey') { @return tweaks-temp.$grey-200; }
   }
 }
 
 @function background($type) {
-  @if ($type == 'a') { @return $white; }
-  @if ($type == 'b') { @return $grey-050; }
-  @if ($type == 'c') { @return $grey-100; }
-  @if ($type == 'd') { @return $grey-250; }
+  @if ($type == 'a') { @return tweaks-temp.$white; }
+  @if ($type == 'b') { @return tweaks-temp.$grey-050; }
+  @if ($type == 'c') { @return tweaks-temp.$grey-100; }
+  @if ($type == 'd') { @return tweaks-temp.$grey-250; }
 
-  @if ($blackness == 'true') {
-    @if ($type == 'e') { @return $black; }
-    @if ($type == 'f') { @return $grey-950; }
-    @if ($type == 'g') { @return $grey-900; }
-    @if ($type == 'h') { @return $grey-850; }
+  @if (tweaks-temp.$blackness == 'true') {
+    @if ($type == 'e') { @return tweaks-temp.$black; }
+    @if ($type == 'f') { @return tweaks-temp.$grey-950; }
+    @if ($type == 'g') { @return tweaks-temp.$grey-900; }
+    @if ($type == 'h') { @return tweaks-temp.$grey-850; }
   } @else {
-    @if ($type == 'e') { @return $grey-800; }
-    @if ($type == 'f') { @return $grey-750; }
-    @if ($type == 'g') { @return $grey-700; }
-    @if ($type == 'h') { @return $grey-650; }
+    @if ($type == 'e') { @return tweaks-temp.$grey-800; }
+    @if ($type == 'f') { @return tweaks-temp.$grey-750; }
+    @if ($type == 'g') { @return tweaks-temp.$grey-700; }
+    @if ($type == 'h') { @return tweaks-temp.$grey-650; }
   }
 }
 
@@ -120,36 +121,36 @@
 // Basic colors
 //
 
-$primary:                               theme($theme);
-$primary-fixed:                         theme($theme);
-$drop_target_color:                     $orange-dark;
-$background:                            if(sass($variant == 'light'): background(c); else: background(e));
-$surface:                               if(sass($variant == 'light'): background(a); else: background(h));
-$base:                                  if(sass($variant == 'light'): background(a); else: background(g));
-$base-alt:                              if(sass($variant == 'light'): background(b); else: background(f));
+$primary:                               theme(tweaks-temp.$theme);
+$primary-fixed:                         theme(tweaks-temp.$theme);
+$drop_target_color:                     tweaks-temp.$orange-dark;
+$background:                            if(sass(config.$variant == 'light'): background(c); else: background(e));
+$surface:                               if(sass(config.$variant == 'light'): background(a); else: background(h));
+$base:                                  if(sass(config.$variant == 'light'): background(a); else: background(g));
+$base-alt:                              if(sass(config.$variant == 'light'): background(b); else: background(f));
 
-@if $colorscheme != 'default' {
-  $surface:                             if(sass($variant == 'light'): background(b); else: background(h));
-  $base:                                if(sass($variant == 'light'): background(b); else: background(g));
-  $base-alt:                            if(sass($variant == 'light'): background(c); else: background(f));
+@if tweaks-temp.$colorscheme != 'default' {
+  $surface:                             if(sass(config.$variant == 'light'): background(b); else: background(h));
+  $base:                                if(sass(config.$variant == 'light'): background(b); else: background(g));
+  $base-alt:                            if(sass(config.$variant == 'light'): background(c); else: background(f));
 }
 
-$tooltip:                               if(sass($variant == 'dark'): rgba(darker(background(e), 3%), 0.9); else: rgba(darker(background(h), 3%), 0.9));
+$tooltip:                               if(sass(config.$variant == 'dark'): rgba(darker(background(e), 3%), 0.9); else: rgba(darker(background(h), 3%), 0.9));
 $osd:                                   background(e);
 $scrim:                                 background(f);
 $scrim-alt:                             background(g);
 $scrim-inverse:                         rgba(white, 0.1);
-$titlebar:                              if(sass($topbar == 'dark'): background(g); else: background(a));
-$titlebar-backdrop:                     if(sass($topbar == 'dark'): background(h); else: background(b));
+$titlebar:                              if(sass(config.$topbar == 'dark'): background(g); else: background(a));
+$titlebar-backdrop:                     if(sass(config.$topbar == 'dark'): background(h); else: background(b));
 
-$keyboard:                              if(sass($variant == 'light'): $grey-050; else: $grey-800); // for gnome-shell keyboard
-$keyboard-alt:                          if(sass($variant == 'light'): $grey-300; else: $grey-900); // for gnome-shell keyboard
-$system:                                if(sass($blackness == 'true'): $grey-850; else: $grey-750); // for gnome-shell keyboard
-$popover:                               if(sass($variant == 'light'): background(a); else: background(e));
+$keyboard:                              if(sass(config.$variant == 'light'): tweaks-temp.$grey-050; else: tweaks-temp.$grey-800); // for gnome-shell keyboard
+$keyboard-alt:                          if(sass(config.$variant == 'light'): tweaks-temp.$grey-300; else: tweaks-temp.$grey-900); // for gnome-shell keyboard
+$system:                                if(sass(tweaks-temp.$blackness == 'true'): tweaks-temp.$grey-850; else: tweaks-temp.$grey-750); // for gnome-shell keyboard
+$popover:                               if(sass(config.$variant == 'light'): background(a); else: background(e));
 
-$panel-solid:                           if(sass($topbar == 'dark'): background(e); else: background(c)); // for Unity panel which doesn't allow translucent colors
-$panel:                                 if(sass($opacity == 'default'): rgba($panel-solid, 0.65); else: $panel-solid);
-$shell:                                 if(sass($topbar == 'dark'): rgba(black, 0.65); else: background(c)); // for gnome-shell
+$panel-solid:                           if(sass(config.$topbar == 'dark'): background(e); else: background(c)); // for Unity panel which doesn't allow translucent colors
+$panel:                                 if(sass(tweaks-temp.$opacity == 'default'): rgba($panel-solid, 0.65); else: $panel-solid);
+$shell:                                 if(sass(config.$topbar == 'dark'): rgba(black, 0.65); else: background(c)); // for gnome-shell
 
 $button:                                gtkalpha(currentColor, 0.05);
 $entry:                                 gtkalpha(currentColor, 0.05);
@@ -162,35 +163,35 @@ $entry:                                 gtkalpha(currentColor, 0.05);
 // that reads as a lit glass edge. The blur itself comes from the extension.
 // With $glass off every tint is the solid surface colour.
 
-$glass-tint:                            if(sass($glass == 'true'): if(sass($variant == 'light'): rgba(white, 0.65); else: rgba(background(e), 0.60)); else: $surface);
-$glass-tint-strong:                     if(sass($glass == 'true'): if(sass($variant == 'light'): rgba(white, 0.80); else: rgba(background(f), 0.72)); else: $base-alt);
-$glass-rim:                             if(sass($variant == 'light'): rgba(black, 0.10); else: rgba(white, 0.14));
-$glass-highlight:                       if(sass($variant == 'light'): rgba(white, 0.90); else: rgba(white, 0.10));
-$glass-shadow:                          0 1px 2px rgba(black, 0.12), 0 4px 12px rgba(black, if(sass($variant == 'light'): 0.08; else: 0.24));
-$glass-sidebar:                         if(sass($glass == 'true'): if(sass($variant == 'light'): rgba(black, 0.03); else: rgba(white, 0.04)); else: $base-alt);
-$glass-shadow-raised:                   0 2px 4px rgba(black, 0.16), 0 12px 32px rgba(black, if(sass($variant == 'light'): 0.14; else: 0.36));
+$glass-tint:                            if(sass(tweaks-temp.$glass == 'true'): if(sass(config.$variant == 'light'): rgba(white, 0.65); else: rgba(background(e), 0.60)); else: $surface);
+$glass-tint-strong:                     if(sass(tweaks-temp.$glass == 'true'): if(sass(config.$variant == 'light'): rgba(white, 0.80); else: rgba(background(f), 0.72)); else: $base-alt);
+$glass-rim:                             if(sass(config.$variant == 'light'): rgba(black, 0.10); else: rgba(white, 0.14));
+$glass-highlight:                       if(sass(config.$variant == 'light'): rgba(white, 0.90); else: rgba(white, 0.10));
+$glass-shadow:                          0 1px 2px rgba(black, 0.12), 0 4px 12px rgba(black, if(sass(config.$variant == 'light'): 0.08; else: 0.24));
+$glass-sidebar:                         if(sass(tweaks-temp.$glass == 'true'): if(sass(config.$variant == 'light'): rgba(black, 0.03); else: rgba(white, 0.04)); else: $base-alt);
+$glass-shadow-raised:                   0 2px 4px rgba(black, 0.16), 0 12px 32px rgba(black, if(sass(config.$variant == 'light'): 0.14; else: 0.36));
 
 //
 // Misc colors
 //
 
 $link:                                  $primary;
-$link-visited:                          if(sass($variant == 'light'): $purple-dark; else: $purple-light);
+$link-visited:                          if(sass(config.$variant == 'light'): tweaks-temp.$purple-dark; else: tweaks-temp.$purple-light);
 
-$warning:                               if(sass($variant == 'light'): $yellow-dark; else: $yellow-light);
-$error:                                 if(sass($variant == 'light'): $red-dark; else: $red-light);
-$success:                               if(sass($variant == 'light'): $sea-dark; else: $sea-light);
+$warning:                               if(sass(config.$variant == 'light'): tweaks-temp.$yellow-dark; else: tweaks-temp.$yellow-light);
+$error:                                 if(sass(config.$variant == 'light'): tweaks-temp.$red-dark; else: tweaks-temp.$red-light);
+$success:                               if(sass(config.$variant == 'light'): tweaks-temp.$sea-dark; else: tweaks-temp.$sea-light);
 
 $suggested:                             $primary;
 $destructive:                           $error;
 
-$check_radio_primary:                   if(sass($check_radio == 'default'): $success; else: $primary);
+$check_radio_primary:                   if(sass(tweaks-temp.$check_radio == 'default'): $success; else: $primary);
 
-$frame:                                 if(sass($variant == 'light'): rgba(black, 0.1); else: rgba(black, 0.25)); // instead of shadows
-$border:                                if(sass($variant == 'light'): rgba(black, 0.12); else: rgba(white, 0.12));
-$solid-border:                          if(sass($variant == 'light'): darker($background, 8%); else: lighter($background, 12%));
+$frame:                                 if(sass(config.$variant == 'light'): rgba(black, 0.1); else: rgba(black, 0.25)); // instead of shadows
+$border:                                if(sass(config.$variant == 'light'): rgba(black, 0.12); else: rgba(white, 0.12));
+$solid-border:                          if(sass(config.$variant == 'light'): darker($background, 8%); else: lighter($background, 12%));
 $border-alt:                            rgba(black, 0.16); // darker border color for Chrome and Firefox
-$titlebar-indicator:                    if(sass($topbar == 'dark'): currentColor; else: $primary);
+$titlebar-indicator:                    if(sass(config.$topbar == 'dark'): currentColor; else: $primary);
 
 //
 // Overlay state colors
@@ -242,9 +243,9 @@ $primary-fill:                          on($primary, fill);
 // Titlebutton colors
 //
 
-$titlebutton-close:                      $button-close;
-$titlebutton-max:                        $button-max;
-$titlebutton-min:                        $button-min;
+$titlebutton-close:                      tweaks-temp.$button-close;
+$titlebutton-max:                        tweaks-temp.$button-max;
+$titlebutton-min:                        tweaks-temp.$button-min;
 
 // workaround for GTK3 @placeholder_text_color which doesn't allow translucent colors
-$placeholder_text_color:                if(sass($variant == 'light'): color.mix(black, $base, 60%); else: color.mix(white, $base, 70%));
+$placeholder_text_color:                if(sass(config.$variant == 'light'): color.mix(black, $base, 60%); else: color.mix(white, $base, 70%));

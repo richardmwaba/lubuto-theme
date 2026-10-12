@@ -1,7 +1,9 @@
 // Theme ColorScheme palette: default/nord/dracula
 @use "sass:math";
+@use 'config';
 
-@import 'color-palette-default';
+@forward 'color-palette-default';
+@use 'color-palette-default';
 
 $colorscheme: 'default';
 

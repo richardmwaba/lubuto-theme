@@ -1,22 +1,26 @@
+@use "../../colors";
+@use "../../variables";
+@use "../common";
+
 /* Workspace Switcher */
 // Workspace switcher OSD: one dot per workspace, the active one larger and in the accent colour.
 
 .workspace-switcher {
   @extend %osd_panel;
-  border-radius: $circular-radius;
+  border-radius: variables.$circular-radius;
   margin-bottom: 8em;
-  spacing: $space-size * 2;
-  padding: $space-size * 2 $space-size * 3;
+  spacing: variables.$space-size * 2;
+  padding: variables.$space-size * 2 variables.$space-size * 3;
 }
 
 .ws-switcher-indicator {
-  background-color: on(dark, disabled);
+  background-color: colors.on(dark, disabled);
   padding: 3px;
   margin: 13px;
-  border-radius: $circular-radius;
+  border-radius: variables.$circular-radius;
 
   &:active {
-    background-color: $primary;
+    background-color: colors.$primary;
     padding: 5px;
     margin: 11px;
   }

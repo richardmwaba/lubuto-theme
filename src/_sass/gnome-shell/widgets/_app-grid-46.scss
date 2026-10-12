@@ -1,3 +1,8 @@
+@use "../../colors";
+@use "../../tweaks-temp";
+@use "../../variables";
+@use "panel";
+
 /* App Grid */
 
 $app_icon_size: 96px;
@@ -18,14 +23,14 @@ $app_folder_size: 720px;
 /* App Icons */
 
 // items in the app grid and dash
-.overview-tile {
-  border-radius: $material-radius * 3;
+.overview-tile, %overview-tile {
+  border-radius: variables.$material-radius * 3;
   padding: 12px;
   spacing: 6px;
-  transition-duration: $longer_duration;
+  transition-duration: variables.$longer_duration;
   text-align: center;
   background-color: transparent;
-  color: on(dark);
+  color: colors.on(dark);
   border: 1px solid transparent;
   box-shadow: inset 0 1px transparent;
 
@@ -33,8 +38,8 @@ $app_folder_size: 720px;
   &:focus,
   &:highlighted,
   &:selected {
-    background-color: on(dark, divider);
-    color: on(dark);
+    background-color: colors.on(dark, divider);
+    color: colors.on(dark);
     transition-duration: 0ms;
     border-image: none;
     background-image: none;
@@ -42,9 +47,9 @@ $app_folder_size: 720px;
 
   &:active,
   &:checked {
-    background-color: on(dark, track);
-    transition-duration: $longer-duration;
-    color: on(dark);
+    background-color: colors.on(dark, track);
+    transition-duration: variables.$longer-duration;
+    color: colors.on(dark);
   }
 
   // the icon itself
@@ -61,9 +66,9 @@ $app_folder_size: 720px;
 .notification-badge {
   min-width: 16px;
   min-height: 16px;
-  color: on($primary);
-  background-color: $primary;
-  border-radius: $circular-radius;
+  color: colors.on(colors.$primary);
+  background-color: colors.$primary;
+  border-radius: variables.$circular-radius;
   padding: 0.2em 0.4em;
   // font-weight: bold;
   text-align: center;
@@ -71,12 +76,12 @@ $app_folder_size: 720px;
 
 // app folders
 .app-folder {
-  background-color: on(dark, fill);
-  border-radius: $material-radius * 3;
+  background-color: colors.on(dark, fill);
+  border-radius: variables.$material-radius * 3;
 
-  &:focus, &:hover { background-color: on(dark, divider); }
+  &:focus, &:hover { background-color: colors.on(dark, divider); }
   &:active, &:highlighted, &:selected,
-  &:checked { background-color: on(dark, track); }
+  &:checked { background-color: colors.on(dark, track); }
   &:insensitive { background-color: transparent; }
 }
 
@@ -84,28 +89,28 @@ $app_folder_size: 720px;
 .app-grid-running-dot {
   width: 6px; height: 3px;
   border-radius: 2px;
-  background-color: on(dark, track);
+  background-color: colors.on(dark, track);
   margin-bottom: 1px;
 }
 
 StWidget.focused {
   .app-grid-running-dot {
     width: 18px;
-    background-color: $primary;
+    background-color: colors.$primary;
   }
 }
 
 .app-folder-dialog-container {
   // pad the top with panel height so the folder doesn't overlap the panel on smaller resolutions
-  padding-top: $panel_height;
+  padding-top: panel.$panel_height;
 }
 
 // expanded folder
 .app-folder-dialog { //style like the dash
-  border-radius: $material-radius * 6;
+  border-radius: variables.$material-radius * 6;
   border: none;
-  background-color: rgba($system, 0.95);
-  color: on($system);
+  background-color: rgba(colors.$system, 0.95);
+  color: colors.on(colors.$system);
   spacing: 6px;
   box-shadow: none;
   outline: none;
@@ -122,17 +127,17 @@ StWidget.focused {
 
     .folder-name-entry {
       min-height: 28px;
-      padding: $space-size;
+      padding: variables.$space-size;
       border: none;
-      color: on($system);
+      color: colors.on(colors.$system);
       background-color: rgba(white, 0.15);
-      caret-color: on($system);
-      selection-background-color: on($system, divider) !important;
+      caret-color: colors.on(colors.$system);
+      selection-background-color: colors.on(colors.$system, divider) !important;
       selected-color: white !important;
       width: 300px;
 
       &:focus {
-        color: on($system);
+        color: colors.on(colors.$system);
         background-color: rgba(white, 0.25);
       }
 
@@ -143,26 +148,26 @@ StWidget.focused {
       }
 
       &:insensitive, StLabel.hint-text {
-        color: on($system, disabled);
+        color: colors.on(colors.$system, disabled);
       }
     }
 
     /* FIXME: this is to keep the label in sync with the entry */
-    & .folder-name-label { padding: 5px 7px; color: on($system, secondary); }
+    & .folder-name-label { padding: 5px 7px; color: colors.on(colors.$system, secondary); }
 
     & .icon-button {
-      background-color: on($system, divider);
-      color: on($system, secondary);
+      background-color: colors.on(colors.$system, divider);
+      color: colors.on(colors.$system, secondary);
       border: none;
       height: 32px;
       width: 32px;
-      padding: $space-size;
-      border-radius: if(sass($corner_style == 'circular'): $circular-radius; else: $material-radius);
+      padding: variables.$space-size;
+      border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): variables.$circular-radius; else: variables.$material-radius);
 
-      & > StIcon { icon-size: $base-icon-size }
+      & > StIcon { icon-size: variables.$base-icon-size }
 
-      &:hover { background-color: on($system, divider); }
-      &:checked, &:active { background-color: on($system, track); }
+      &:hover { background-color: colors.on(colors.$system, divider); }
+      &:checked, &:active { background-color: colors.on(colors.$system, track); }
     }
   }
 
@@ -183,8 +188,8 @@ StWidget.focused {
 // Rename popup for app folders
 .rename-folder-popup {
   .rename-folder-popup-item {
-    spacing: $space-size;
-    &:ltr, &:rtl { padding: 0 $space-size * 2; }
+    spacing: variables.$space-size;
+    &:ltr, &:rtl { padding: 0 variables.$space-size * 2; }
   }
 }
 
@@ -196,7 +201,7 @@ StWidget.focused {
 
 // App Grid pagination indicators
 .page-indicator {
-  padding: $space-size $space-size * 2 0;
+  padding: variables.$space-size variables.$space-size * 2 0;
 
   .page-indicator-icon {
     width: 10px;
@@ -215,7 +220,7 @@ StWidget.focused {
 .system-action-icon {
   background-color: rgba(0,0,0,0.8);
   color: white;
-  border-radius: $circular-radius;
+  border-radius: variables.$circular-radius;
 }
 
 .page-navigation-hint {
@@ -245,22 +250,22 @@ StWidget.focused {
   padding: 18px;
   width: 24px;
   height: 24px;
-  border-radius: $circular-radius;
-  color: on($system);
+  border-radius: variables.$circular-radius;
+  color: colors.on(colors.$system);
   background-color: transparent;
 
   &:insensitive {
     background-color: rgba(white, 0.06);
-    color: on($system, disabled);
+    color: colors.on(colors.$system, disabled);
   }
 
   &:hover {
     background-color: rgba(white, 0.12);
-    color: on($system);
+    color: colors.on(colors.$system);
   }
 
   &:active {
     background-color: rgba(white, 0.24);
-    color: on($system);
+    color: colors.on(colors.$system);
   }
 }

@@ -1,28 +1,35 @@
+@use "../../colors";
+@use "../../config";
+@use "../../tweaks-temp";
+@use "../../variables";
+@use "../drawing";
+
 @use "sass:color";
+@use "../common";
 
 /* Modal Dialogs */
 
-$mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(black, 0.75));
+$mdborder_color: if(sass(config.$variant == 'light'): rgba(black, 0.15); else: rgba(black, 0.75));
 
-.headline { @include font(title); }
+.headline { @include drawing.font(title); }
 
 .modal-dialog {
-  border-radius: if(sass($corner_style == 'circular'): 20px + $space-size; else: $material-radius + $space-size);
-  color: $text;
-  background-color: $base;
+  border-radius: if(sass(tweaks-temp.$corner_style == 'circular'): 20px + variables.$space-size; else: variables.$material-radius + variables.$space-size);
+  color: colors.$text;
+  background-color: colors.$base;
   border: 0 none $mdborder_color;
   box-shadow: 0 3px 8px rgba(black, 0.2);
-  padding: $space-size * 2;
+  padding: variables.$space-size * 2;
 
   .modal-dialog-content-box {
-    margin: $margin-size * 4 40px $margin-size * 8;
+    margin: variables.$margin-size * 4 40px variables.$margin-size * 8;
     spacing: 32px;
     max-width: 28em;
-    background-color: $base;
+    background-color: colors.$base;
   }
 
   .modal-dialog-button-box {
-    padding-top: $space-size;
+    padding-top: variables.$space-size;
   }
 
   .modal-dialog-button {
@@ -39,23 +46,23 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
   // border: 2px solid $mdborder_color;
 
   .modal-dialog-button:last-child {
-    color: on($destructive) !important;
-    background-color: $destructive;
+    color: colors.on(colors.$destructive) !important;
+    background-color: colors.$destructive;
 
     &:hover {
-      color: on($destructive) !important;
-      background-color: lighter($destructive, 9%);
+      color: colors.on(colors.$destructive) !important;
+      background-color: colors.lighter(colors.$destructive, 9%);
     }
 
     &:active {
-      color: on($destructive) !important;
-      background-color: darker($destructive, 5%);
+      color: colors.on(colors.$destructive) !important;
+      background-color: colors.darker(colors.$destructive, 5%);
     }
   }
 
   .end-session-dialog-battery-warning,
   .dialog-list-title {
-    color: $warning;
+    color: colors.$warning;
   }
 }
 
@@ -94,8 +101,8 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
 
       .dialog-list-item-title { font-weight: bold; }
       .dialog-list-item-description {
-        color: $text-secondary;
-        @include font(title);
+        color: colors.$text-secondary;
+        @include drawing.font(title);
       }
     }
   }
@@ -109,9 +116,9 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
   }
   .run-dialog-entry { width: 20em; }
   .run-dialog-description {
-    @include font(subheading);
+    @include drawing.font(subheading);
     text-align: center;
-    color: $text-disabled;
+    color: colors.$text-disabled;
   }
 }
 
@@ -121,37 +128,37 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
   width: 28em;
 
   .modal-dialog-button:first-child {
-    color: $destructive;
+    color: colors.$destructive;
 
     &:active {
       color: white !important;
-      background-color: $destructive;
+      background-color: colors.$destructive;
     }
   }
 
   .modal-dialog-button:last-child {
-    color: on($suggested) !important;
-    background-color: $suggested;
+    color: colors.on(colors.$suggested) !important;
+    background-color: colors.$suggested;
 
     &:hover {
-      color: on($suggested) !important;
-      background-color: lighter($suggested, 9%);
+      color: colors.on(colors.$suggested) !important;
+      background-color: colors.lighter(colors.$suggested, 9%);
     }
 
     &:active {
-      color: on($suggested) !important;
-      background-color: darker($suggested, 5%);
+      color: colors.on(colors.$suggested) !important;
+      background-color: colors.darker(colors.$suggested, 5%);
     }
 
     &:insensitive {
-      color: rgba($suggested, 0.5) !important;
-      background-color: rgba($suggested, 0.15);
+      color: rgba(colors.$suggested, 0.5) !important;
+      background-color: rgba(colors.$suggested, 0.15);
     }
   }
 
   .modal-dialog-content-box {
     margin-bottom: 24px;
-    background-color: $base;
+    background-color: colors.$base;
   }
 }
 
@@ -180,11 +187,11 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
 .prompt-dialog-info-label,
 .prompt-dialog-null-label {
   text-align: center;
-  @include font(title);
+  @include drawing.font(title);
 }
 
 .prompt-dialog-error-label {
-  color: $warning;
+  color: colors.$warning;
 }
 
 
@@ -195,7 +202,7 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
   spacing: 8px;
   margin-bottom: 6px;
 
-  .polkit-dialog-user-root-label { color: $warning; }
+  .polkit-dialog-user-root-label { color: colors.$warning; }
 }
 
 /* Audio selection dialog */
@@ -205,9 +212,9 @@ $mdborder_color: if(sass($variant == 'light'): rgba(black, 0.15); else: rgba(bla
 }
 
 .audio-selection-device {
-  border: 1px solid $border;
-  border-radius: $material-radius;
-  &:active,&:hover,&:focus { background-color: $primary; }
+  border: 1px solid colors.$border;
+  border-radius: variables.$material-radius;
+  &:active,&:hover,&:focus { background-color: colors.$primary; }
 }
 
 .audio-selection-device-box {

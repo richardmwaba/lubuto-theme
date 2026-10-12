@@ -1,16 +1,19 @@
+@use "../../colors";
+@use "../../variables";
+
 /* Workspace pager */
 
 %overview_panel {
-  color: on(dark);
-  background-color: on(dark, divider);
+  color: colors.on(dark);
+  background-color: colors.on(dark, divider);
   border: none;
 }
 
 // thumbnails in overview
 .workspace-thumbnails {
   visible-width: 32px; //amount visible before hover
-  spacing: $space-size;
-  padding: $space-size;
+  spacing: variables.$space-size;
+  padding: variables.$space-size;
 
   .workspace-thumbnail {
     @extend %overview_panel;
@@ -27,7 +30,7 @@
 
 // selected indicator
 .workspace-thumbnail-indicator {
-  border: 3px solid $primary;
+  border: 3px solid colors.$primary;
   border-radius: 3px;
   padding: 0px;
   // background-color: transparentize(rgba($primary, 0.2), 0.9);
