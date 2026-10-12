@@ -48,7 +48,7 @@ export class OverviewBlur {
         this._clear();
         const params = this._getParams();
         for (const monitor of Main.layoutManager.monitors) {
-            const backdrop = new Backdrop(monitor.index, params);
+            const backdrop = new Backdrop(monitor.index, params, 'wallpaper');
             backdrop.attach(this._group);
             backdrop.frame(0, 0, monitor.width, monitor.height, 0, monitor.x, monitor.y);
             this._backdrops.push(backdrop);
