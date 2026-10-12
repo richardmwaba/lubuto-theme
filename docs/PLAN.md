@@ -344,8 +344,9 @@ like one family.
       previous values go to `~/.config/lubuto/fonts-undo.sh`.
 - [x] Shell stylesheet families are `SF Pro Text, Inter, Cantarell` and `SF Pro Display, Inter, Cantarell`,
       so the shell and GTK share a family.
-- [ ] Try `rgba` antialiasing on the reference displays and record which one reads sharper. Ship that.
-      Grayscale ships until the test is done.
+- [x] `rgba` against `grayscale` on both reference displays, 2026-10-12, same text on each: no visible
+      difference. Grayscale ships, since it has no colour fringes and does not depend on the panel's
+      subpixel layout.
 - [x] `install.sh --fonts` applies the preset and prints how to undo it; `--remove --fonts` undoes both.
 - [x] Apps that draw their own window buttons. Mutter never offers server-side decorations on Wayland, so
       each app is its own case. Firefox with "Title Bar" off paints its buttons from its own CSS and only
