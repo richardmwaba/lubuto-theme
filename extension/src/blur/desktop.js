@@ -12,6 +12,8 @@ import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 
+import {isDisposed} from '../disposed.js';
+
 export class DesktopClone {
     constructor() {
         this.actor = new Clutter.Actor({name: 'lubuto-desktop-clone'});
@@ -23,21 +25,32 @@ export class DesktopClone {
             'child-removed', () => this._rebuild(),
             this);
         global.display.connectObject('restacked', () => this._rebuild(), this);
+        // At shell shutdown the stage goes away from C with the clones in
+        // it, while windows keep closing and the signals above keep firing.
+        this.actor.connect('destroy', () => this._release());
     }
 
     destroy() {
+        const actor = this.actor;
+        this._release();
+        actor?.destroy();
+    }
+
+    _release() {
         global.window_group.disconnectObject(this);
         global.display.disconnectObject(this);
         this._clear();
-        this.actor.destroy();
         this.actor = null;
     }
 
     _clear() {
         for (const {clone, bindings} of this._clones.values()) {
-            for (const binding of bindings)
-                binding.unbind();
-            clone.destroy();
+            for (const binding of bindings) {
+                if (!isDisposed(binding))
+                    binding.unbind();
+            }
+            if (!isDisposed(clone))
+                clone.destroy();
         }
         this._clones.clear();
     }

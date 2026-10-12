@@ -10,6 +10,7 @@ import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
+import {isDisposed} from '../disposed.js';
 import {ClipShadowEffect} from './effects.js';
 
 export const SHADOW_PADDING = 80;
@@ -35,14 +36,6 @@ export function createShadow(actor) {
         bindings.push(actor.bind_property(prop, shadow, prop, GObject.BindingFlags.SYNC_CREATE));
 
     return {shadow, bindings};
-}
-
-// GJS keeps the wrapper of a GObject that C code disposed, and every access
-// through it logs a critical instead of throwing. The wrapper's string form
-// is the one tell that costs nothing.
-export function isDisposed(object) {
-    const tag = object.toString();
-    return tag.includes('(DISPOSED)') || tag.includes('(FINALIZED)');
 }
 
 export function destroyShadow({shadow, bindings}) {

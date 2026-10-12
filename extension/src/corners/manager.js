@@ -11,7 +11,8 @@ import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import {WindowCornersEffect} from './effects.js';
-import {createShadow, destroyShadow, isDisposed, updateShadow} from './shadow.js';
+import {isDisposed} from '../disposed.js';
+import {createShadow, destroyShadow, updateShadow} from './shadow.js';
 
 const EFFECT_NAME = 'lubuto-window-corners';
 
