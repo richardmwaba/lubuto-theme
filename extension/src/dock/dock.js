@@ -72,7 +72,13 @@ export class Dock {
         // appear, leave or animate; its allocation is the signal to recentre.
         this._container.connectObject('notify::allocation', () => this._place(), this);
         this._dash.connectObject('icon-size-changed', () => this._place(), this);
-        this._dash._background.connectObject('notify::allocation', () => this._placeBackdrop(), this);
+        // The frame takes its corner radius from the background's theme node.
+        // At login that node resolves after the first allocation, so a style
+        // change re-frames too, or the backdrop keeps square corners.
+        this._dash._background.connectObject(
+            'notify::allocation', () => this._placeBackdrop(),
+            'style-changed', () => this._placeBackdrop(),
+            this);
 
         this._relayout();
     }
