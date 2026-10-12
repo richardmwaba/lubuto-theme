@@ -545,8 +545,21 @@ install_gdm() {
   local THEME_DIR="${1}/${2}${3}${4}${5}${6}"
   local built="$REPO_DIR/build/gdm/gnome-shell-theme.gresource"
 
+  # The login background: the file given, else the current dark wallpaper.
+  local background="${gdm_background:-}"
+  if [[ -z "$background" ]]; then
+    background="$(python3 -c 'import subprocess, urllib.parse
+u = subprocess.run(["dconf", "read", "/org/gnome/desktop/background/picture-uri-dark"], capture_output=True, text=True).stdout.strip().strip("\x27")
+print(urllib.parse.unquote(u.removeprefix("file://")) if u.startswith("file://") else "")' 2> /dev/null)"
+  fi
+  local extra=()
+  if [[ -n "$background" && -f "$background" ]]; then
+    extra=(--background "$background")
+    echo -e "\nGDM: login background '$background'."
+  fi
+
   echo -e "\nGDM: building a login screen resource from '$THEME_DIR'..."
-  python3 "$REPO_DIR/tools/build-gdm-theme.py" "$THEME_DIR/gnome-shell" "$built" || exit 1
+  python3 "$REPO_DIR/tools/build-gdm-theme.py" "$THEME_DIR/gnome-shell" "$built" "${extra[@]}" || exit 1
 
   # The original is kept once; later runs replace a Lubuto resource.
   local commands="[ -f '$GDM_BACKUP' ] || cp -p '$GDM_RESOURCE' '$GDM_BACKUP'; install -m 644 '$built' '$GDM_RESOURCE'"

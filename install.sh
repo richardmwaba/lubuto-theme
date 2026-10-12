@@ -30,6 +30,7 @@ OPTIONS:
   --gdm                   Style the login screen with the same variant -l links: builds a gnome-shell-theme.gresource
                           and installs it over the system one with sudo, keeping a backup ('--remove --gdm' restores;
                           a gnome-shell update restores the stock file, run the step again after one)
+  --gdm-background FILE   Image for the login screen behind the GDM step (Default: the current dark wallpaper)
   --icons [hatter|tela]   Fetch the icon theme pinned in presets/icons.manifest, in the variant that matches
                           the theme colour, into ~/.icons (Default: hatter); then offers to set icon-theme
   --cursor [ice|classic]  Fetch Bibata-Modern-Ice or Bibata-Modern-Classic into ~/.icons (Default: ice);
@@ -108,6 +109,10 @@ while [[ "$#" -gt 0 ]]; do
     --gdm)
       gdm="true"
       shift
+      ;;
+    --gdm-background)
+      gdm_background="$2"
+      shift 2
       ;;
     --icons)
       icons="hatter"

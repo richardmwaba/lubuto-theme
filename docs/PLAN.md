@@ -359,6 +359,8 @@ like one family.
       the theme assets, compiles with `glib-compile-resources` and loads the result to check it. The
       installer puts it over the system file with sudo and keeps `.lubuto-backup` for `--remove --gdm`.
       GDM is a separate session with no user extensions, so this is the only way to reach the login screen.
+      `--gdm-background` embeds an image in the resource for `#lockDialogGroup`, the current dark wallpaper
+      by default; the distribution logo is GDM's own dconf key and is untouched.
 - [x] `install.sh --flatpak`: `flatpak override --user` grants read access to the themes directory and sets
       `GTK_THEME` to the same variant `-l` links; `--remove --flatpak` undoes it. The snap App Center is
       out of reach: snaps read themes through the gtk-common-themes snap only.

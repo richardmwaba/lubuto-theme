@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Builds a GDM theme resource from an installed Lubuto shell theme.
 
-Usage: build-gdm-theme.py <theme>/gnome-shell <out.gresource> [<system.gresource>]
+Usage: build-gdm-theme.py <theme>/gnome-shell <out.gresource> [<system.gresource>] [--background <image>]
 
 GDM runs its own shell session without user extensions or ~/.themes, so the
 login screen only ever reads the stylesheet inside the system's
 gnome-shell-theme.gresource. This takes that resource, replaces the dark and
 light stylesheets with the theme's one, adds the theme's assets, compiles a
 new resource with glib-compile-resources and loads it back to check it.
+With --background, the image goes into the resource and the login screen's
+#lockDialogGroup shows it, so GDM needs no access to the user's files.
 Installing the result over the system file is the installer's job.
 """
 
@@ -43,10 +45,18 @@ def extract(resource, into):
 
 
 def main():
-    if len(sys.argv) < 3:
+    args = sys.argv[1:]
+    background = None
+    if '--background' in args:
+        at = args.index('--background')
+        background = args[at + 1]
+        del args[at:at + 2]
+    if len(args) < 2:
         sys.exit(__doc__)
-    theme, out = sys.argv[1], sys.argv[2]
-    system = sys.argv[3] if len(sys.argv) > 3 else SYSTEM
+    theme, out = args[0], args[1]
+    system = args[2] if len(args) > 2 else SYSTEM
+    if background and not os.path.isfile(background):
+        sys.exit(f'{background} not found.')
     stylesheet = os.path.join(theme, 'gnome-shell.css')
     if not os.path.isfile(stylesheet):
         sys.exit(f'{stylesheet} not found; install the theme first.')
@@ -59,8 +69,22 @@ def main():
 
         # GDM picks the dark or light sheet from its own colour scheme, so both
         # carry the chosen variant; high contrast stays stock for a11y.
+        extra = ''
+        if background:
+            image = 'lubuto-login-background' + os.path.splitext(background)[1].lower()
+            shutil.copyfile(background, os.path.join(work, image))
+            # Longhands: St does not parse the CSS background shorthand with
+            # a size, and background-size: cover is what fills the screen.
+            extra = ('\n#lockDialogGroup {\n'
+                     f'  background-image: url("resource://{PREFIX}{image}");\n'
+                     '  background-size: cover;\n'
+                     '  background-repeat: no-repeat;\n'
+                     '}\n')
         for name in ('gnome-shell-dark.css', 'gnome-shell-light.css'):
             shutil.copyfile(stylesheet, os.path.join(work, name))
+            if extra:
+                with open(os.path.join(work, name), 'a') as sheet:
+                    sheet.write(extra)
         for entry in os.listdir(theme):
             source = os.path.join(theme, entry)
             if entry == 'gnome-shell.css':

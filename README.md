@@ -56,6 +56,7 @@ Everything the installer takes:
 | `--flatpak` | Let Flatpak apps read the theme and set `GTK_THEME` to the linked variant |
 | `--firefox` | Lubuto window buttons in Firefox's own title bar, through `userChrome.css` |
 | `--gdm` | Style the login screen with the linked variant: builds a `gnome-shell-theme.gresource` and installs it over the system one with sudo, keeping a backup. A gnome-shell update restores the stock file; run it again after one |
+| `--gdm-background FILE` | Image for the login screen, embedded in that resource; default is the current dark wallpaper. The Fedora logo is GDM's own setting and stays |
 | `--icons [hatter\|tela]` | Fetch the pinned icon theme in the variant that matches the colour |
 | `--cursor [ice\|classic]` | Fetch Bibata-Modern-Ice or Bibata-Modern-Classic |
 | `--full` | `-l -e --fonts --icons hatter --cursor ice` |
