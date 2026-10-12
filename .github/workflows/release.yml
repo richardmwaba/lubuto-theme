@@ -1,0 +1,43 @@
+name: Release
+
+# A tag like v1.0.0 builds the full theme matrix and the extension, then
+# attaches both zips to a GitHub release for that tag.
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install tools
+        run: sudo apt-get update -q && sudo apt-get install -y -q gnome-shell-extensions libglib2.0-bin zip
+      - name: Build the full theme matrix
+        run: |
+          ./install.sh -d "$RUNNER_TEMP/themes" -t all
+          (cd "$RUNNER_TEMP/themes" && zip -qr "$GITHUB_WORKSPACE/Lubuto-${GITHUB_REF_NAME}.zip" .)
+      - name: Pack the extension
+        run: |
+          ./tools/build-extension.sh
+          cp build/lubuto@richardmwaba.github.io.shell-extension.zip "lubuto-extension-${GITHUB_REF_NAME}.zip"
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "Lubuto $GITHUB_REF_NAME" \
+            --notes-file CHANGELOG.md \
+            "Lubuto-${GITHUB_REF_NAME}.zip" \
+            "lubuto-extension-${GITHUB_REF_NAME}.zip"

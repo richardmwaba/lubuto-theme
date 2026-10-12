@@ -382,9 +382,12 @@ Exit: a fresh install with `--full` reproduces the reference machine's icons and
 
 ### Phase 9: docs and release
 
-- [ ] README: scope, requirements, one-command install, flags, screenshots per colour.
-- [ ] `THIRD_PARTY.md`, CHANGELOG, contribution notes.
-- [ ] Tagged release with a prebuilt theme zip and extension zip from CI.
+- [x] README: scope, requirements, one-command install, every flag, extension settings, the per-app
+      window button notes. Screenshots per colour still pending: they need the reference displays.
+- [x] `extension/THIRD_PARTY.md` covers the theme side too; `CHANGELOG.md` and `CONTRIBUTING.md` added.
+- [x] `.github/workflows/release.yml`: a `v*` tag builds the full theme matrix and the extension and
+      publishes both zips with the changelog as notes. Tagging is a manual step.
+- [ ] Tag `v1.0.0` after the measure, the rgba test and the screenshots.
 
 ## Decisions
 

@@ -1,0 +1,53 @@
+# Changelog
+
+Dates are when the work landed on `master`. Phases refer to `docs/PLAN.md`.
+
+## Unreleased
+
+First Lubuto release, forked from Orchis.
+
+### Theme
+
+- GNOME 50 only. Every other target of Orchis is dropped: Cinnamon, XFWM4, Plank, Metacity, GTK 2,
+  Firefox and the non-GNOME GTK 3 app styles.
+- Shell stylesheet covers the GNOME 50 nodes: scrollbars, workspace switcher, recording and sharing pills,
+  keyboard subkeys, message action bin, login authentication list, conflicting session dialog, parental
+  controls shield, lock screen notifications, polkit and Looking Glass panes.
+- libadwaita 1.9 coverage: the named colours and `:root` variables it expects, dialogs, bottom sheets,
+  toggle groups, tab overview, shortcut keycaps.
+- Glass tokens: tint, strong tint, rim, highlight, two short shadows, three radii (window 16 px, surface
+  12 px, control 8 px). The `noglass` tweak keeps surfaces solid.
+- Crisp pass: flat headerbars with a highlight edge and a hairline only where content scrolls under them,
+  translucent sidebars with a rim, cards and popovers with a 1 px rim and short shadow, controls at 8 px
+  and surfaces at 12 px, GTK 3 parity.
+- Shell font family is SF Pro Text, Inter, Cantarell, so the shell and GTK share a family.
+- Build on Dart Sass with `@use` and `@forward`, no deprecation warnings. CI parses every GTK stylesheet
+  with the real GTK 3 and GTK 4 parsers on Fedora 44.
+
+### Extension
+
+- `lubuto@richardmwaba.github.io` loads the shell stylesheet for the chosen variant and retires
+  `user-theme`.
+- Blur: a live copy of the desktop, blurred behind the panel, popovers and dock; the overview blurs the
+  wallpaper. Tint strength per surface.
+- Rounded window corners with shadows, ported from Rounded Window Corners Reborn.
+- Dock: a Dash subclass in a glass pill at the bottom, fixed icon size, hover magnify, autohide with a
+  pressure barrier, sized from its content.
+- Translucent window move and resize. Wobbly windows, ported from Compiz Windows Effect.
+- Preferences window for every setting.
+
+### Installer and presets
+
+- `install.sh` flags for the GTK 4 link, the extension, fonts, Flatpak, Firefox, icons and cursor, each
+  with an undo.
+- Crisp font preset: fontconfig snippet and gsettings script with a saved undo.
+- Firefox window buttons through `userChrome.css`.
+- Icons and cursor fetched from pinned upstream releases listed in `presets/icons.manifest`: Hatter,
+  Tela, Bibata.
+
+### Tools
+
+- `tools/check-gtk-css.py` parses compiled stylesheets with GTK.
+- `tools/render-gtk.py` renders a sample window to PNG with the active theme, GTK 3 or GTK 4.
+- `tools/fetch-icons.sh` installs a manifest entry.
+- `tools/build-extension.sh` packs the extension.
