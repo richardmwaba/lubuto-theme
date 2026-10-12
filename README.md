@@ -12,7 +12,9 @@ Two pieces make the look:
   corners with shadows, a macOS-style dock built on the shell's Dash, translucent window moves and wobbly
   windows.
 
-Screenshots: pending. The plan's Phase 8b and the release notes track them.
+The nine colours, dark compact, rendered from the GTK 4 sample window with the fixed accent:
+
+![The nine Lubuto colours](images/colours-dark.png)
 
 ## Requirements
 
@@ -89,8 +91,10 @@ npm ci
 ```
 
 `npm run lint` checks the extension. `tools/check-gtk-css.py <3|4> file.css` parses a compiled stylesheet
-with the real GTK parser, and `tools/render-gtk.py <3|4> out.png` renders a sample window of common
-widgets with the active theme. CI runs the build, the lint and the GTK parsers on every push.
+with the real GTK parser, `tools/render-gtk.py <3|4> out.png` renders a sample window of common widgets
+with the active theme, and `tools/screenshot.py out.png` takes a screenshot through the desktop portal,
+with its dialog. `tools/measure.sh` and `tools/measure-frames.py` are the performance protocol in
+`docs/MEASURING.md`. CI runs the build, the lint and the GTK parsers on every push.
 
 ## Layout
 
