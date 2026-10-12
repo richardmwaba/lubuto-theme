@@ -68,10 +68,10 @@ export class Dock {
             this);
         this._container.connectObject('notify::hover', () => this._onHoverChanged(), this);
         this._hideOverviewDash();
-        this._dash.connectObject(
-            'notify::allocation', () => this._place(),
-            'icon-size-changed', () => this._place(),
-            this);
+        // The container takes its natural size, so it follows icons that
+        // appear, leave or animate; its allocation is the signal to recentre.
+        this._container.connectObject('notify::allocation', () => this._place(), this);
+        this._dash.connectObject('icon-size-changed', () => this._place(), this);
         this._dash._background.connectObject('notify::allocation', () => this._placeBackdrop(), this);
 
         this._relayout();
@@ -285,12 +285,11 @@ export class Dock {
         if (!monitor || !this._container || !this._container.get_stage())
             return;
 
-        const [, natWidth] = this._dash.get_preferred_width(-1);
-        const [, natHeight] = this._dash.get_preferred_height(natWidth);
+        const [, natWidth] = this._container.get_preferred_width(-1);
+        const [, natHeight] = this._container.get_preferred_height(natWidth);
         const width = Math.ceil(natWidth);
         const height = Math.ceil(natHeight);
 
-        this._container.set_size(width, height);
         this._container.set_position(
             Math.round(monitor.x + (monitor.width - width) / 2),
             monitor.y + monitor.height - height);
