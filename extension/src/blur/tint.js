@@ -8,16 +8,31 @@ export function applyTint(actor, opacity) {
     if (!actor)
         return;
     if (opacity < 0) {
-        actor.set_style(null);
+        clearTint(actor);
         return;
     }
-    // Clear first so the colour read is the stylesheet's, not a previous inline alpha.
+
+    // Read the stylesheet's colour, not a previous inline alpha, and only once
+    // the node is styled: an unstyled node reports transparent black, and a
+    // tint built on that is a different colour.
+    const previous = actor.get_style();
     actor.set_style(null);
+    actor.ensure_style();
     const color = actor.get_theme_node().get_background_color();
-    const alpha = Math.round(Math.min(1, Math.max(0, opacity)) * 255);
-    actor.set_style(`background-color: rgba(${color.red}, ${color.green}, ${color.blue}, ${alpha / 255});`);
+    if (color.alpha === 0) {
+        actor.set_style(previous);
+        return;
+    }
+
+    const alpha = Math.min(1, Math.max(0, opacity));
+    const style = `background-color: rgba(${color.red}, ${color.green}, ${color.blue}, ${alpha});`;
+    if (style !== previous)
+        actor.set_style(style);
+    else
+        actor.set_style(previous);
 }
 
 export function clearTint(actor) {
-    actor?.set_style(null);
+    if (actor && actor.get_style() !== null)
+        actor.set_style(null);
 }

@@ -125,6 +125,10 @@ export class PopupBlur {
         const [width, height] = box.get_transformed_size();
         const radius = box.get_theme_node().get_border_radius(St.Corner.TOPLEFT);
 
+        // The first open may have run before the box was styled.
+        if (box.get_style() === null)
+            applyTint(box, this._getParams().popoverOpacity);
+
         state.backdrop.frame(
             x - monitor.x, y - monitor.y, width, height, radius,
             x - parentX, y - parentY);
