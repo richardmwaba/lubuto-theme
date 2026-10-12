@@ -182,9 +182,12 @@ selected with the same flags as the previous Orchis install (`--tweaks compact b
 - [x] Fix every missing selector: scrollbar handles, workspace switcher OSD, screen recording and sharing
       pills, keyboard subkeys popover, notification action bin, message list clear button, calendar events,
       panel indicator boxes, break countdown, search status box, restart message, access dialog.
-- [ ] Deferred shell nodes, 29 of them: login dialog auth list, unlock dialog notifications, parental
-      controls shield, conflicting session dialog, polkit user label, Looking Glass panes. Style them before
-      Phase 9.
+- [x] Deferred shell nodes, done 2026-10-11 against the GNOME 50 `_login-lock.scss`, `_looking-glass.scss`
+      and `_dialogs.scss`: login auth list, a11y button, bottom button group, message hint, conflicting
+      session dialog, parental controls shield, lock screen `.message` notifications and icon, polkit user
+      label, and the Looking Glass evaluator, windows, extensions, actors and debug panes with their
+      toolbar and inspector buttons. The extensions pane id is `#LookingGlassExtensions`; the old
+      lower-case id matched nothing.
 - [x] Calendar popover: bottom corners rendered square while the top corners were round. Cause: Blur my
       Shell's popup blur sizes its surface from the popover actor, not from `.popup-menu-content`, which has
       a 14 px bottom margin in Orchis. Popup blur is off on the reference machine until the `blur` module

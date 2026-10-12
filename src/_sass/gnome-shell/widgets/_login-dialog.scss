@@ -42,6 +42,7 @@
     }
   }
 
+  .a11y-button,
   .cancel-button,
   .switch-user-button,
   .login-dialog-session-list-button {
@@ -72,6 +73,15 @@
 .login-dialog-banner { color: colors.on(dark, secondary); }
 .login-dialog-button-box { width: 23em; spacing: 5px; }
 .login-dialog-message { text-align: center; }
+.login-dialog-message-hint,
+.login-dialog-message {
+  color: colors.on(dark, secondary);
+  min-height: 2.75em;
+}
+.login-dialog-bottom-button-group {
+  padding: 32px;
+  spacing: 16px;
+}
 .login-dialog-user-selection-box { padding: 100px 0px; }
 
 .login-dialog-not-listed-label {
@@ -150,4 +160,69 @@
   color: colors.on(dark, disabled);
   font-size: 1em;
   padding-top: 1em;
+}
+
+// Conflicting session dialog
+.conflicting-session-dialog-content {
+  spacing: 20px;
+
+  .conflicting-session-dialog-title {
+    @include drawing.font(headline);
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .conflicting-session-dialog-desc { text-align: center; }
+
+  .conflicting-session-dialog-desc-warning {
+    text-align: center;
+    color: colors.$warning;
+    background-color: rgba(colors.$warning, 0.1);
+    padding: variables.$space-size * 1.5;
+    border-radius: variables.$radius-control;
+    margin: variables.$space-size 0;
+  }
+}
+
+// Authentication methods list (smartcard, fingerprint, password)
+.login-dialog-auth-list-view { -st-vfade-offset: 3em; }
+
+.login-dialog-auth-list {
+  spacing: variables.$space-size;
+  margin-left: 2em;
+}
+
+.login-dialog-auth-list-title {
+  margin-left: 2em;
+  padding-bottom: variables.$space-size;
+  color: colors.on(dark, secondary);
+}
+
+.login-dialog,
+.unlock-dialog {
+  .login-dialog-auth-list-item {
+    border-radius: variables.$radius-control;
+    padding: variables.$space-size * 1.2;
+    color: colors.on(dark, secondary);
+    transition-duration: variables.$duration;
+
+    &:selected,
+    &:focus,
+    &:hover {
+      background-color: colors.on(dark, divider);
+      color: colors.on(dark);
+    }
+
+    &:active {
+      background-color: colors.on(dark, track);
+      color: colors.on(dark);
+    }
+  }
+}
+
+.login-dialog-auth-list-label {
+  font-weight: bold;
+
+  &:ltr { padding-left: variables.$space-size * 2.5; text-align: left; }
+  &:rtl { padding-right: variables.$space-size * 2.5; text-align: right; }
 }

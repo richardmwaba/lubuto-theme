@@ -39,6 +39,7 @@
     padding-bottom: 0;
   }
 
+  .message,
   .notification,
   .unlock-dialog-notification-source {
     padding: 12px 6px;
@@ -48,8 +49,21 @@
     border-radius: variables.$material-radius;
 
     &.critical { background-color: color.adjust(colors.$system, $alpha: -0.1) }
+    &:active { background-color: colors.$tooltip; }
+
+    .message-header { color: colors.on(dark); }
+
+    StButton {
+      background-color: transparent;
+      color: colors.on(dark, secondary);
+
+      &:hover, &:focus { color: colors.on(dark); }
+      &:insensitive { opacity: 0.5; }
+    }
   }
 }
+
+.unlock-dialog-notification-icon { icon-size: variables.$large-icon-size; }
 
 .unlock-dialog-notification-label {
   padding: 0px 0px 0px 12px;
@@ -79,5 +93,34 @@
     background-color: color.adjust(colors.$tooltip, $alpha: -0.7);
     &:hover, &:focus { background-color: color.adjust(colors.$tooltip,$alpha: -0.5); }
     &:active { background-color: color.adjust(colors.$primary,$alpha: -0.5); }
+  }
+}
+
+// Parental controls
+.parental-controls-shield {
+  spacing: 0.75em;
+  color: colors.on(dark);
+
+  .parental-controls-shield-title {
+    margin-top: 0.6em;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .parental-controls-shield-description {
+    text-align: center;
+    color: colors.on(dark, secondary);
+  }
+
+  .parental-controls-shield-button {
+    margin-top: 0.85em;
+    padding: 16px 44px;
+    font-weight: bold;
+    color: colors.on(dark);
+    background-color: colors.on(dark, divider);
+    border-radius: variables.$circular-radius;
+
+    &:hover, &:focus { background-color: colors.on(dark, track); }
+    &:active { background-color: colors.on(dark, secondary-fill); }
   }
 }

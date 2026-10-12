@@ -1,5 +1,6 @@
 @use "../../colors";
 @use "../../variables";
+@use "../common";
 @use "../drawing";
 
 @use "sass:color";
@@ -24,6 +25,18 @@
     background-color: colors.lighter(colors.$system, 10%);
     box-shadow: inset 0 -1px 0 colors.on(dark, divider);
     color: colors.on(dark, secondary);
+    spacing: variables.$space-size;
+
+    .lg-toolbar-button {
+      padding: variables.$space-size variables.$space-size * 2;
+      border-radius: variables.$radius-control;
+      color: colors.on(dark, secondary);
+
+      &:hover, &:focus { background-color: rgba(colors.on(dark), 0.15); color: colors.on(dark); }
+      &:active { background-color: rgba(colors.on(dark), 0.25); color: colors.on(dark); }
+
+      > StIcon { icon-size: variables.$base-icon-size; }
+    }
   }
 
   .labels {
@@ -114,9 +127,50 @@
   &:hover { border: none; }
 }
 
-#lookingGlassExtensions {
+#LookingGlassExtensions {
   padding: variables.$space-size;
   color: colors.on(dark, secondary);
+
+  .lg-extensions-none {
+    @include drawing.font(headline);
+    color: colors.on(dark, disabled);
+  }
+}
+
+#LookingGlassEvaluator {
+  padding: variables.$space-size;
+
+  .evaluator-results {
+    @extend %monospace;
+    spacing: variables.$space-size;
+  }
+}
+
+#LookingGlassWindows {
+  padding: variables.$space-size;
+  spacing: variables.$space-size;
+
+  .lg-window {
+    border-radius: variables.$material-radius;
+    background-color: rgba(colors.on(dark), 0.1);
+    color: colors.on(dark, secondary);
+    margin: 0;
+    padding: variables.$space-size * 2;
+
+    &:hover, &:focus { background-color: rgba(colors.on(dark), 0.15); }
+
+    .lg-window-name {
+      @include drawing.font(headline);
+      color: colors.on(dark);
+    }
+
+    .lg-window-props-box { spacing: variables.$space-size * 0.5; }
+  }
+}
+
+#LookingGlassActors {
+  padding: variables.$space-size;
+  spacing: variables.$space-size;
 }
 
 .lg-extensions-list {
@@ -151,8 +205,13 @@
   padding: variables.$space-size;
   box-shadow: variables.$shell-shadow-z4;
 
-  .window-close {
+  .window-close,
+  .lg-obj-inspector-close-button {
     margin: variables.$space-size;
+    padding: variables.$space-size;
+    border-radius: variables.$circular-radius;
+
+    > StIcon { icon-size: variables.$base-icon-size; }
   }
 }
 
