@@ -90,9 +90,29 @@ vec2 p = cogl_tex_coord0_in.xy / pixelStep;
 cogl_color_out *= lubutoCornerAlpha(p);
 `;
 
+// The buffer an offscreen effect paints into is not the actor's box. Clutter
+// pads the paint box for effects (_clutter_actor_box_enlarge_for_effects):
+// the size rounds to whole pixels plus 3, with the extra split so the origin
+// sits about 2 px inside, and the whole box then scales by the ceiling of the
+// resource scale. The shader sees texels of that buffer, so the frame has to
+// be placed in it the same way; taken as the actor's box instead, every
+// corner circle lands 2 px off and overshoots the edges.
+function offscreenBox(width, height) {
+    const x2 = Math.ceil(width + 0.75);
+    const y2 = Math.ceil(height + 0.75);
+    return {
+        x1: x2 - Math.round(width) - 3,
+        y1: y2 - Math.round(height) - 3,
+        x2,
+        y2,
+    };
+}
+
 // Multiplies the painted texture by a rounded-rectangle coverage, so an actor
 // painted through this effect gets rounded corners. The frame is the painted
-// box in pixels: an actor with a clip paints only the clip, so pass the clip.
+// box in logical pixels: an actor with a clip paints only the clip, so pass
+// the clip. Add the effect to its actor before framing, so the resource
+// scale is the actor's.
 export const RoundedClipEffect = GObject.registerClass({
     GTypeName: 'LubutoRoundedClipEffect',
 }, class RoundedClipEffect extends Shell.GLSLEffect {
@@ -110,12 +130,22 @@ export const RoundedClipEffect = GObject.registerClass({
     setFrame(width, height, radius) {
         const w = Math.max(1, width);
         const h = Math.max(1, height);
-        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        const r = Math.min(radius * scale, w / 2, h / 2);
+        const actor = this.get_actor();
+        const scale = Math.ceil(actor
+            ? actor.get_resource_scale()
+            : St.ThemeContext.get_for_stage(global.stage).scale_factor);
 
-        this.set_uniform_float(this._bounds, 4, [0, 0, w, h]);
+        const box = offscreenBox(w, h);
+        const textureWidth = Math.ceil((box.x2 - box.x1) * scale);
+        const textureHeight = Math.ceil((box.y2 - box.y1) * scale);
+        // Clutter truncates the offset to an int before scaling it.
+        const x = -Math.trunc(box.x1) * scale;
+        const y = -Math.trunc(box.y1) * scale;
+        const r = Math.min(radius * scale, w * scale / 2, h * scale / 2);
+
+        this.set_uniform_float(this._bounds, 4, [x, y, x + w * scale, y + h * scale]);
         this.set_uniform_float(this._clipRadius, 1, [r]);
-        this.set_uniform_float(this._pixelStep, 2, [1 / w, 1 / h]);
+        this.set_uniform_float(this._pixelStep, 2, [1 / textureWidth, 1 / textureHeight]);
         this.queue_repaint();
     }
 });
