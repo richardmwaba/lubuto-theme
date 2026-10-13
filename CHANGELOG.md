@@ -1,8 +1,8 @@
 # Changelog
 
-Dates are when the work landed on `master`. Phases refer to `docs/PLAN.md`.
+Dates are when the release was tagged.
 
-## Unreleased
+## 0.1.0 (2026-10-12)
 
 First Lubuto release, forked from Orchis.
 
@@ -53,3 +53,12 @@ First Lubuto release, forked from Orchis.
 - `tools/build-extension.sh` packs the extension.
 - `tools/build-gdm-theme.py` builds a login screen resource from an installed variant.
 - `tools/measure.sh` and `tools/measure-frames.py` are the performance protocol.
+
+### Known issues
+
+- Logging out hangs gnome-shell for five seconds before the login screen appears: Xwayland dies as the
+  session's X11 apps are killed, and mutter 50.5 then blocks on an X11 round trip for the next window
+  that goes away. The same abort happens with the extension disabled. The extension drops its effects
+  as soon as the end-session dialog confirms, so the frozen frame carries no Lubuto visuals. GNOME's
+  crash protection can flip `org.gnome.shell disable-user-extensions` to true after the abort;
+  `gnome-extensions enable lubuto@richardmwaba.github.io` undoes it.

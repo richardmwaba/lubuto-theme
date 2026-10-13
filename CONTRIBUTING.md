@@ -1,7 +1,7 @@
 # Contributing
 
 Lubuto targets GNOME Shell 50 on Wayland, with the GTK and libadwaita versions Fedora 44 ships. A change
-that only works elsewhere is out of scope; see the goals and non-goals in `docs/PLAN.md`.
+that only works elsewhere is out of scope.
 
 ## Set up
 

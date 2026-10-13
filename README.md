@@ -110,7 +110,7 @@ with its dialog. `tools/measure.sh` and `tools/measure-frames.py` are the perfor
 | `extension` | The shell extension: `src/<module>` per behaviour, schema, prefs |
 | `presets` | fontconfig snippet, gsettings script, Firefox stylesheet, icon manifest |
 | `tools` | Build, parse and render helpers |
-| `docs/PLAN.md` | Scope, architecture, decisions and status |
+| `docs/MEASURING.md` | Performance protocol and the numbers behind the defaults |
 
 ## Licence
 
