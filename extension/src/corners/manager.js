@@ -143,7 +143,10 @@ export class WindowCorners {
         if (!ROUNDABLE_TYPES.includes(win.windowType))
             return false;
 
-        const maximized = win.maximizedHorizontally || win.maximizedVertically;
+        // A tile from edge tiling is maximised on one axis only and keeps
+        // its corners like any other window; only a window filling the
+        // work area on both axes counts as maximised.
+        const maximized = win.maximizedHorizontally && win.maximizedVertically;
         if (win.fullscreen)
             return config.keepFullscreen;
         if (maximized)
