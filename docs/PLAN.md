@@ -289,15 +289,19 @@ choice. `extension/THIRD_PARTY.md` lists the ported code.
 
 ### Known issues outside Lubuto
 
-- Logout hangs gnome-shell for five seconds, then systemd aborts it. The dump has mutter's X11 teardown
-  blocking in `XIfEvent` on the dead Xwayland connection (`xserver_died` → `meta_x11_display_dispose` →
-  `meta_window_unmanage` → `meta_display_set_input_focus`), with no Lubuto frames on the stack, and the
-  same dump appears with the extension disabled. The frame on screen during the hang is what differs:
-  stock, it is plain; with the effects running it showed clones, backdrops and shadows over vanishing
-  windows. The extension therefore tears its effect modules down when the end-session dialog confirms,
-  and GNOME's crash protection can still flip `org.gnome.shell disable-user-extensions` to true after
-  the abort, which `gnome-extensions enable` undoes. A mutter 50.5 bug on this machine; retest after
-  the next mutter update.
+- Logout hangs gnome-shell for five seconds, then systemd aborts it. Xwayland dies as the session's X11
+  apps are killed, and before mutter's own X11 teardown runs, the next window to go away asks
+  `meta_display_get_current_time_roundtrip` for a timestamp on the dead connection: `XIfEvent` blocks
+  for good. Two dumps show it from `meta_window_unmanage` (focused X11 window) and from
+  `meta_wayland_shell_surface_destroy_window` (a Wayland window), with no Lubuto frames, and the same
+  abort happens with the extension disabled. Keeping the focus off X11 windows after the confirm only
+  moved the hang to the Wayland path, so nothing extension-side avoids it; it is a mutter 50.5 race to
+  report upstream with the coredump. The extension drops its effect modules when the end-session
+  dialog confirms, logged as `Lubuto: ConfirmedLogout`, so the frozen frame carries no Lubuto
+  visuals; the light band seen across the bottom of the laptop screen during the hang appears after
+  that teardown and is not drawn by the shell, most likely stale GPU memory shown while the compositor
+  is stuck. GNOME's crash protection can flip `org.gnome.shell disable-user-extensions` to true after
+  the abort, which `gnome-extensions enable` undoes. Retest after the next mutter update.
 
 ### Phase 6: fluidity and performance
 
