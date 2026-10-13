@@ -225,7 +225,7 @@ export class WindowCorners {
         }, radius);
 
         if (state.shadow) {
-            const hidden = win.maximizedHorizontally || win.maximizedVertically || win.fullscreen;
+            const hidden = (win.maximizedHorizontally && win.maximizedVertically) || win.fullscreen;
             updateShadow(win, state.shadow.shadow, config.radius, contentsOffset, {hidden});
         }
     }
