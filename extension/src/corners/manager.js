@@ -18,11 +18,31 @@ const EFFECT_NAME = 'lubuto-window-corners';
 
 const ROUNDABLE_TYPES = [Meta.WindowType.NORMAL, Meta.WindowType.DIALOG, Meta.WindowType.MODAL_DIALOG];
 
+// A window within this many pixels of a work area edge counts as touching it.
+const EDGE_SLOP = 2;
+
 // X11 clients paint into the actor's first child; Wayland clients into the actor.
 function surfaceOf(actor) {
     return actor.metaWindow.get_client_type() === Meta.WindowClientType.X11
         ? actor.get_first_child()
         : actor;
+}
+
+// Rounded corners against a screen edge, or against the tile next door, cut
+// wallpaper slivers into the seam, so a window that touches two or more
+// edges of its work area is treated like a maximised one: square and without
+// a shadow. That covers maximised windows, halves and quarters from any
+// tiling, whoever did the tiling; a tiling with gaps keeps the corners.
+function fillsEdges(win) {
+    const area = win.get_work_area_current_monitor();
+    const rect = win.get_frame_rect();
+    const touches = [
+        rect.x <= area.x + EDGE_SLOP,
+        rect.y <= area.y + EDGE_SLOP,
+        rect.x + rect.width >= area.x + area.width - EDGE_SLOP,
+        rect.y + rect.height >= area.y + area.height - EDGE_SLOP,
+    ].filter(Boolean).length;
+    return touches >= 2;
 }
 
 export class WindowCorners {
@@ -112,6 +132,7 @@ export class WindowCorners {
             'notify::fullscreen', () => this._refresh(actor),
             'notify::appears-focused', () => this._refresh(actor),
             'workspace-changed', () => this._refresh(actor),
+            'position-changed', () => this._refresh(actor),
             this);
 
         this._refresh(actor);
@@ -143,13 +164,9 @@ export class WindowCorners {
         if (!ROUNDABLE_TYPES.includes(win.windowType))
             return false;
 
-        // A tile from edge tiling is maximised on one axis only and keeps
-        // its corners like any other window; only a window filling the
-        // work area on both axes counts as maximised.
-        const maximized = win.maximizedHorizontally && win.maximizedVertically;
         if (win.fullscreen)
             return config.keepFullscreen;
-        if (maximized)
+        if (fillsEdges(win))
             return config.keepMaximized;
         return true;
     }
@@ -225,7 +242,7 @@ export class WindowCorners {
         }, radius);
 
         if (state.shadow) {
-            const hidden = (win.maximizedHorizontally && win.maximizedVertically) || win.fullscreen;
+            const hidden = fillsEdges(win) || win.fullscreen;
             updateShadow(win, state.shadow.shadow, config.radius, contentsOffset, {hidden});
         }
     }
