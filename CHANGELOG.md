@@ -6,6 +6,10 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Corners: an X11 window withdrawn during its minimise animation, as Zoom does, no longer aborts the shell.
+  Mutter clears the window's workspace inside the unmanage and emits `workspace-changed` there, and the
+  corners module answered by asking for the window's work area, which asserts without a workspace. The
+  window is dropped on `unmanaging`, and a window without a workspace is never queried.
 - Popover blur: the backdrop no longer settles 4% smaller than the menu. GNOME 50 opens a box pointer
   with a scale animation from 0.96, and the backdrop framed itself from the scaled geometry; it now
   frames from allocations and mirrors the scale and pivot.

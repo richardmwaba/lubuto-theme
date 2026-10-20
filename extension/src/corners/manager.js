@@ -128,7 +128,14 @@ export class WindowCorners {
             'notify::size', () => this._refresh(actor),
             this);
         texture.connectObject('size-changed', () => this._refresh(actor), this);
+        // An X11 client that withdraws its window, as Zoom does on minimise,
+        // gets unmanaged. Mutter clears the workspace from inside the
+        // unmanage and emits workspace-changed there, while any work area
+        // query on a window without a workspace aborts the shell. The
+        // unmanaging signal comes first, so the window is dropped on it and
+        // nothing of ours runs for the rest of the unmanage.
         actor.metaWindow.connectObject(
+            'unmanaging', () => this._unwatch(actor),
             'notify::fullscreen', () => this._refresh(actor),
             'notify::appears-focused', () => this._refresh(actor),
             'workspace-changed', () => this._refresh(actor),
@@ -186,6 +193,10 @@ export class WindowCorners {
             return;
         const win = actor.metaWindow;
         if (!win)
+            return;
+        // Between unmanaging and destroy the window has no workspace, and
+        // its work area cannot be asked for.
+        if (!win.is_on_all_workspaces() && win.get_workspace() === null)
             return;
 
         const want = this._shouldRound(win);
