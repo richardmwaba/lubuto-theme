@@ -2,6 +2,14 @@
 
 Dates are when the release was tagged.
 
+## Unreleased
+
+### Extension
+
+- Popover blur: the backdrop no longer settles 4% smaller than the menu. GNOME 50 opens a box pointer
+  with a scale animation from 0.96, and the backdrop framed itself from the scaled geometry; it now
+  frames from allocations and mirrors the scale and pivot.
+
 ## 0.1.0 (2026-10-12)
 
 First Lubuto release, forked from Orchis.
