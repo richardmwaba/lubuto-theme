@@ -121,6 +121,7 @@ export class Dock {
         this._backdrop?.destroy();
         this._backdrop = null;
         if (this._container) {
+            this._settleContainer();
             Main.layoutManager.removeChrome(this._container);
             this._container.destroy();
         }
@@ -134,6 +135,7 @@ export class Dock {
         const reserve = config.reserveSpace && !this._autohide;
         if (reserve !== this._reserveSpace) {
             this._reserveSpace = reserve;
+            this._settleContainer();
             Main.layoutManager.removeChrome(this._container);
             Main.layoutManager.addChrome(this._container, {
                 affectsStruts: this._reserveSpace,
@@ -164,6 +166,18 @@ export class Dock {
             applyTint(this._dash._background, params.dockOpacity);
         else if (this._dash)
             clearTint(this._dash._background);
+    }
+
+    // A chrome actor is its own relayout root, and clutter keeps that pending
+    // entry when the actor leaves the stage before the relayout runs: the next
+    // frame allocates the detached actor and logs two St criticals and a
+    // "Spurious clutter_actor_allocate" warning. Reading the allocation box
+    // runs the pending relayout while the actor is still in the stage, which
+    // drains the entry. A screen lock disables the extension right after the
+    // session mode change has queued a relayout, which is the common case.
+    _settleContainer() {
+        if (this._container.get_stage() && !this._container.has_allocation())
+            this._container.get_allocation_box();
     }
 
     _targetMonitor() {

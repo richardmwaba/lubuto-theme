@@ -6,6 +6,10 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Dock: a screen lock no longer logs `st_widget_get_theme_node called on the widget ... lubuto-dock
+  ... which is not in the stage` and `Spurious clutter_actor_allocate`. Clutter keeps a chrome
+  actor's pending relayout entry when the actor leaves the stage before the relayout runs, then
+  allocates it off-stage at the next frame; the dock runs that relayout before it leaves.
 - Theme: the colour tweaks are settings. `theme-palette` (default, Nord, Dracula), `theme-shade`
   (grey, graphite, black) and `theme-tweaks` (primary, solid, submenu) each add a suffix to the theme
   directory name, the shell stylesheet reloads at once, `gtk-theme` and the libadwaita links in
@@ -36,6 +40,8 @@ Dates are when the release was tagged.
 
 ### Theme
 
+- Shell: the search entry's shadow is one layer. St draws one shadow per rule and logged
+  `Ignoring excess values in shadow definition` for the second, which it never drew.
 - Theme directories carry the colour tweaks in their name:
   `Lubuto-<Colour>[-Light|-Dark][-Compact][-Nord|-Dracula][-Graphite|-Black][-Primary][-Solid][-Submenu]`.
   `install.sh --matrix` builds every combination for the selected variants, with the asset
