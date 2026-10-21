@@ -38,6 +38,10 @@ OPTIONS:
   --full                  -l -e --fonts --icons hatter --cursor ice
   -f, --fixed             Fixed accent (blue) colour instead of following the GNOME accent colour
 
+  --matrix                Install every combination of the colour tweaks (graphite, black, primary, solid,
+                          submenu) for each selected variant, so the extension can switch between them.
+                          Layout tweaks and the palette given with --tweaks apply to all of them.
+
   --tweaks                Specify versions for tweaks [solid|compact|black|graphite|primary|macos|submenu|(nord/dracula)] (Options can mix)
                           1. solid              No transparency panel variant
                           2. compact            No floating panel variant
@@ -109,6 +113,10 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     --gdm)
       gdm="true"
+      shift
+      ;;
+    --matrix)
+      matrix="true"
       shift
       ;;
     --gdm-background)
@@ -494,6 +502,8 @@ else
   if [[ "$extension" == 'true' ]]; then
     install_extension
   fi
+
+  sync_extension_tweaks
 
   if [[ "$flatpak" == 'true' ]]; then
     flatpak_theme

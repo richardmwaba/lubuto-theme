@@ -6,6 +6,8 @@ import Gtk from 'gi://Gtk';
 
 import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
+import {TWEAKS, findThemeDir, variantName} from './src/themeDirs.js';
+
 const COLORS = [
     ['blue', 'Blue'],
     ['purple', 'Purple'],
@@ -28,6 +30,28 @@ const LIGHT_STYLES = [
     ['standard', 'Dark top bar'],
     ['light', 'Fully light'],
 ];
+
+const PALETTES = [
+    ['default', 'Default'],
+    ['nord', 'Nord'],
+    ['dracula', 'Dracula'],
+];
+
+const SHADES = [
+    ['grey', 'Grey'],
+    ['graphite', 'Graphite'],
+    ['black', 'Black'],
+];
+
+const TWEAK_ROWS = {
+    primary: ['Accent check boxes', 'Check boxes and radios in the accent colour instead of green'],
+    solid: ['Solid panel and popovers', 'No transparency on the top panel and its menus'],
+    submenu: ['Themed submenus', 'Submenus and quick settings menus in the surface colour'],
+};
+
+// The settings the variant name depends on.
+const VARIANT_KEYS = ['theme-name', 'color', 'color-scheme', 'light-style', 'compact',
+    'theme-palette', 'theme-shade', 'theme-tweaks'];
 
 export default class LubutoPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
@@ -54,6 +78,8 @@ export default class LubutoPreferences extends ExtensionPreferences {
         });
         settings.bind('sync-gtk-theme', sync, 'active', Gio.SettingsBindFlags.DEFAULT);
         group.add(sync);
+
+        this._addTweaks(page, settings);
 
         const blur = new Adw.PreferencesGroup({title: _('Glass blur')});
         page.add(blur);
@@ -197,6 +223,65 @@ export default class LubutoPreferences extends ExtensionPreferences {
             settings.bind(key, row, 'value', Gio.SettingsBindFlags.DEFAULT);
             effects.add(row);
         }
+    }
+
+    // The colour tweaks. Each choice names a theme directory, so a row says
+    // when the directory it would select is not installed.
+    _addTweaks(page, settings) {
+        const interfaceSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
+        const group = new Adw.PreferencesGroup({
+            title: _('Tweaks'),
+            description: _('Each choice selects a theme directory; ./install.sh --matrix builds every combination. ' +
+                'The shell follows at once, GTK apps after a restart.'),
+        });
+        page.add(group);
+
+        const palette = this._comboRow(settings, 'theme-palette', _('Palette'), PALETTES);
+        const shade = this._comboRow(settings, 'theme-shade', _('Surface shade'), SHADES);
+        group.add(palette);
+        group.add(shade);
+
+        const switches = {};
+        for (const [tweak] of TWEAKS) {
+            const [title, subtitle] = TWEAK_ROWS[tweak];
+            const row = new Adw.SwitchRow({title, subtitle});
+            row.active = settings.get_strv('theme-tweaks').includes(tweak);
+            row.connect('notify::active', () => {
+                const tweaks = settings.get_strv('theme-tweaks').filter(t => t !== tweak);
+                if (row.active)
+                    tweaks.push(tweak);
+                if (tweaks.length !== settings.get_strv('theme-tweaks').length)
+                    settings.set_strv('theme-tweaks', tweaks);
+            });
+            group.add(row);
+            switches[tweak] = row;
+        }
+
+        const installed = overrides => findThemeDir(variantName(settings, interfaceSettings, overrides)) !== null;
+        const missing = (choices, key) => choices
+            .filter(([nick]) => !installed({[key]: nick}))
+            .map(([, label]) => label);
+
+        const refresh = () => {
+            const current = settings.get_strv('theme-tweaks');
+            for (const [tweak] of TWEAKS) {
+                const row = switches[tweak];
+                const active = current.includes(tweak);
+                if (row.active !== active)
+                    row.active = active;
+                const flipped = active ? current.filter(t => t !== tweak) : [...current, tweak];
+                row.subtitle = installed({tweaks: flipped}) ? TWEAK_ROWS[tweak][1] : _('Not installed');
+            }
+            for (const [row, choices, key] of [[palette, PALETTES, 'palette'], [shade, SHADES, 'shade']]) {
+                const gone = missing(choices, key);
+                row.subtitle = gone.length ? `${_('Not installed:')} ${gone.join(', ')}` : '';
+            }
+        };
+
+        for (const key of VARIANT_KEYS)
+            settings.connect(`changed::${key}`, refresh);
+        interfaceSettings.connect('changed::color-scheme', refresh);
+        refresh();
     }
 
     _comboRow(settings, key, title, choices, subtitle = null) {

@@ -30,6 +30,34 @@ SIZE_VARIANTS=('' '-Compact')
 ctype=
 icon='-default'
 
+# The colour tweaks name the theme directory, after the palette suffix, so the
+# extension can pick a combination by name: -Graphite or -Black, -Primary,
+# -Solid, -Submenu, in that order. Layout tweaks stay inside the directory.
+tweak_suffix() {
+  local suffix=''
+  case "${shade:-}" in
+    graphite) suffix+='-Graphite' ;;
+    black) suffix+='-Black' ;;
+  esac
+  [[ "${primary:-}" == 'true' ]] && suffix+='-Primary'
+  [[ "${opacity:-}" == 'solid' ]] && suffix+='-Solid'
+  [[ "${submenu:-}" == 'true' ]] && suffix+='-Submenu'
+  echo "$suffix"
+}
+
+# Every combination of the colour tweaks, for uninstall and the matrix.
+TWEAK_SUFFIXES=()
+for _shade in '' '-Graphite' '-Black'; do
+  for _primary in '' '-Primary'; do
+    for _solid in '' '-Solid'; do
+      for _submenu in '' '-Submenu'; do
+        TWEAK_SUFFIXES+=("${_shade}${_primary}${_solid}${_submenu}")
+      done
+    done
+  done
+done
+unset _shade _primary _solid _submenu
+
 # Check command availability
 function has_command() {
   command -v "$1" > /dev/null
@@ -74,12 +102,18 @@ install() {
   local size="$5"
   local ctype="$6"
   local icon="$7"
+  # A sibling directory whose asset directories this one links to instead of
+  # copying. The matrix passes the base combination here.
+  local asset_source="${8:-}"
 
   if [[ "$color" == '-Dark' ]]; then
     local ELSE_DARK="$color"
   fi
 
-  local THEME_DIR="${1}/${2}${3}${4}${5}${6}"
+  local tsuffix
+  tsuffix="$(tweak_suffix)"
+  local variant="${2}${3}${4}${5}${6}${tsuffix}"
+  local THEME_DIR="${1}/${variant}"
 
   [[ -d "$THEME_DIR" ]] && rm -rf "$THEME_DIR"
 
@@ -93,13 +127,13 @@ install() {
   cat > "$THEME_DIR/index.theme" <<INDEX
 [Desktop Entry]
 Type=X-GNOME-Metatheme
-Name=${2}${3}${4}${5}${6}
+Name=${variant}
 Comment=Lubuto, a Liquid Glass theme for GNOME 50 based on Orchis
 Encoding=UTF-8
 
 [X-GNOME-Metatheme]
-GtkTheme=${2}${3}${4}${5}${6}
-MetacityTheme=${2}${3}${4}${5}${6}
+GtkTheme=${variant}
+MetacityTheme=${variant}
 IconTheme=$(icon_theme_for "$theme")
 CursorTheme=Bibata-Modern-Ice
 ButtonLayout=close,minimize,maximize:menu
@@ -109,17 +143,21 @@ INDEX
   cp -r "$SRC_DIR/gnome-shell/pad-osd.css"                                                   "$THEME_DIR/gnome-shell"
   compile_scss "$SRC_DIR/gnome-shell/shell-50/gnome-shell${ELSE_DARK:-}$size.scss"           "$THEME_DIR/gnome-shell/gnome-shell.css"
 
-  cp -r "$SRC_DIR/gnome-shell/common-assets"                                                 "$THEME_DIR/gnome-shell/assets"
-  cp -r "$SRC_DIR/gnome-shell/assets${ELSE_DARK:-}/"*.svg                                    "$THEME_DIR/gnome-shell/assets"
+  if [[ -n "$asset_source" ]]; then
+    ln -s "../../${asset_source}/gnome-shell/assets"                                         "$THEME_DIR/gnome-shell/assets"
+  else
+    cp -r "$SRC_DIR/gnome-shell/common-assets"                                               "$THEME_DIR/gnome-shell/assets"
+    cp -r "$SRC_DIR/gnome-shell/assets${ELSE_DARK:-}/"*.svg                                  "$THEME_DIR/gnome-shell/assets"
 
-  if [[ "$primary" == 'true' ]]; then
-    cp -r "$SRC_DIR/gnome-shell/theme$theme$ctype/checkbox${ELSE_DARK:-}.svg"                "$THEME_DIR/gnome-shell/assets/checkbox.svg"
+    if [[ "$primary" == 'true' ]]; then
+      cp -r "$SRC_DIR/gnome-shell/theme$theme$ctype/checkbox${ELSE_DARK:-}.svg"              "$THEME_DIR/gnome-shell/assets/checkbox.svg"
+    fi
+
+    cp -r "$SRC_DIR/gnome-shell/theme$theme$ctype/more-results${ELSE_DARK:-}.svg"            "$THEME_DIR/gnome-shell/assets/more-results.svg"
+    cp -r "$SRC_DIR/gnome-shell/theme$theme$ctype/toggle-on${ELSE_DARK:-}.svg"               "$THEME_DIR/gnome-shell/assets/toggle-on.svg"
+
+    cp -r "$SRC_DIR/gnome-shell/activities/activities${icon}.svg"                            "$THEME_DIR/gnome-shell/assets/activities.svg"
   fi
-
-  cp -r "$SRC_DIR/gnome-shell/theme$theme$ctype/more-results${ELSE_DARK:-}.svg"              "$THEME_DIR/gnome-shell/assets/more-results.svg"
-  cp -r "$SRC_DIR/gnome-shell/theme$theme$ctype/toggle-on${ELSE_DARK:-}.svg"                 "$THEME_DIR/gnome-shell/assets/toggle-on.svg"
-
-  cp -r "$SRC_DIR/gnome-shell/activities/activities${icon}.svg"                              "$THEME_DIR/gnome-shell/assets/activities.svg"
 
   (
     cd "$THEME_DIR/gnome-shell"
@@ -129,15 +167,23 @@ INDEX
   )
 
   mkdir -p                                                                                   "$THEME_DIR/gtk-3.0"
-  cp -r "$SRC_DIR/gtk/assets$theme$ctype"                                                    "$THEME_DIR/gtk-3.0/assets"
-  cp -r "$SRC_DIR/gtk/scalable"                                                              "$THEME_DIR/gtk-3.0/assets"
+  if [[ -n "$asset_source" ]]; then
+    ln -s "../../${asset_source}/gtk-3.0/assets"                                             "$THEME_DIR/gtk-3.0/assets"
+  else
+    cp -r "$SRC_DIR/gtk/assets$theme$ctype"                                                  "$THEME_DIR/gtk-3.0/assets"
+    cp -r "$SRC_DIR/gtk/scalable"                                                            "$THEME_DIR/gtk-3.0/assets"
+  fi
   cp -r "$SRC_DIR/gtk/thumbnails/thumbnail$theme${ELSE_DARK:-}$ctype.png"                    "$THEME_DIR/gtk-3.0/thumbnail.png"
   compile_scss "$SRC_DIR/gtk/3.0/gtk$color$size.scss"                                        "$THEME_DIR/gtk-3.0/gtk.css"
   compile_scss "$SRC_DIR/gtk/3.0/gtk-Dark$size.scss"                                         "$THEME_DIR/gtk-3.0/gtk-dark.css"
 
   mkdir -p                                                                                   "$THEME_DIR/gtk-4.0"
-  cp -r "$SRC_DIR/gtk/assets$theme$ctype"                                                    "$THEME_DIR/gtk-4.0/assets"
-  cp -r "$SRC_DIR/gtk/scalable"                                                              "$THEME_DIR/gtk-4.0/assets"
+  if [[ -n "$asset_source" ]]; then
+    ln -s "../../${asset_source}/gtk-4.0/assets"                                             "$THEME_DIR/gtk-4.0/assets"
+  else
+    cp -r "$SRC_DIR/gtk/assets$theme$ctype"                                                  "$THEME_DIR/gtk-4.0/assets"
+    cp -r "$SRC_DIR/gtk/scalable"                                                            "$THEME_DIR/gtk-4.0/assets"
+  fi
   compile_scss "$SRC_DIR/gtk/4.0/gtk$color$size.scss"                                        "$THEME_DIR/gtk-4.0/gtk.css"
   compile_scss "$SRC_DIR/gtk/4.0/gtk-Dark$size.scss"                                         "$THEME_DIR/gtk-4.0/gtk-dark.css"
 }
@@ -320,10 +366,38 @@ install_theme() {
   for theme in "${themes[@]}"; do
     for color in "${colors[@]}"; do
       for size in "${sizes[@]}"; do
-        install "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype" "$icon"
+        if [[ "${matrix:-}" == 'true' ]]; then
+          install_matrix "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype" "$icon"
+        else
+          install "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype" "$icon"
+        fi
       done
     done
   done
+}
+
+# Every combination of the colour tweaks for one variant, so the extension can
+# switch between them by name. The assets differ only with `primary`, so each
+# combination links to the plain one with the same `primary` state. The tweak
+# set given on the command line is restored afterwards for the link, GDM and
+# Flatpak steps.
+install_matrix() {
+  local saved_shade="${shade:-}" saved_primary="${primary:-}" saved_opacity="${opacity:-}" saved_submenu="${submenu:-}"
+
+  for primary in false true; do
+    local base="${2}${3}${4}${5}${6}$(primary="$primary" shade='' opacity='' submenu='' tweak_suffix)"
+    for shade in '' graphite black; do
+      for opacity in '' solid; do
+        for submenu in false true; do
+          local source=''
+          [[ -n "$shade" || "$opacity" == 'solid' || "$submenu" == 'true' ]] && source="$base"
+          install "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$source"
+        done
+      done
+    done
+  done
+
+  shade="$saved_shade" primary="$saved_primary" opacity="$saved_opacity" submenu="$saved_submenu"
 }
 
 uninstall_theme() {
@@ -331,7 +405,9 @@ uninstall_theme() {
     for color in "${COLOR_VARIANTS[@]}"; do
       for size in "${SIZE_VARIANTS[@]}"; do
         for scheme in '' '-Nord' '-Dracula'; do
-          uninstall "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$scheme"
+          for tweaks in "${TWEAK_SUFFIXES[@]}"; do
+            uninstall "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$scheme$tweaks"
+          done
         done
       done
     done
@@ -345,7 +421,9 @@ clean_theme() {
     for theme in "${themes[@]}"; do
       for color in "${colors[@]}"; do
         for size in "${sizes[@]}"; do
-          uninstall "${dest}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype"
+          for tweaks in "${TWEAK_SUFFIXES[@]}"; do
+            uninstall "${dest}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype$tweaks"
+          done
         done
       done
     done
@@ -356,7 +434,7 @@ link_theme() {
   for theme in "${themes[@]}"; do
     for color in "${lcolors[@]}"; do
       for size in "${sizes[0]}"; do
-        link_libadwaita "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype"
+        link_libadwaita "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype$(tweak_suffix)"
       done
     done
   done
@@ -597,7 +675,7 @@ gdm_theme() {
   for theme in "${themes[@]}"; do
     for color in "${lcolors[@]}"; do
       for size in "${sizes[0]}"; do
-        install_gdm "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype"
+        install_gdm "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype$(tweak_suffix)"
       done
     done
   done
@@ -652,7 +730,7 @@ flatpak_theme() {
   for theme in "${themes[@]}"; do
     for color in "${lcolors[@]}"; do
       for size in "${sizes[0]}"; do
-        flatpak_override "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype"
+        flatpak_override "${dest:-$DEST_DIR}" "${_name:-$THEME_NAME}" "$theme" "$color" "$size" "$ctype$(tweak_suffix)"
       done
     done
   done
@@ -660,6 +738,34 @@ flatpak_theme() {
 
 EXTENSION_UUID="lubuto@richardmwaba.github.io"
 USER_THEME_UUID="user-theme@gnome-shell-extensions.gcampax.github.com"
+
+# The colour tweaks name the theme directory, and the extension composes that
+# name from its own settings, so the tweak set given on the command line is
+# written to the extension's keys. Without this a `--tweaks graphite` install
+# builds a -Graphite directory the extension's defaults never look for.
+sync_extension_tweaks() {
+  local schemas="$HOME/.local/share/gnome-shell/extensions/$EXTENSION_UUID/schemas"
+  if [[ "$UID" == "$ROOT_UID" || ! -f "$schemas/gschemas.compiled" ]] || ! has_command gsettings; then
+    return 0
+  fi
+
+  local palette='default'
+  [[ "${nord:-}" == 'true' ]] && palette='nord'
+  [[ "${dracula:-}" == 'true' ]] && palette='dracula'
+  local tweaks=()
+  [[ "${primary:-}" == 'true' ]] && tweaks+=("'primary'")
+  [[ "${opacity:-}" == 'solid' ]] && tweaks+=("'solid'")
+  [[ "${submenu:-}" == 'true' ]] && tweaks+=("'submenu'")
+  local list
+  list="$(IFS=,; echo "${tweaks[*]}")"
+
+  echo -e "\nExtension: palette '$palette', shade '${shade:-grey}', tweaks [$list]."
+  if ! gsettings --schemadir "$schemas" set org.gnome.shell.extensions.lubuto theme-palette "'$palette'" 2> /dev/null ||
+     ! gsettings --schemadir "$schemas" set org.gnome.shell.extensions.lubuto theme-shade "'${shade:-grey}'" 2> /dev/null ||
+     ! gsettings --schemadir "$schemas" set org.gnome.shell.extensions.lubuto theme-tweaks "[$list]" 2> /dev/null; then
+    echo "The installed extension has no tweak keys yet; reinstall it with -e and log in again."
+  fi
+}
 
 # Packs, installs and enables the shell extension for the current user, and
 # disables user-theme because the extension loads the shell stylesheet itself.

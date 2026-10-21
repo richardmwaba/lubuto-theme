@@ -6,6 +6,12 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Theme: the colour tweaks are settings. `theme-palette` (default, Nord, Dracula), `theme-shade`
+  (grey, graphite, black) and `theme-tweaks` (primary, solid, submenu) each add a suffix to the theme
+  directory name, the shell stylesheet reloads at once, `gtk-theme` and the libadwaita links in
+  `~/.config/gtk-4.0` follow under `sync-gtk-theme`, and GTK apps pick the change up on restart. A
+  combination that is not installed logs a warning and falls back to the plain variant. The prefs
+  Theme page has a Tweaks group whose rows say when a choice is not installed.
 - Dock: a click on an icon whose app has two or more windows on the workspace opens previews of
   those windows above the icon; a click on a preview goes to that window, the wheel over the icon
   steps through them, arrows walk the previews from the keyboard. `dock-click-action` picks previews
@@ -30,6 +36,11 @@ Dates are when the release was tagged.
 
 ### Theme
 
+- Theme directories carry the colour tweaks in their name:
+  `Lubuto-<Colour>[-Light|-Dark][-Compact][-Nord|-Dracula][-Graphite|-Black][-Primary][-Solid][-Submenu]`.
+  `install.sh --matrix` builds every combination for the selected variants, with the asset
+  directories shared between siblings, and `--remove` clears them. The installer writes the
+  `--tweaks` set to the extension's keys so the shell loads the directory it built.
 - `--tweaks graphite`: a dark surface shade halfway between the default grey and `black`. Window
   background `#111111`, sidebar `#141414`, cards `#1E1E1E`, popovers and the quick settings submenu
   box `#272727`. The default grey reads as washed out under the glass highlights and `black` is a

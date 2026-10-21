@@ -51,6 +51,7 @@ Everything the installer takes:
 | `-e, --extension` | Install and enable the shell extension |
 | `-f, --fixed` | Fixed blue accent instead of following the GNOME accent colour |
 | `--tweaks` | `solid`, `compact`, `black`, `graphite`, `primary`, `buttons`, `submenu`, `nord`, `dracula`, `noglass`; see `--help` |
+| `--matrix` | Build every combination of the colour tweaks (`graphite`, `black`, `primary`, `solid`, `submenu`) for each selected variant, so the extension's Tweaks group can switch between them without a reinstall |
 | `--round` | Corner radius in px; default 16, which the extension's window corners match |
 | `--fonts` | Crisp preset: Inter and JetBrains Mono, slight hinting, grayscale antialiasing |
 | `--flatpak` | Let Flatpak apps read the theme and set `GTK_THEME` to the linked variant |
@@ -74,6 +75,7 @@ Open them from Extensions, or `gnome-extensions prefs lubuto@richardmwaba.github
 | Group | Settings |
 | --- | --- |
 | Variant | Colour, light or dark or follow the system, light style, compact, keep the GTK theme in sync |
+| Tweaks | Palette (default, Nord, Dracula), surface shade (grey, graphite, black), accent check boxes, solid panel, themed submenus. Each names a theme directory; a row says when that directory is not installed. The shell follows at once, GTK apps after a restart |
 | Glass blur | Blur on or off per surface (panel, overview, popovers, dock), radius, brightness, tint strength per surface |
 | Window corners | Radius (16 px to match the theme), shadow, keep for maximized and fullscreen, blacklist |
 | Dock | Icon size, monitor, hover magnify, reserve space, autohide, show-apps button |

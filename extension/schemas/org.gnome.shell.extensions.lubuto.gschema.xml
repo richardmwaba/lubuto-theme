@@ -20,6 +20,16 @@
     <value value="0" nick="standard"/>
     <value value="1" nick="light"/>
   </enum>
+  <enum id="org.gnome.shell.extensions.lubuto.palette">
+    <value value="0" nick="default"/>
+    <value value="1" nick="nord"/>
+    <value value="2" nick="dracula"/>
+  </enum>
+  <enum id="org.gnome.shell.extensions.lubuto.shade">
+    <value value="0" nick="grey"/>
+    <value value="1" nick="graphite"/>
+    <value value="2" nick="black"/>
+  </enum>
 
   <schema id="org.gnome.shell.extensions.lubuto" path="/org/gnome/shell/extensions/lubuto/">
     <key name="theme-name" type="s">
@@ -44,6 +54,21 @@
     <key name="compact" type="b">
       <default>false</default>
       <summary>Use the compact size variant</summary>
+    </key>
+    <key name="theme-palette" enum="org.gnome.shell.extensions.lubuto.palette">
+      <default>"default"</default>
+      <summary>Colour palette: the default, Nord or Dracula</summary>
+      <description>Picks the -Nord or -Dracula theme directory. The installer builds it with --tweaks nord or --tweaks dracula.</description>
+    </key>
+    <key name="theme-shade" enum="org.gnome.shell.extensions.lubuto.shade">
+      <default>"grey"</default>
+      <summary>Dark surface shade: grey, graphite or black</summary>
+      <description>Picks the -Graphite or -Black theme directory. The installer builds every shade with --matrix.</description>
+    </key>
+    <key name="theme-tweaks" type="as">
+      <default>[]</default>
+      <summary>Colour tweaks that name the theme directory</summary>
+      <description>Any of primary, solid and submenu. Each adds its suffix to the theme directory name; the installer builds every combination with --matrix.</description>
     </key>
     <key name="blur-enabled" type="b">
       <default>true</default>
