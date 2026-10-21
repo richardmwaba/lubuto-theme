@@ -56,6 +56,10 @@ const VARIANT_KEYS = ['theme-name', 'color', 'color-scheme', 'light-style', 'com
 export default class LubutoPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         const settings = this.getSettings();
+        // Rows live in a 600 px clamp whatever the window width, so choice
+        // labels stay short and the explanation goes in the subtitle. The
+        // taller default keeps the Theme page's two groups on one screen.
+        window.set_default_size(720, 820);
 
         const page = new Adw.PreferencesPage({title: _('Theme'), icon_name: 'preferences-desktop-theme-symbolic'});
         window.add(page);
