@@ -168,8 +168,26 @@ export class WindowPreviewMenu extends PopupMenu.PopupMenu {
         this.open(BoxPointer.PopupAnimation.FULL);
     }
 
+    // A pressed item's click gesture notifies when its action goes away, and
+    // the stock handler then touches the item. An item destroyed under a
+    // press, which the close button does when the window goes before the
+    // release, would run that handler on a disposed object, so the actions go
+    // first, while the item is alive.
+    _dropItems() {
+        for (const item of this._getMenuItems()) {
+            for (const action of item.get_actions())
+                item.remove_action(action);
+            item.destroy();
+        }
+    }
+
+    destroy() {
+        this._dropItems();
+        super.destroy();
+    }
+
     _populate() {
-        this.removeAll();
+        this._dropItems();
         const width = this._getConfig().previewSize;
         for (const window of appWindows(this._app)) {
             const item = new WindowPreviewItem(window, width);

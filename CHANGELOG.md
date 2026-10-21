@@ -6,6 +6,10 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Dock previews: closing a window from its preview no longer logs `Object
+  Gjs_dock_previews_WindowPreviewItem ... has been already disposed`. The item went away under the
+  press, and the shell's click gesture handler then ran on the disposed item; the item's actions
+  are detached before it is destroyed.
 - Dock: a push against the bottom edge reveals the dock every time. The shell's pressure barrier
   stays triggered until the pointer moves off the edge line, so sliding along the edge out of the
   pill hid the dock with the pointer still on that line, and pushing again did nothing until the
