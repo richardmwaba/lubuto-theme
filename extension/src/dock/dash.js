@@ -15,11 +15,19 @@ const MAGNIFY_TIME = 150;
 
 export const LubutoDash = GObject.registerClass({
     GTypeName: 'LubutoDash',
+    Signals: {'redisplayed': {}},
 }, class LubutoDash extends Dash.Dash {
     _init(getConfig) {
         this._getConfig = getConfig;
         super._init();
         this._magnified = new Set();
+    }
+
+    // The dock maps windows to icons; it needs to know when the set of
+    // icons changes, which the stock dash keeps to itself.
+    _redisplay() {
+        super._redisplay();
+        this.emit('redisplayed');
     }
 
     // Every icon takes the configured size. The stock version picks the

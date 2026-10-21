@@ -7,6 +7,7 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
@@ -19,6 +20,10 @@ import {LubutoDash} from './dash.js';
 
 // The overview's own dash is hidden while the dock runs, but keeps a height so
 // the overview layout still leaves room at the bottom for the dock.
+//
+// The dock also tells every window where its icon is. The shell animates a
+// minimise and a restore between the window and its icon geometry, and with
+// none set it uses the monitor corner; nothing in the stock shell sets it.
 
 const SLIDE_TIME = 200;
 const HIDE_DELAY = 400;
@@ -39,6 +44,7 @@ export class Dock {
         this._hideTimeout = 0;
         this._pressureBarrier = null;
         this._barrier = null;
+        this._iconGeometryLater = 0;
     }
 
     enable() {
@@ -79,6 +85,15 @@ export class Dock {
             'notify::allocation', () => this._placeBackdrop(),
             'style-changed', () => this._placeBackdrop(),
             this);
+        // Icon geometry follows the icons (redisplay, size, position, which
+        // all end in _place) and the windows. A new window of a running app
+        // changes no icon, so its actor's arrival in the window group is the
+        // cue; 'window-created' is too early, the actor does not exist yet.
+        // The tracker's cue covers an app id that resolves after the map.
+        this._dash.connectObject('redisplayed', () => this._queueIconGeometry(), this);
+        global.window_group.connectObject('child-added', () => this._queueIconGeometry(), this);
+        Shell.WindowTracker.get_default().connectObject(
+            'tracked-windows-changed', () => this._queueIconGeometry(), this);
 
         this._relayout();
     }
@@ -86,7 +101,10 @@ export class Dock {
     disable() {
         this._cancelHide();
         this._destroyBarrier();
+        this._clearIconGeometry();
         Main.layoutManager.disconnectObject(this);
+        global.window_group.disconnectObject(this);
+        Shell.WindowTracker.get_default().disconnectObject(this);
         Main.overview.disconnectObject(this);
         this._container?.disconnectObject(this);
         this._restoreOverviewDash();
@@ -312,6 +330,97 @@ export class Dock {
 
         this._reserveOverviewSpace();
         this._placeBackdrop();
+        this._queueIconGeometry();
+    }
+
+    // Icon geometry. One pass once the dock settles: an IDLE later waits
+    // for the redraw and its layout, so item allocations are final. A
+    // BEFORE_REDRAW later runs ahead of the layout pass, and an icon
+    // animating in queues a relayout every frame, so it finds no allocation
+    // at any frame and nothing asks again after the last one.
+
+    _queueIconGeometry() {
+        if (this._iconGeometryLater || !this._container)
+            return;
+        const laters = global.compositor.get_laters();
+        this._iconGeometryLater = laters.add(Meta.LaterType.IDLE, () => {
+            this._iconGeometryLater = 0;
+            this._updateIconGeometry();
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    // The rectangle of a dash item in stage coordinates at the settled dock
+    // position. The item's parent is unscaled, so the parent's transformed
+    // position plus the item's allocation stays put while the item itself
+    // animates in from scale 0; the container's translation is the autohide
+    // slide, which a hidden dock must not pass on.
+    _itemRect(item) {
+        const parent = item.get_parent();
+        if (!parent || !item.has_allocation() || item.animatingOut)
+            return null;
+        const box = item.get_allocation_box();
+        const [parentX, parentY] = parent.get_transformed_position();
+        const width = Math.round(box.x2 - box.x1);
+        const height = Math.round(box.y2 - box.y1);
+        if (width <= 0 || height <= 0)
+            return null;
+        return new Mtk.Rectangle({
+            x: Math.round(parentX + box.x1 - this._container.translation_x),
+            y: Math.round(parentY + box.y1 - this._container.translation_y),
+            width,
+            height,
+        });
+    }
+
+    _updateIconGeometry() {
+        if (!this._container || !this._dash)
+            return;
+
+        const rects = new Map();
+        for (const item of this._dash._box.get_children()) {
+            const app = item.child?.app;
+            if (!app)
+                continue;
+            const rect = this._itemRect(item);
+            if (rect)
+                rects.set(app, rect);
+        }
+
+        // A window whose app has no icon lands on the show-apps button, or
+        // on the pill when that button is hidden.
+        let fallback = null;
+        if (this._dash._showAppsIcon.visible)
+            fallback = this._itemRect(this._dash._showAppsIcon);
+        if (!fallback && this._container.has_allocation()) {
+            const [x, y] = this._container.get_transformed_position();
+            fallback = new Mtk.Rectangle({
+                x: Math.round(x - this._container.translation_x),
+                y: Math.round(y - this._container.translation_y),
+                width: this._container.width,
+                height: this._container.height,
+            });
+        }
+
+        const tracker = Shell.WindowTracker.get_default();
+        for (const actor of global.get_window_actors()) {
+            const window = actor.meta_window;
+            if (!window)
+                continue;
+            const app = tracker.get_window_app(window);
+            const rect = (app && rects.get(app)) ?? fallback;
+            if (rect)
+                window.set_icon_geometry(rect);
+        }
+    }
+
+    _clearIconGeometry() {
+        if (this._iconGeometryLater) {
+            global.compositor.get_laters().remove(this._iconGeometryLater);
+            this._iconGeometryLater = 0;
+        }
+        for (const actor of global.get_window_actors())
+            actor.meta_window?.set_icon_geometry(null);
     }
 
     _placeBackdrop() {

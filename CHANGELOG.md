@@ -6,6 +6,9 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Dock: a minimise shrinks the window into its icon in the dock, and a restore grows out of it.
+  Windows of apps without an icon use the show-apps button. The shell animates to a window's icon
+  geometry, and nothing in the stock shell sets one, so the fallback was the monitor corner.
 - Dock: plugging in a monitor that takes over the same monitor index no longer leaves the dock, its
   blur and its autohide edge on the old monitor's frame. A laptop panel alone and an external display
   alone are both index 0, and the dock refreshed its frame only on an index change; it now refreshes
