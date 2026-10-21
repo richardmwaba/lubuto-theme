@@ -156,8 +156,18 @@ export class Dock {
         if (!monitor)
             return;
 
-        if (this._monitor?.index !== monitor.index) {
-            this._monitor = monitor;
+        // The layout manager builds new monitor objects on every change, and
+        // the same index comes back with another geometry when the set of
+        // monitors changes: the laptop panel alone and the external display
+        // alone are both index 0. The backdrop copies the monitor size when
+        // built, so it is rebuilt whenever the frame moves.
+        const previous = this._monitor;
+        const moved = !previous ||
+            previous.index !== monitor.index ||
+            previous.x !== monitor.x || previous.y !== monitor.y ||
+            previous.width !== monitor.width || previous.height !== monitor.height;
+        this._monitor = monitor;
+        if (moved) {
             this._backdrop?.destroy();
             this._backdrop = null;
             if (this._getBlurParams()) {

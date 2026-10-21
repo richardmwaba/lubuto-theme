@@ -6,6 +6,10 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Dock: plugging in a monitor that takes over the same monitor index no longer leaves the dock, its
+  blur and its autohide edge on the old monitor's frame. A laptop panel alone and an external display
+  alone are both index 0, and the dock refreshed its frame only on an index change; it now refreshes
+  whenever the monitor's geometry differs.
 - Corners: an X11 window withdrawn during its minimise animation, as Zoom does, no longer aborts the shell.
   Mutter clears the window's workspace inside the unmanage and emits `workspace-changed` there, and the
   corners module answered by asking for the window's work area, which asserts without a workspace. The
