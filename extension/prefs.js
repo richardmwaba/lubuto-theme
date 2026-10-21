@@ -151,6 +151,18 @@ export default class LubutoPreferences extends ExtensionPreferences {
         settings.bind('dock-monitor', dockMonitor, 'value', Gio.SettingsBindFlags.DEFAULT);
         dock.add(dockMonitor);
 
+        dock.add(this._comboRow(settings, 'dock-click-action', _('Click on an app with several windows'), [
+            ['previews', _('Show window previews')],
+            ['cycle', _('Raise the next window')],
+        ], _('The wheel over an icon always steps through its windows')));
+
+        const previewSize = new Adw.SpinRow({
+            title: _('Preview width'),
+            adjustment: new Gtk.Adjustment({lower: 120, upper: 480, step_increment: 20}),
+        });
+        settings.bind('dock-preview-size', previewSize, 'value', Gio.SettingsBindFlags.DEFAULT);
+        dock.add(previewSize);
+
         const effects = new Adw.PreferencesGroup({title: _('Window effects')});
         page.add(effects);
 

@@ -6,6 +6,10 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Dock: a click on an icon whose app has two or more windows on the workspace opens previews of
+  those windows above the icon; a click on a preview goes to that window, the wheel over the icon
+  steps through them, arrows walk the previews from the keyboard. `dock-click-action` picks previews
+  or a raise-the-next-window click instead, `dock-preview-size` sets the thumbnail width.
 - Blur and dock: no more `Can't update stage views actor lubuto-...` warnings in the journal. The
   dock recentred and the backdrops framed themselves from allocation handlers, which queued a relayout
   after the layout pass; both now apply geometry from a before-redraw later, one frame later.
@@ -23,6 +27,10 @@ Dates are when the release was tagged.
 - Popover blur: the backdrop no longer settles 4% smaller than the menu. GNOME 50 opens a box pointer
   with a scale animation from 0.96, and the backdrop framed itself from the scaled geometry; it now
   frames from allocations and mirrors the scale and pivot.
+
+### Theme
+
+- Shell: rules for the dock's window previews, `.lubuto-window-previews`.
 
 ## 0.1.0 (2026-10-12)
 

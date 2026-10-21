@@ -144,6 +144,19 @@
       <default>true</default>
       <summary>Show the applications button</summary>
     </key>
+    <key name="dock-click-action" type="s">
+      <choices>
+        <choice value="previews"/>
+        <choice value="cycle"/>
+      </choices>
+      <default>'previews'</default>
+      <summary>A click on an icon whose app has several windows: show previews, or raise the next window</summary>
+    </key>
+    <key name="dock-preview-size" type="i">
+      <range min="120" max="480"/>
+      <default>240</default>
+      <summary>Window preview width in logical pixels</summary>
+    </key>
     <key name="move-enabled" type="b">
       <default>true</default>
       <summary>Make a window translucent while it is dragged</summary>

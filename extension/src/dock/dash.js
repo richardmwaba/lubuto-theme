@@ -1,17 +1,107 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
-// The shell's Dash with two changes: the icon size is a setting rather than
-// whatever fits, and icons grow under the pointer. DashItemContainer sizes
+// The shell's Dash with three changes: the icon size is a setting rather than
+// whatever fits, icons grow under the pointer, and an icon whose app has
+// several windows shows them as previews on a click. DashItemContainer sizes
 // itself from its child's scale, so a magnified icon pushes its neighbours
 // apart the way the macOS dock does.
 
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import Graphene from 'gi://Graphene';
+import Shell from 'gi://Shell';
 
+import * as BoxPointer from 'resource:///org/gnome/shell/ui/boxpointer.js';
 import * as Dash from 'resource:///org/gnome/shell/ui/dash.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+
+import {WindowPreviewMenu, appWindows, nextWindow} from './previews.js';
 
 const MAGNIFY_TIME = 150;
+
+// A dash icon that knows about its app's windows. The stock icon raises the
+// most recent window on every click; a second window is out of reach without
+// the switcher.
+export const LubutoDashIcon = GObject.registerClass({
+    GTypeName: 'LubutoDashIcon',
+}, class LubutoDashIcon extends Dash.DashIcon {
+    _init(app, getConfig) {
+        super._init(app);
+        this._getConfig = getConfig;
+        this._previews = null;
+        this.connect('destroy', () => {
+            this._previews?.destroy();
+            this._previews = null;
+        });
+    }
+
+    // A plain left click on a running app with two or more windows opens
+    // the previews or steps to the next window; everything else keeps the
+    // stock behaviour: one window raises it, Ctrl and middle click open a new
+    // window, a stopped app launches.
+    activate(button) {
+        const event = Clutter.get_current_event();
+        const modifiers = event ? event.get_state() : 0;
+        const plainLeft = (!button || button === Clutter.BUTTON_PRIMARY) &&
+            (modifiers & Clutter.ModifierType.CONTROL_MASK) === 0;
+        const windows = this.app.state === Shell.AppState.RUNNING ? appWindows(this.app) : [];
+
+        if (!plainLeft || windows.length < 2) {
+            super.activate(button);
+            return;
+        }
+
+        if (this._getConfig().clickAction === 'cycle') {
+            Main.activateWindow(nextWindow(this.app, 1));
+            return;
+        }
+
+        // A second click closes, like the app menu. Stepping windows from
+        // here is not an option: the shell drops every grab when a window
+        // takes focus, so the popup would close on the first step anyway.
+        if (this._previews?.isOpen)
+            this._previews.close(BoxPointer.PopupAnimation.FULL);
+        else
+            this._popupPreviews();
+    }
+
+    // The wheel over the icon walks the app's windows without a popup.
+    vfunc_scroll_event(event) {
+        let step;
+        switch (event.get_scroll_direction()) {
+            case Clutter.ScrollDirection.UP:
+            case Clutter.ScrollDirection.LEFT:
+                step = -1;
+                break;
+            case Clutter.ScrollDirection.DOWN:
+            case Clutter.ScrollDirection.RIGHT:
+                step = 1;
+                break;
+            default:
+                return Clutter.EVENT_PROPAGATE;
+        }
+        const window = nextWindow(this.app, step);
+        if (!window)
+            return Clutter.EVENT_PROPAGATE;
+        Main.activateWindow(window);
+        return Clutter.EVENT_STOP;
+    }
+
+    _popupPreviews() {
+        if (!this._previews) {
+            this._previews = new WindowPreviewMenu(this, this.app, this._getConfig);
+            this._previews.connect('open-state-changed', (menu, open) => {
+                // The dash hides the tooltip while a menu is up, the way it
+                // does for the app menu.
+                this.setForcedHighlight(open);
+                this.emit('menu-state-changed', open);
+            });
+            Main.overview.connectObject('hiding', () => this._previews?.close(), this);
+            this._menuManager.addMenu(this._previews);
+        }
+        this._previews.popup();
+    }
+});
 
 export const LubutoDash = GObject.registerClass({
     GTypeName: 'LubutoDash',
@@ -28,6 +118,26 @@ export const LubutoDash = GObject.registerClass({
     _redisplay() {
         super._redisplay();
         this.emit('redisplayed');
+    }
+
+    // The stock factory with the Lubuto icon in place of the stock one.
+    _createAppItem(app) {
+        const item = new Dash.DashItemContainer();
+        const appIcon = new LubutoDashIcon(app, this._getConfig);
+
+        appIcon.connect('menu-state-changed', (o, opened) => {
+            this._itemMenuStateChanged(item, opened);
+        });
+
+        item.setChild(appIcon);
+        // The accessible name is the container's label text.
+        appIcon.label_actor = null;
+        item.setLabelText(app.get_name());
+
+        appIcon.icon.setIconSize(this.iconSize);
+        this._hookUpLabel(item, appIcon);
+
+        return item;
     }
 
     // Every icon takes the configured size. The stock version picks the

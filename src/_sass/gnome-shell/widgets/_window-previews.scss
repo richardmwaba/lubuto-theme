@@ -1,0 +1,48 @@
+@use "../../colors";
+@use "../../variables";
+
+/* Dock window previews: the popup a dock icon opens for an app with several
+   windows. The popup itself is a .popup-menu, so the glass, rim and shadow
+   come from the popover rules; this file lays out the thumbnails. */
+
+.lubuto-window-previews {
+  .popup-menu-content {
+    padding: variables.$space-size;
+    spacing: variables.$space-size;
+  }
+
+  .lubuto-window-preview {
+    padding: variables.$space-size;
+    spacing: variables.$space-size;
+    border-radius: variables.$radius-surface;
+  }
+
+  .lubuto-window-preview-thumb {
+    border-radius: variables.$radius-control;
+    border: 1px solid colors.$glass-rim;
+    background-color: colors.$fill;
+  }
+
+  .lubuto-window-preview-title {
+    font-size: 12px;
+    color: colors.$text;
+    text-align: center;
+  }
+
+  .lubuto-window-preview-close {
+    margin: variables.$space-size;
+    padding: variables.$space-size * 0.5;
+    border-radius: variables.$circular-radius;
+    color: colors.$text;
+    background-color: colors.$glass-tint-strong;
+    border: 1px solid colors.$glass-rim;
+
+    &:hover {
+      background-color: colors.$secondary-fill;
+    }
+
+    &:active {
+      background-color: colors.$fill;
+    }
+  }
+}
