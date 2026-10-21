@@ -195,8 +195,8 @@ install_solid() {
   sed -i "/\$opacity:/s/default/solid/" "$SRC_DIR/_sass/_tweaks-temp.scss"
 }
 
-install_black() {
-  sed -i "/\$blackness:/s/false/true/" "$SRC_DIR/_sass/_tweaks-temp.scss"
+install_shade() {
+  sed -i "/\$shade:/s/grey/$shade/" "$SRC_DIR/_sass/_tweaks-temp.scss"
 }
 
 install_orchis_buttons() {
@@ -260,8 +260,8 @@ theme_tweaks() {
     install_solid
   fi
 
-  if [[ "$blackness" == "true" ]] ; then
-    install_black
+  if [[ -n "${shade:-}" ]] ; then
+    install_shade
   fi
 
   if [[ "$primary" == "true" ]] ; then

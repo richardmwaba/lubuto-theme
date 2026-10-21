@@ -50,7 +50,7 @@ Everything the installer takes:
 | `-l, --libadwaita` | Link the installed GTK 4 theme into `~/.config/gtk-4.0` |
 | `-e, --extension` | Install and enable the shell extension |
 | `-f, --fixed` | Fixed blue accent instead of following the GNOME accent colour |
-| `--tweaks` | `solid`, `compact`, `black`, `primary`, `buttons`, `submenu`, `nord`, `dracula`, `noglass`; see `--help` |
+| `--tweaks` | `solid`, `compact`, `black`, `graphite`, `primary`, `buttons`, `submenu`, `nord`, `dracula`, `noglass`; see `--help` |
 | `--round` | Corner radius in px; default 16, which the extension's window corners match |
 | `--fonts` | Crisp preset: Inter and JetBrains Mono, slight hinting, grayscale antialiasing |
 | `--flatpak` | Let Flatpak apps read the theme and set `GTK_THEME` to the linked variant |

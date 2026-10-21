@@ -30,6 +30,11 @@ Dates are when the release was tagged.
 
 ### Theme
 
+- `--tweaks graphite`: a dark surface shade halfway between the default grey and `black`. Window
+  background `#111111`, sidebar `#141414`, cards `#1E1E1E`, popovers and the quick settings submenu
+  box `#272727`. The default grey reads as washed out under the glass highlights and `black` is a
+  hard step down; graphite keeps the depth without the flatness. `graphite` and `black` do not mix.
+
 - Shell: rules for the dock's window previews, `.lubuto-window-previews`.
 
 ## 0.1.0 (2026-10-12)

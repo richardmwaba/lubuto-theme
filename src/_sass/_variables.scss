@@ -12,7 +12,7 @@
 
 $asset-suffix: if(sass(config.$variant == 'dark'): '-dark'; else: '');
 $theme-asset-suffix: if(sass(config.$topbar == 'dark'): if(sass(config.$variant == 'dark'): '-dark'; else: ''); else: '-light');
-$blackness-asset-suffix: if(sass(tweaks-temp.$blackness == 'false' or config.$topbar == 'light'): ''; else: '-blackness');
+$blackness-asset-suffix: if(sass(tweaks-temp.$shade != 'black' or config.$topbar == 'light'): ''; else: '-blackness');
 
 //
 // Sizes

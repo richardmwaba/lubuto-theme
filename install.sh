@@ -38,10 +38,11 @@ OPTIONS:
   --full                  -l -e --fonts --icons hatter --cursor ice
   -f, --fixed             Fixed accent (blue) colour instead of following the GNOME accent colour
 
-  --tweaks                Specify versions for tweaks [solid|compact|black|primary|macos|submenu|(nord/dracula)] (Options can mix)
+  --tweaks                Specify versions for tweaks [solid|compact|black|graphite|primary|macos|submenu|(nord/dracula)] (Options can mix)
                           1. solid              No transparency panel variant
                           2. compact            No floating panel variant
                           3. black              Full black variant
+                             graphite           Dark surfaces midway between the default grey and black (black and graphite can not mix use!)
                           4. primary            Change radio icon checked color to primary theme color (Default is Green)
                           5. buttons            Orchis window buttons instead of the default macOS style
                           6. submenu            Set normal submenus color contrast (dark submenu style on dark version)
@@ -167,8 +168,13 @@ while [[ "$#" -gt 0 ]]; do
             shift
             ;;
           black)
-            blackness="true"
+            shade="black"
             echo -e "Install black version ..."
+            shift
+            ;;
+          graphite)
+            shade="graphite"
+            echo -e "Install graphite version ..."
             shift
             ;;
           primary)
