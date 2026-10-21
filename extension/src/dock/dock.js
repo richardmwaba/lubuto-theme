@@ -437,6 +437,10 @@ export class Dock {
     }
 
     _updateIconGeometry() {
+        // The pass runs from an idle later, which the shell's shutdown hook
+        // still dispatches after the actors are gone.
+        if (!this._dash || !this._container?.get_stage())
+            return;
         if (!this._container || !this._dash)
             return;
 

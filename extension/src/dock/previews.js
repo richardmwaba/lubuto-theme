@@ -175,8 +175,14 @@ export class WindowPreviewMenu extends PopupMenu.PopupMenu {
     // first, while the item is alive.
     _dropItems() {
         for (const item of this._getMenuItems()) {
-            for (const action of item.get_actions())
+            for (const action of item.get_actions()) {
+                // Disabling cancels a gesture in progress now, on the live
+                // item; dropping its handlers keeps the stage's end-of-sequence
+                // notification from reaching the item afterwards.
+                action.enabled = false;
+                GObject.signal_handlers_destroy(action);
                 item.remove_action(action);
+            }
             item.destroy();
         }
     }
