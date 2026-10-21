@@ -41,10 +41,12 @@ Dates are when the release was tagged.
   `install.sh --matrix` builds every combination for the selected variants, with the asset
   directories shared between siblings, and `--remove` clears them. The installer writes the
   `--tweaks` set to the extension's keys so the shell loads the directory it built.
-- `--tweaks graphite`: a dark surface shade halfway between the default grey and `black`. Window
-  background `#111111`, sidebar `#141414`, cards `#1E1E1E`, popovers and the quick settings submenu
-  box `#272727`. The default grey reads as washed out under the glass highlights and `black` is a
-  hard step down; graphite keeps the depth without the flatness. `graphite` and `black` do not mix.
+- `--tweaks graphite`: a dark surface shade a quarter of the way from the default grey to `black`.
+  Window background `#191919`, sidebar `#1C1C1C`, cards `#252525`, popovers and the quick settings
+  submenu box `#323232`. The default grey reads as washed out under the glass highlights and `black`
+  is a hard step down; graphite keeps the depth and still reads as grey. The selected sidebar row
+  in GTK apps paints a 9-slice PNG in the palette's base colour, so `tools/make-row-selected.py`
+  mixes a graphite set from the grey and black ones. `graphite` and `black` do not mix.
 
 - Shell: rules for the dock's window previews, `.lubuto-window-previews`.
 

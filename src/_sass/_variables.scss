@@ -12,7 +12,9 @@
 
 $asset-suffix: if(sass(config.$variant == 'dark'): '-dark'; else: '');
 $theme-asset-suffix: if(sass(config.$topbar == 'dark'): if(sass(config.$variant == 'dark'): '-dark'; else: ''); else: '-light');
-$blackness-asset-suffix: if(sass(tweaks-temp.$shade != 'black' or config.$topbar == 'light'): ''; else: '-blackness');
+// The selected sidebar row's 9-slice PNG carries the palette's base colour,
+// so each dark shade has its own set.
+$blackness-asset-suffix: if(sass(config.$topbar == 'light'): ''; else: if(sass(tweaks-temp.$shade == 'black'): '-blackness'; else: if(sass(tweaks-temp.$shade == 'graphite'): '-graphite'; else: '')));
 
 //
 // Sizes

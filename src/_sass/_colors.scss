@@ -98,10 +98,15 @@
   }
 }
 
-// The colour halfway between two palette entries, rounded to whole channels so
-// the stylesheet carries a hex value rather than fractional percentages.
-@function midway($a, $b) {
-  $m: color.mix($a, $b);
+// The graphite palette sits a quarter of the way from the grey ramp to the
+// black one: far enough to lose the washed look, near enough that a window
+// still reads as grey rather than black. tools/make-row-selected.py mixes the
+// sidebar selection PNGs with the same ratio. Channels are rounded so the
+// stylesheet carries whole values rather than fractional percentages.
+$graphite-ratio: 25%;
+
+@function graphite($black-side, $grey-side) {
+  $m: color.mix($black-side, $grey-side, $graphite-ratio);
   @return rgb(math.round(color.channel($m, 'red')), math.round(color.channel($m, 'green')), math.round(color.channel($m, 'blue')));
 }
 
@@ -117,12 +122,12 @@
     @if ($type == 'g') { @return tweaks-temp.$grey-900; }
     @if ($type == 'h') { @return tweaks-temp.$grey-850; }
   } @else if (tweaks-temp.$shade == 'graphite') {
-    // Midway between the grey and black ramps. Mixing rather than fixed values
-    // keeps the Nord and Dracula tints.
-    @if ($type == 'e') { @return midway(tweaks-temp.$black, tweaks-temp.$grey-800); }
-    @if ($type == 'f') { @return midway(tweaks-temp.$grey-950, tweaks-temp.$grey-750); }
-    @if ($type == 'g') { @return midway(tweaks-temp.$grey-900, tweaks-temp.$grey-700); }
-    @if ($type == 'h') { @return midway(tweaks-temp.$grey-850, tweaks-temp.$grey-650); }
+    // Mixed from the two ramps rather than fixed, so Nord and Dracula keep
+    // their tint.
+    @if ($type == 'e') { @return graphite(tweaks-temp.$black, tweaks-temp.$grey-800); }
+    @if ($type == 'f') { @return graphite(tweaks-temp.$grey-950, tweaks-temp.$grey-750); }
+    @if ($type == 'g') { @return graphite(tweaks-temp.$grey-900, tweaks-temp.$grey-700); }
+    @if ($type == 'h') { @return graphite(tweaks-temp.$grey-850, tweaks-temp.$grey-650); }
   } @else {
     @if ($type == 'e') { @return tweaks-temp.$grey-800; }
     @if ($type == 'f') { @return tweaks-temp.$grey-750; }
