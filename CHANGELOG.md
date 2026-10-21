@@ -6,6 +6,12 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Dock: a push against the bottom edge reveals the dock every time. The shell's pressure barrier
+  stays triggered until the pointer moves off the edge line, so sliding along the edge out of the
+  pill hid the dock with the pointer still on that line, and pushing again did nothing until the
+  pointer left the edge. The dock rebuilds its barrier whenever it hides. A push with the pointer
+  beside the pill now gives 1.2 s to reach it before the dock hides again, and entering the pill
+  while it slides out brings it back.
 - Dock: a screen lock no longer logs `st_widget_get_theme_node called on the widget ... lubuto-dock
   ... which is not in the stage` and `Spurious clutter_actor_allocate`. Clutter keeps a chrome
   actor's pending relayout entry when the actor leaves the stage before the relayout runs, then

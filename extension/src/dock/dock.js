@@ -27,6 +27,9 @@ import {LubutoDash} from './dash.js';
 
 const SLIDE_TIME = 200;
 const HIDE_DELAY = 400;
+// After a push reveals the dock, the pointer may be anywhere along the edge
+// and needs time to reach the pill.
+const REVEAL_GRACE = 1200;
 const PRESSURE_THRESHOLD = 100;
 const PRESSURE_TIMEOUT = 1000;
 
@@ -234,7 +237,13 @@ export class Dock {
         this._pressureBarrier = new Layout.PressureBarrier(
             PRESSURE_THRESHOLD, PRESSURE_TIMEOUT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW);
-        this._pressureBarrier.connect('trigger', () => this._show());
+        // A push with the pointer beside the pill reveals a dock nothing
+        // hovers, so the hide check runs; it keeps the dock while the pointer
+        // stays inside its box and hides it otherwise.
+        this._pressureBarrier.connect('trigger', () => {
+            this._show();
+            this._scheduleHide(REVEAL_GRACE);
+        });
 
         this._barrier = new Meta.Barrier({
             backend: global.backend,
@@ -267,8 +276,9 @@ export class Dock {
     }
 
     _onHoverChanged() {
+        // Entering the pill while it slides out brings it back.
         if (this._container.hover)
-            this._cancelHide();
+            this._show();
         else
             this._scheduleHide();
     }
@@ -294,6 +304,13 @@ export class Dock {
             return;
         this._shown = false;
 
+        // The pressure barrier stays triggered until the pointer moves off
+        // the edge line. Sliding along the edge out of the pill hides the
+        // dock with the pointer still on that line, and a push then does
+        // nothing until the pointer leaves the edge and comes back. A fresh
+        // barrier starts untriggered, so a push after a hide always works.
+        this._setupBarrier();
+
         this._container.remove_all_transitions();
         this._container.ease({
             translation_y: this._container.height,
@@ -306,11 +323,11 @@ export class Dock {
         });
     }
 
-    _scheduleHide() {
+    _scheduleHide(delay = HIDE_DELAY) {
         this._cancelHide();
         if (!this._autohide)
             return;
-        this._hideTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, HIDE_DELAY, () => {
+        this._hideTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, delay, () => {
             this._hideTimeout = 0;
             if (this._shouldStayShown())
                 this._scheduleHide();
@@ -329,8 +346,21 @@ export class Dock {
 
     _shouldStayShown() {
         return this._container.hover ||
+            this._pointerInDock() ||
             Main.overview.visible ||
             global.stage.get_grab_actor() !== null;
+    }
+
+    // Whether the pointer is over the dock's settled box, from the top of the
+    // container down to the screen edge. Hover alone misses the pointer that
+    // sits on the edge line before the dock has slid in under it.
+    _pointerInDock() {
+        if (!this._monitor || !this._container)
+            return false;
+        const [x, y] = global.get_pointer();
+        const c = this._container;
+        return x >= c.x && x < c.x + c.width &&
+            y >= c.y && y < this._monitor.y + this._monitor.height;
     }
 
     // The container recentres on its own allocation. Moving it there queues
