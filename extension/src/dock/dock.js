@@ -45,6 +45,7 @@ export class Dock {
         this._pressureBarrier = null;
         this._barrier = null;
         this._iconGeometryLater = 0;
+        this._placeLater = 0;
     }
 
     enable() {
@@ -102,6 +103,10 @@ export class Dock {
         this._cancelHide();
         this._destroyBarrier();
         this._clearIconGeometry();
+        if (this._placeLater) {
+            global.compositor.get_laters().remove(this._placeLater);
+            this._placeLater = 0;
+        }
         Main.layoutManager.disconnectObject(this);
         global.window_group.disconnectObject(this);
         Shell.WindowTracker.get_default().disconnectObject(this);
@@ -314,7 +319,21 @@ export class Dock {
             global.stage.get_grab_actor() !== null;
     }
 
+    // The container recentres on its own allocation. Moving it there queues
+    // a relayout after the layout pass, which Clutter's stage-view update
+    // warns about, so the move waits for a BEFORE_REDRAW later, which runs
+    // ahead of the next layout pass. One frame late, invisible.
     _place() {
+        if (this._placeLater || !this._container)
+            return;
+        this._placeLater = global.compositor.get_laters().add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this._placeLater = 0;
+            this._placeNow();
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _placeNow() {
         const monitor = this._monitor;
         if (!monitor || !this._container || !this._container.get_stage())
             return;

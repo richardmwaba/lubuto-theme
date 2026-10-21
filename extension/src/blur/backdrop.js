@@ -17,8 +17,18 @@
 //
 // Static by design: the wallpaper rarely changes, so the blurred result is
 // painted once and cached by Clutter until the background or the clip changes.
+//
+// A frame is applied one frame late, from a BEFORE_REDRAW later. Callers
+// frame from allocation handlers: the dock recentres on its own allocation,
+// a popover frames on its box's. A size, position or show() there queues a
+// relayout after the layout pass has run, and Clutter's stage-view update
+// then finds the actor without an allocation and warns, one line per actor
+// per frame. The later runs ahead of the next layout pass, so the change is
+// allocated in the frame it is made.
 
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import * as Background from 'resource:///org/gnome/shell/ui/background.js';
@@ -40,6 +50,7 @@ export class Backdrop {
         this._mirrors = {};
         this._radius = radius;
         this._frame = null;
+        this._layoutLater = 0;
 
         // Two actors. The outer one is exactly the framed rectangle and is
         // what gets rounded corners. The inner one is the frame plus a margin
@@ -117,7 +128,7 @@ export class Backdrop {
         this._radius = radius;
         this._blur.unscaledRadius = radius;
         this._blur.brightness = brightness;
-        this._layout();
+        this._queueLayout();
     }
 
     // Show the monitor region at (x, y, width, height), monitor relative, with
@@ -136,12 +147,22 @@ export class Backdrop {
             originX,
             originY,
         };
-        this._layout();
+        this._queueLayout();
+    }
+
+    _queueLayout() {
+        if (this._layoutLater || !this.actor)
+            return;
+        this._layoutLater = global.compositor.get_laters().add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this._layoutLater = 0;
+            this._layout();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     _layout() {
         const f = this._frame;
-        if (!f)
+        if (!f || !this.actor)
             return;
 
         const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
@@ -256,6 +277,10 @@ export class Backdrop {
     }
 
     destroy() {
+        if (this._layoutLater) {
+            global.compositor.get_laters().remove(this._layoutLater);
+            this._layoutLater = 0;
+        }
         this._bgManager?.destroy();
         this._bgManager = null;
         this._clone?.destroy();

@@ -6,6 +6,9 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Blur and dock: no more `Can't update stage views actor lubuto-...` warnings in the journal. The
+  dock recentred and the backdrops framed themselves from allocation handlers, which queued a relayout
+  after the layout pass; both now apply geometry from a before-redraw later, one frame later.
 - Dock: a minimise shrinks the window into its icon in the dock, and a restore grows out of it.
   Windows of apps without an icon use the show-apps button. The shell animates to a window's icon
   geometry, and nothing in the stock shell sets one, so the fallback was the monitor corner.
