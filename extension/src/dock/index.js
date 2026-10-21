@@ -21,7 +21,6 @@ export class DockModule {
             'changed::dock-reserve-space', () => this._dock?.updateConfig(),
             'changed::dock-autohide', () => this._dock?.updateConfig(),
             'changed::dock-show-apps', () => this._dock?.updateConfig(),
-            'changed::dock-click-action', () => this._dock?.updateConfig(),
             'changed::dock-preview-size', () => this._dock?.updateConfig(),
             'changed::blur-enabled', () => this._restart(),
             'changed::blur-dock', () => this._restart(),
@@ -56,7 +55,6 @@ export class DockModule {
             reserveSpace: this._settings.get_boolean('dock-reserve-space'),
             autohide: this._settings.get_boolean('dock-autohide'),
             showApps: this._settings.get_boolean('dock-show-apps'),
-            clickAction: this._settings.get_string('dock-click-action'),
             previewSize: this._settings.get_int('dock-preview-size'),
         };
     }

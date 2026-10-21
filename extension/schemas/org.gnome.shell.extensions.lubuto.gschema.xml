@@ -169,15 +169,6 @@
       <default>true</default>
       <summary>Show the applications button</summary>
     </key>
-    <key name="dock-click-action" type="s">
-      <choices>
-        <choice value="previews"/>
-        <choice value="cycle"/>
-        <choice value="minimize"/>
-      </choices>
-      <default>'previews'</default>
-      <summary>A click on a running app's icon: previews when it has several windows, or raise the next window, or minimise its focused window and previews when it has several</summary>
-    </key>
     <key name="dock-preview-size" type="i">
       <range min="120" max="480"/>
       <default>240</default>

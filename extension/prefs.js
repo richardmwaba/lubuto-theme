@@ -147,7 +147,11 @@ export default class LubutoPreferences extends ExtensionPreferences {
         settings.bind('corners-radius', cornerRadius, 'value', Gio.SettingsBindFlags.DEFAULT);
         corners.add(cornerRadius);
 
-        const dock = new Adw.PreferencesGroup({title: _('Dock')});
+        const dock = new Adw.PreferencesGroup({
+            title: _('Dock'),
+            description: _('A click on a running app raises it, minimises its focused window, or shows ' +
+                'previews when it has several windows. The wheel over an icon steps through them.'),
+        });
         page.add(dock);
 
         for (const [key, title] of [
@@ -177,11 +181,6 @@ export default class LubutoPreferences extends ExtensionPreferences {
         settings.bind('dock-monitor', dockMonitor, 'value', Gio.SettingsBindFlags.DEFAULT);
         dock.add(dockMonitor);
 
-        dock.add(this._comboRow(settings, 'dock-click-action', _('Click on a running app'), [
-            ['previews', _('Previews when it has several windows')],
-            ['cycle', _('Raise the next window')],
-            ['minimize', _('Minimise its focused window, previews when it has several')],
-        ], _('The wheel over an icon always steps through its windows')));
 
         const previewSize = new Adw.SpinRow({
             title: _('Preview width'),

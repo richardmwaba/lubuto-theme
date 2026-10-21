@@ -43,6 +43,10 @@ export const LubutoDashIcon = GObject.registerClass({
     // the previews or steps to the next window; everything else keeps the
     // stock behaviour: one window raises it, Ctrl and middle click open a new
     // window, a stopped app launches.
+    // A plain left click on a running app: previews when it has several
+    // windows, minimise when its one window has focus, raise it otherwise.
+    // One behaviour rather than a setting: the three cases never compete,
+    // and the wheel covers stepping through windows.
     activate(button) {
         const event = Clutter.get_current_event();
         const modifiers = event ? event.get_state() : 0;
@@ -50,22 +54,13 @@ export const LubutoDashIcon = GObject.registerClass({
             (modifiers & Clutter.ModifierType.CONTROL_MASK) === 0;
         const windows = this.app.state === Shell.AppState.RUNNING ? appWindows(this.app) : [];
 
-        // A click on the app whose one window has focus: minimise it when
-        // asked, the way a taskbar does. With several windows the previews
-        // show, so the click never hides a window the user cannot see.
-        if (plainLeft && windows.length === 1 && this._getConfig().clickAction === 'minimize' &&
-            windows[0] === global.display.focus_window) {
+        if (plainLeft && windows.length === 1 && windows[0] === global.display.focus_window) {
             windows[0].minimize();
             return;
         }
 
         if (!plainLeft || windows.length < 2) {
             super.activate(button);
-            return;
-        }
-
-        if (this._getConfig().clickAction === 'cycle') {
-            Main.activateWindow(nextWindow(this.app, 1));
             return;
         }
 

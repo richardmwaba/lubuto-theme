@@ -9,8 +9,9 @@ Dates are when the release was tagged.
 - Dock: the wheel over an icon steps through the app's windows with a high-resolution wheel or a
   touchpad too. Those send smooth scroll events only, which the icon ignored; smooth deltas now
   accumulate to a step, and a short cooldown keeps a classic wheel's paired events to one step.
-- Dock: `dock-click-action` gains `minimize`: a click on the icon of an app whose single window
-  has focus minimises it; with several windows the previews show as usual.
+- Dock: a click on the icon of an app whose single window has focus minimises it, and a click on
+  the minimised one restores it. One behaviour, no setting: previews for several windows, minimise
+  for a focused single one, raise otherwise, and the wheel steps through windows.
 - Dock previews: closing a window from its preview no longer logs `Object
   Gjs_dock_previews_WindowPreviewItem ... has been already disposed`. The item went away under the
   press, and the shell's click gesture handler then ran on the disposed item; the item's actions
@@ -33,8 +34,8 @@ Dates are when the release was tagged.
   Theme page has a Tweaks group whose rows say when a choice is not installed.
 - Dock: a click on an icon whose app has two or more windows on the workspace opens previews of
   those windows above the icon; a click on a preview goes to that window, the wheel over the icon
-  steps through them, arrows walk the previews from the keyboard. `dock-click-action` picks previews
-  or a raise-the-next-window click instead, `dock-preview-size` sets the thumbnail width.
+  steps through them, arrows walk the previews from the keyboard. `dock-preview-size` sets the
+  thumbnail width.
 - Blur and dock: no more `Can't update stage views actor lubuto-...` warnings in the journal. The
   dock recentred and the backdrops framed themselves from allocation handlers, which queued a relayout
   after the layout pass; both now apply geometry from a before-redraw later, one frame later.
