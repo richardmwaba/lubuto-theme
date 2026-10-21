@@ -17,6 +17,10 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import {WindowPreviewMenu, appWindows, nextWindow} from './previews.js';
 
+// Milliseconds after a wheel step during which further scroll events are
+// swallowed: a classic wheel notch arrives as two events.
+const SCROLL_COOLDOWN = 150;
+
 const MAGNIFY_TIME = 150;
 
 // A dash icon that knows about its app's windows. The stock icon raises the
@@ -46,6 +50,15 @@ export const LubutoDashIcon = GObject.registerClass({
             (modifiers & Clutter.ModifierType.CONTROL_MASK) === 0;
         const windows = this.app.state === Shell.AppState.RUNNING ? appWindows(this.app) : [];
 
+        // A click on the app whose one window has focus: minimise it when
+        // asked, the way a taskbar does. With several windows the previews
+        // show, so the click never hides a window the user cannot see.
+        if (plainLeft && windows.length === 1 && this._getConfig().clickAction === 'minimize' &&
+            windows[0] === global.display.focus_window) {
+            windows[0].minimize();
+            return;
+        }
+
         if (!plainLeft || windows.length < 2) {
             super.activate(button);
             return;
@@ -65,9 +78,13 @@ export const LubutoDashIcon = GObject.registerClass({
             this._popupPreviews();
     }
 
-    // The wheel over the icon walks the app's windows without a popup.
+    // The wheel over the icon walks the app's windows without a popup. A
+    // classic wheel notch arrives as a smooth event and a discrete one, a
+    // high-resolution wheel or a touchpad as smooth events alone, so smooth
+    // deltas accumulate to a step and a short cooldown after any step swallows
+    // the companion event.
     vfunc_scroll_event(event) {
-        let step;
+        let step = 0;
         switch (event.get_scroll_direction()) {
             case Clutter.ScrollDirection.UP:
             case Clutter.ScrollDirection.LEFT:
@@ -77,12 +94,30 @@ export const LubutoDashIcon = GObject.registerClass({
             case Clutter.ScrollDirection.RIGHT:
                 step = 1;
                 break;
+            case Clutter.ScrollDirection.SMOOTH: {
+                const [dx, dy] = event.get_scroll_delta();
+                this._scrollAccumulator = (this._scrollAccumulator ?? 0) +
+                    (Math.abs(dy) >= Math.abs(dx) ? dy : dx);
+                if (Math.abs(this._scrollAccumulator) >= 1)
+                    step = Math.sign(this._scrollAccumulator);
+                break;
+            }
             default:
                 return Clutter.EVENT_PROPAGATE;
         }
+
+        const time = event.get_time();
+        if (step === 0 || time - (this._lastScrollStep ?? 0) < SCROLL_COOLDOWN) {
+            if (step !== 0)
+                this._scrollAccumulator = 0;
+            return Clutter.EVENT_STOP;
+        }
+
         const window = nextWindow(this.app, step);
         if (!window)
             return Clutter.EVENT_PROPAGATE;
+        this._lastScrollStep = time;
+        this._scrollAccumulator = 0;
         Main.activateWindow(window);
         return Clutter.EVENT_STOP;
     }

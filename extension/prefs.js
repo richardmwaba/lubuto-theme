@@ -177,9 +177,10 @@ export default class LubutoPreferences extends ExtensionPreferences {
         settings.bind('dock-monitor', dockMonitor, 'value', Gio.SettingsBindFlags.DEFAULT);
         dock.add(dockMonitor);
 
-        dock.add(this._comboRow(settings, 'dock-click-action', _('Click on an app with several windows'), [
-            ['previews', _('Show window previews')],
+        dock.add(this._comboRow(settings, 'dock-click-action', _('Click on a running app'), [
+            ['previews', _('Previews when it has several windows')],
             ['cycle', _('Raise the next window')],
+            ['minimize', _('Minimise its focused window, previews when it has several')],
         ], _('The wheel over an icon always steps through its windows')));
 
         const previewSize = new Adw.SpinRow({

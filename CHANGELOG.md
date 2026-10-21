@@ -6,6 +6,11 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Dock: the wheel over an icon steps through the app's windows with a high-resolution wheel or a
+  touchpad too. Those send smooth scroll events only, which the icon ignored; smooth deltas now
+  accumulate to a step, and a short cooldown keeps a classic wheel's paired events to one step.
+- Dock: `dock-click-action` gains `minimize`: a click on the icon of an app whose single window
+  has focus minimises it; with several windows the previews show as usual.
 - Dock previews: closing a window from its preview no longer logs `Object
   Gjs_dock_previews_WindowPreviewItem ... has been already disposed`. The item went away under the
   press, and the shell's click gesture handler then ran on the disposed item; the item's actions
