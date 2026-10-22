@@ -2,7 +2,7 @@
 
 Dates are when the release was tagged.
 
-## Unreleased
+## 1.0.0 (2026-10-22)
 
 ### Extension
 

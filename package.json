@@ -1,6 +1,6 @@
 {
   "name": "lubuto",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "GNOME 50 theme and shell extension with a Liquid Glass look, forked from Orchis",
   "private": true,
   "license": "GPL-3.0-or-later",

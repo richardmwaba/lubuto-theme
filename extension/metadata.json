@@ -6,5 +6,5 @@
   "settings-schema": "org.gnome.shell.extensions.lubuto",
   "gettext-domain": "lubuto",
   "url": "https://github.com/richardmwaba/orchis-theme-extended",
-  "version-name": "0.1.0"
+  "version-name": "1.0.0"
 }
