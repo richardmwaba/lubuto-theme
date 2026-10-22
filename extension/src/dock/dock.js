@@ -60,6 +60,10 @@ export class Dock {
             track_hover: true,
         });
 
+        // Same reason as the backdrop: at a shell shutdown the stage destroys
+        // the container before disable() runs, and the pending laters go too.
+        this._container.connect('destroy', () => this._cancelLaters());
+
         this._dash = new LubutoDash(() => this._getConfig());
         this._dash.showAppsButton.connectObject('notify::checked', () => this._onShowApps(), this);
         this._container.add_child(this._dash);
@@ -401,6 +405,18 @@ export class Dock {
     // BEFORE_REDRAW later runs ahead of the layout pass, and an icon
     // animating in queues a relayout every frame, so it finds no allocation
     // at any frame and nothing asks again after the last one.
+
+    _cancelLaters() {
+        const laters = global.compositor.get_laters();
+        if (this._placeLater) {
+            laters.remove(this._placeLater);
+            this._placeLater = 0;
+        }
+        if (this._iconGeometryLater) {
+            laters.remove(this._iconGeometryLater);
+            this._iconGeometryLater = 0;
+        }
+    }
 
     _queueIconGeometry() {
         if (this._iconGeometryLater || !this._container)

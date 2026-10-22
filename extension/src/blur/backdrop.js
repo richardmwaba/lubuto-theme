@@ -68,6 +68,9 @@ export class Backdrop {
             height: 0,
             visible: false,
         });
+        // The stage tears its children down ahead of the extension at a shell
+        // shutdown, and a pending layout later would then touch disposed actors.
+        this.actor.connect('destroy', () => this._cancelLayout());
         this._blurred = new St.Widget({
             name: 'lubuto-backdrop-blur',
             width: 0,
@@ -276,11 +279,15 @@ export class Backdrop {
         }
     }
 
-    destroy() {
+    _cancelLayout() {
         if (this._layoutLater) {
             global.compositor.get_laters().remove(this._layoutLater);
             this._layoutLater = 0;
         }
+    }
+
+    destroy() {
+        this._cancelLayout();
         this._bgManager?.destroy();
         this._bgManager = null;
         this._clone?.destroy();

@@ -7,6 +7,7 @@
 // menu manager handles the grab and the outside click.
 
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -17,6 +18,11 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 // Thumbnail height as a share of its width.
 const PREVIEW_ASPECT = 0.625;
+// The popup closes once the pointer has been outside the dock and the popup
+// for this long. The pointer wanders off a dock naturally, and the popup's
+// grab would otherwise hold an autohide dock on screen until a click.
+const LEAVE_DELAY = 600;
+const LEAVE_POLL = 150;
 const FALLBACK_ICON_SIZE = 64;
 
 // The app's windows on the active workspace in a fixed order. app.get_windows()
@@ -166,6 +172,61 @@ export class WindowPreviewMenu extends PopupMenu.PopupMenu {
                 this._app.disconnectObject(this);
         });
         this.open(BoxPointer.PopupAnimation.FULL);
+        this._watchPointer();
+    }
+
+    // Closes the popup after the pointer has stayed outside the dock and the
+    // popup for LEAVE_DELAY. Both rectangles and the gap between them count
+    // as inside, so crossing from the icon to a thumbnail is safe. Polling
+    // rather than hover: hover cannot cover the gap, and a grab is in place.
+    _watchPointer() {
+        this._stopWatching();
+        let leftAt = 0;
+        this._pointerWatch = GLib.timeout_add(GLib.PRIORITY_DEFAULT, LEAVE_POLL, () => {
+            if (!this.isOpen) {
+                this._pointerWatch = 0;
+                return GLib.SOURCE_REMOVE;
+            }
+            const [x, y] = global.get_pointer();
+            if (this._pointerInside(x, y)) {
+                leftAt = 0;
+                return GLib.SOURCE_CONTINUE;
+            }
+            const now = GLib.get_monotonic_time() / 1000;
+            if (!leftAt) {
+                leftAt = now;
+                return GLib.SOURCE_CONTINUE;
+            }
+            if (now - leftAt < LEAVE_DELAY)
+                return GLib.SOURCE_CONTINUE;
+            this._pointerWatch = 0;
+            this.close(BoxPointer.PopupAnimation.FADE);
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _stopWatching() {
+        if (this._pointerWatch) {
+            GLib.source_remove(this._pointerWatch);
+            this._pointerWatch = 0;
+        }
+    }
+
+    _pointerInside(x, y) {
+        // The dock container is the icon's ancestor directly under uiGroup.
+        let dock = this._icon;
+        while (dock.get_parent() && dock.get_parent() !== Main.uiGroup)
+            dock = dock.get_parent();
+        const rects = [this.actor, dock].map(actor => {
+            const [ax, ay] = actor.get_transformed_position();
+            const [aw, ah] = actor.get_transformed_size();
+            return [ax, ay, ax + aw, ay + ah];
+        });
+        const x1 = Math.min(rects[0][0], rects[1][0]);
+        const y1 = Math.min(rects[0][1], rects[1][1]);
+        const x2 = Math.max(rects[0][2], rects[1][2]);
+        const y2 = Math.max(rects[0][3], rects[1][3]);
+        return x >= x1 && x < x2 && y >= y1 && y < y2;
     }
 
     // A pressed item's click gesture notifies when its action goes away, and
@@ -188,6 +249,7 @@ export class WindowPreviewMenu extends PopupMenu.PopupMenu {
     }
 
     destroy() {
+        this._stopWatching();
         this._dropItems();
         super.destroy();
     }

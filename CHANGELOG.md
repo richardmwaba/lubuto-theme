@@ -6,6 +6,12 @@ Dates are when the release was tagged.
 
 ### Extension
 
+- Dock previews close on their own once the pointer has been away from the dock and the popup for
+  0.6 s. A click elsewhere, Esc and a second click on the icon close them as before. The popup's
+  grab held an autohide dock on screen until a click.
+- Blur and dock: a shell shutdown that destroys the stage before the extension is disabled no
+  longer runs pending layout and icon geometry passes on disposed actors; the actors cancel their
+  laters when they are destroyed.
 - Dock: the wheel over an icon steps through the app's windows with a high-resolution wheel or a
   touchpad too. Those send smooth scroll events only, which the icon ignored; smooth deltas now
   accumulate to a step, and a short cooldown keeps a classic wheel's paired events to one step.
